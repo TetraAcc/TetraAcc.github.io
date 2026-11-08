@@ -6,8 +6,7 @@ import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 
 const headings = [
   { depth: 2, slug: 'open-source', text: 'Open Source' },
-  { depth: 2, slug: 'music-crate', text: 'Music Crate' },
-  { depth: 2, slug: 'subdomains', text: 'Subdomain Gateways' }
+  { depth: 2, slug: 'music-crate', text: 'Music Crate' }
 ]
 ---
 
@@ -106,35 +105,4 @@ const headings = [
   </p>
 
   <SpotifyCrate />
-
-  <h2 id='subdomains'>Subdomain Gateways (*.tetraacc.me)</h2>
-  <div data-i18n='zh'>
-    <p>
-      主域名 <code>tetraacc.me</code> 托管静态主页，子域名通过 Cloudflare Tunnel 指向个人设备（受 Zero Trust 访问保护）：
-    </p>
-    <ul>
-      <li><code>ssh.tetraacc.me</code> — Windows 11 主力机远程终端隧道</li>
-      <li><code>deck.tetraacc.me</code> — Steam Deck 常驻服务节点（AstrBot 与挂载资源库）</li>
-    </ul>
-  </div>
-
-  <div data-i18n='ja'>
-    <p>
-      メインドメイン <code>tetraacc.me</code> は静的サイトをホスティングし、サブドメインは Cloudflare Tunnel 経由で自宅ノードへルーティングしています（Zero Trust 認証保護）：
-    </p>
-    <ul>
-      <li><code>ssh.tetraacc.me</code> — Windows 11 メインマシン リモートSSHトンネル</li>
-      <li><code>deck.tetraacc.me</code> — Steam Deck 常駐サーバーノード（AstrBot・ストレージ）</li>
-    </ul>
-  </div>
-
-  <div data-i18n='en'>
-    <p>
-      Root domain <code>tetraacc.me</code> hosts this static site, while subdomains route to self-hosted nodes via Cloudflare Tunnel (protected by Zero Trust):
-    </p>
-    <ul>
-      <li><code>ssh.tetraacc.me</code> — Windows 11 workstation remote SSH tunnel</li>
-      <li><code>deck.tetraacc.me</code> — Steam Deck always-on node (AstrBot &amp; media library)</li>
-    </ul>
-  </div>
 </PageLayout>
