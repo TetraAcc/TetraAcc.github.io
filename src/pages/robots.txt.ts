@@ -1,11 +1,11 @@
 import type { APIRoute } from 'astro'
 
 const robotsTxt = `
-User-agent: GPTBot
-User-agent: ClaudeBot
-User-agent: Claude-Web
-
 User-agent: *
+Disallow: /calendar
+Disallow: /calendar/
+Disallow: /calendar.ics
+Disallow: /admin/
 Allow: /
 
 Sitemap: ${new URL('sitemap-index.xml', import.meta.env.SITE).href}
