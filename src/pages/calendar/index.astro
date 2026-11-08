@@ -1,0 +1,662 @@
+---
+import PageLayout from '@/layouts/CommonPage.astro'
+import { CALENDAR_CONFIG } from '@/data/calendar'
+
+const headings = [
+  { depth: 2, slug: 'calendar-view', text: 'Calendar' },
+  { depth: 2, slug: 'subscribe', text: 'Subscribe' }
+]
+---
+
+<PageLayout title='Calendar & Schedule' {headings}>
+  <link
+    rel='stylesheet'
+    href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css'
+  />
+
+  <p data-i18n='zh'>
+    山形大学学事日程、中日法定节假日与调休、个人就活与实习 DDL 实时日程台账。由常驻 Linux 主机每日自动聚合落盘并同步。
+  </p>
+  <p data-i18n='ja'>
+    山形大学の学事日程、日中国民の祝日・振替休日、就職活動・インターン選考の締切をリアルタイムで同期する統合カレンダー。
+  </p>
+  <p data-i18n='en'>
+    Unified calendar tracking Yamagata University academic events, China &amp; Japan national holidays, and career application deadlines.
+  </p>
+
+  {/* 顶部一键订阅与操作栏 */}
+  <h2 id='subscribe'>Subscribe · 一键导入与订阅</h2>
+  <div class='not-prose my-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs font-mono'>
+    <a
+      href={CALENDAR_CONFIG.webcalUrl}
+      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
+      title='点击直接唤起 iPhone、iPad、Mac 或系统日历应用订阅'
+    >
+      <div class='flex items-center gap-2'>
+        <span class='text-base'>🍏</span>
+        <div class='flex flex-col text-start'>
+          <span class='font-medium text-[13px]'>Apple / 系统日历</span>
+          <span class='text-[10px] text-muted-foreground'>webcal:// 一键订阅</span>
+        </div>
+      </div>
+      <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>↗</span>
+    </a>
+
+    <a
+      href={CALENDAR_CONFIG.googleCalUrl}
+      target='_blank'
+      rel='noopener noreferrer'
+      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
+      title='直接跳转在 Google Calendar 网页端添加此日历'
+    >
+      <div class='flex items-center gap-2'>
+        <span class='text-base'>📅</span>
+        <div class='flex flex-col text-start'>
+          <span class='font-medium text-[13px]'>Google Calendar</span>
+          <span class='text-[10px] text-muted-foreground'>添加到谷歌日历</span>
+        </div>
+      </div>
+      <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>↗</span>
+    </a>
+
+    <a
+      href={CALENDAR_CONFIG.icsUrl}
+      download='tetra_schedule.ics'
+      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
+      title='下载标准 iCalendar (.ics) 文件'
+    >
+      <div class='flex items-center gap-2'>
+        <span class='text-base'>⬇️</span>
+        <div class='flex flex-col text-start'>
+          <span class='font-medium text-[13px]'>下载 .ICS 文件</span>
+          <span class='text-[10px] text-muted-foreground'>手动导入到任意应用</span>
+        </div>
+      </div>
+      <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-y-0.5'>↓</span>
+    </a>
+
+    <button
+      type='button'
+      id='copyFeedBtn'
+      data-feed-url={CALENDAR_CONFIG.webcalUrl}
+      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all text-start text-foreground cursor-pointer'
+      title='复制订阅链接，可手动粘贴至 Outlook 等'
+    >
+      <div class='flex items-center gap-2'>
+        <span class='text-base'>📋</span>
+        <div class='flex flex-col text-start'>
+          <span class='font-medium text-[13px]'>复制订阅源 URL</span>
+          <span id='copyFeedText' class='text-[10px] text-muted-foreground'>点击复制到剪贴板</span>
+        </div>
+      </div>
+      <span class='text-muted-foreground/60 group-hover:text-primary transition-colors'>⎘</span>
+    </button>
+  </div>
+
+  {/* 日历控制条：时区切换、图例、视图切换 */}
+  <h2 id='calendar-view'>Schedule · 日历视图</h2>
+
+  <div class='not-prose my-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-3 rounded-xl border border-border/70 bg-card/40 text-xs'>
+    {/* 分类颜色图例 */}
+    <div class='flex flex-wrap items-center gap-2 text-[11px] font-mono'>
+      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20'>
+        <span class='size-1.5 rounded-full bg-red-500'></span>
+        <span>🔴 紧急/就活 DDL</span>
+      </span>
+      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'>
+        <span class='size-1.5 rounded-full bg-blue-500'></span>
+        <span>🔵 活动/说明会/课程</span>
+      </span>
+      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20'>
+        <span class='size-1.5 rounded-full bg-green-500'></span>
+        <span>🟢 中日假期/学校休业</span>
+      </span>
+      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'>
+        <span class='size-1.5 rounded-full bg-amber-500'></span>
+        <span>🟠 调休补班/学校调课</span>
+      </span>
+    </div>
+
+    {/* 右侧：时区切换开关（JST / CST） */}
+    <div class='flex items-center gap-2 self-end md:self-auto font-mono'>
+      <span class='text-muted-foreground text-[11px]'>时区 Timezone:</span>
+      <div id='tzSwitcher' class='inline-flex rounded-lg border border-border/70 p-0.5 bg-muted/40'>
+        <button
+          type='button'
+          data-tz='Asia/Tokyo'
+          class='tz-btn active-tz px-2 py-1 rounded text-[11px] font-medium transition-colors'
+        >
+          🇯🇵 JST (东京 UTC+9)
+        </button>
+        <button
+          type='button'
+          data-tz='Asia/Shanghai'
+          class='tz-btn px-2 py-1 rounded text-[11px] font-medium transition-colors text-muted-foreground'
+        >
+          🇨🇳 CST (北京 UTC+8)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* 日历主容器 */}
+  <div class='not-prose my-4 rounded-xl border border-border/70 bg-card/40 p-3 sm:p-5 shadow-sm overflow-hidden'>
+    <div id='calendarLoading' class='py-12 text-center text-sm text-muted-foreground flex items-center justify-center gap-2'>
+      <span class='size-2 rounded-full bg-primary animate-ping'></span>
+      <span>正在加载并解析日历数据...</span>
+    </div>
+    <div id='calendar' class='min-h-[560px]'></div>
+  </div>
+
+  {/* 事件详情弹窗模态框 */}
+  <div
+    id='eventModal'
+    class='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200'
+  >
+    <div
+      id='eventModalCard'
+      class='relative w-full max-w-lg rounded-2xl border border-border bg-background p-5 sm:p-6 shadow-2xl transition-transform duration-200 scale-95'
+    >
+      <button
+        type='button'
+        id='closeModalBtn'
+        class='absolute top-4 right-4 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
+        aria-label='Close'
+      >
+        <svg class='size-5' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>
+          <path d='M18 6L6 18M6 6l12 12'></path>
+        </svg>
+      </button>
+
+      <div class='flex flex-col gap-y-3'>
+        <div id='modalBadge' class='w-fit text-xs font-mono px-2 py-0.5 rounded'></div>
+        <h3 id='modalTitle' class='text-lg sm:text-xl font-medium text-foreground leading-snug'></h3>
+
+        <div class='flex flex-col gap-y-1.5 text-xs text-muted-foreground font-mono bg-muted/40 p-3 rounded-lg border border-border/50'>
+          <div class='flex items-start gap-2'>
+            <span class='text-foreground/80 shrink-0'>⏰ 时间:</span>
+            <span id='modalTime' class='text-foreground'></span>
+          </div>
+          <div id='modalLocationRow' class='flex items-start gap-2'>
+            <span class='text-foreground/80 shrink-0'>📍 地点:</span>
+            <span id='modalLocation' class='text-foreground'></span>
+          </div>
+        </div>
+
+        <div id='modalDesc' class='text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto pr-1'></div>
+
+        <div class='flex items-center justify-end gap-2 pt-2 border-t border-border/60'>
+          <a
+            id='modalLinkBtn'
+            href='#'
+            target='_blank'
+            rel='noopener noreferrer'
+            class='hidden items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity no-underline'
+          >
+            <span>打开相关页面 / 系统</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style is:global>
+    /* FullCalendar 自定义主题样式：与 Astro Theme Pure 保持 100% 极简一致 */
+    :root {
+      --fc-border-color: hsl(var(--border) / 0.7);
+      --fc-page-bg-color: transparent;
+      --fc-neutral-bg-color: hsl(var(--muted) / 0.3);
+      --fc-today-bg-color: hsl(var(--muted) / 0.4);
+      --fc-highlight-color: hsl(var(--muted) / 0.6);
+      --fc-list-event-hover-bg-color: hsl(var(--muted) / 0.5);
+    }
+
+    .fc {
+      font-family: inherit;
+    }
+
+    .fc .fc-toolbar-title {
+      font-size: 1.15rem;
+      font-weight: 500;
+    }
+
+    .fc .fc-button-primary {
+      background-color: hsl(var(--card));
+      border: 1px solid hsl(var(--border) / 0.8);
+      color: hsl(var(--foreground));
+      font-size: 0.8rem;
+      border-radius: 0.5rem;
+      padding: 0.35rem 0.65rem;
+      transition: all 0.2s ease;
+      text-transform: none;
+      box-shadow: none;
+    }
+
+    .fc .fc-button-primary:hover,
+    .fc .fc-button-primary:focus {
+      background-color: hsl(var(--muted));
+      border-color: hsl(var(--foreground) / 0.3);
+      color: hsl(var(--foreground));
+      box-shadow: none;
+    }
+
+    .fc .fc-button-primary:disabled {
+      opacity: 0.5;
+    }
+
+    .fc .fc-button-active {
+      background-color: hsl(var(--muted)) !important;
+      border-color: hsl(var(--foreground) / 0.4) !important;
+      color: hsl(var(--foreground)) !important;
+      font-weight: 600;
+    }
+
+    .fc-theme-standard td,
+    .fc-theme-standard th {
+      border-color: hsl(var(--border) / 0.6);
+    }
+
+    .fc .fc-col-header-cell-cushion {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      padding: 6px 0;
+    }
+
+    .fc .fc-daygrid-day-number {
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: hsl(var(--muted-foreground));
+      padding: 4px 6px;
+    }
+
+    .fc .fc-daygrid-day.fc-day-today {
+      background-color: hsl(var(--muted) / 0.35) !important;
+    }
+
+    .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+      font-weight: bold;
+      color: hsl(var(--primary));
+    }
+
+    /* 事件胶囊定制 */
+    .fc-event {
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 1px 3px;
+      margin-bottom: 2px;
+      transition: transform 0.15s ease;
+    }
+
+    .fc-event:hover {
+      transform: translateY(-1px);
+    }
+
+    /* 🔴 DDL / 紧急 */
+    .fc-event-ddl {
+      background-color: rgba(239, 68, 68, 0.15) !important;
+      border: 1px solid rgba(239, 68, 68, 0.4) !important;
+      color: #ef4444 !important;
+    }
+
+    /* 🔵 活动 / 会议 / 课程 */
+    .fc-event-event {
+      background-color: rgba(59, 130, 246, 0.15) !important;
+      border: 1px solid rgba(59, 130, 246, 0.4) !important;
+      color: #3b82f6 !important;
+    }
+
+    /* 🟢 假期 / 休业 */
+    .fc-event-holiday {
+      background-color: rgba(34, 197, 94, 0.15) !important;
+      border: 1px solid rgba(34, 197, 94, 0.4) !important;
+      color: #22c55e !important;
+    }
+
+    /* 🟠 调休 / 调课 */
+    .fc-event-shift {
+      background-color: rgba(245, 158, 11, 0.15) !important;
+      border: 1px solid rgba(245, 158, 11, 0.4) !important;
+      color: #f59e0b !important;
+    }
+
+    /* 列表视图优化 */
+    .fc-list-table {
+      border-color: hsl(var(--border) / 0.6);
+    }
+
+    .fc-list-day-cushion {
+      background-color: hsl(var(--muted) / 0.5) !important;
+      color: hsl(var(--foreground));
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .fc-list-event-title, .fc-list-event-time {
+      font-size: 0.8rem;
+    }
+
+    .tz-btn.active-tz {
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground)) !important;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+  </style>
+
+  {/* 客户端加载与解析 ical.js / FullCalendar */}
+  <script src='https://cdn.jsdelivr.net/npm/ical.js@1.5.0/build/ical.min.js' is:inline></script>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js' is:inline></script>
+
+  <script is:inline define:vars={{ icsUrl: CALENDAR_CONFIG.icsUrl }}>
+    ;(function () {
+      let currentTz = localStorage.getItem('tetra-cal-tz') || 'Asia/Tokyo'
+      let calendar = null
+      let rawEvents = []
+
+      // 1. 复制链接快捷操作
+      const copyBtn = document.getElementById('copyFeedBtn')
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          const feedUrl = copyBtn.getAttribute('data-feed-url')
+          navigator.clipboard.writeText(feedUrl).then(() => {
+            const textEl = document.getElementById('copyFeedText')
+            if (textEl) {
+              const prev = textEl.textContent
+              textEl.textContent = '✓ 订阅链接已复制！'
+              setTimeout(() => {
+                textEl.textContent = prev
+              }, 2500)
+            }
+          })
+        })
+      }
+
+      // 2. 时区切换监听
+      const tzBtns = document.querySelectorAll('.tz-btn')
+      tzBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const newTz = btn.getAttribute('data-tz')
+          if (newTz === currentTz) return
+          currentTz = newTz
+          localStorage.setItem('tetra-cal-tz', currentTz)
+
+          tzBtns.forEach((b) => {
+            const isAct = b.getAttribute('data-tz') === currentTz
+            b.classList.toggle('active-tz', isAct)
+            b.classList.toggle('text-muted-foreground', !isAct)
+          })
+
+          if (calendar) {
+            renderEvents(rawEvents)
+          }
+        })
+      })
+
+      // 3. 事件分类识别函数
+      function categorizeEvent(summary, categories = '') {
+        const text = (summary + ' ' + categories).toLowerCase()
+
+        if (
+          /ddl|截止|es|笔试|面试|webtest|提出|締切|deadline|exam|試験/.test(text)
+        ) {
+          return {
+            type: 'ddl',
+            label: '🔴 紧急 / DDL',
+            className: 'fc-event-ddl',
+            badgeClass: 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30'
+          }
+        }
+        if (
+          /说明会|説明会|seminar|培训|研修|讲座|授業|lecture|meeting|workshop|典礼|式/.test(
+            text
+          )
+        ) {
+          return {
+            type: 'event',
+            label: '🔵 活动 / 说明会 / 课程',
+            className: 'fc-event-event',
+            badgeClass: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30'
+          }
+        }
+        if (
+          /休|祝日|假日|元旦|春节|春節|清明|劳动节|労働|端午|中秋|国庆|国慶|振替|成人の日|建国|天皇|春分|昭和|憲法|みどりの日|こどもの日|海の日|山の日|敬老|秋分|スポーツ|文化の日|勤労感謝/.test(
+            text
+          )
+        ) {
+          return {
+            type: 'holiday',
+            label: '🟢 中日假期 / 学校休业',
+            className: 'fc-event-holiday',
+            badgeClass: 'bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/30'
+          }
+        }
+        if (/调|補講|振替|补|月曜|火曜|水曜|木曜|金曜/.test(text)) {
+          return {
+            type: 'shift',
+            label: '🟠 调休补班 / 学校调课',
+            className: 'fc-event-shift',
+            badgeClass: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30'
+          }
+        }
+
+        return {
+          type: 'default',
+          label: '📅 日程',
+          className: 'fc-event-event',
+          badgeClass: 'bg-muted text-foreground border border-border'
+        }
+      }
+
+      // 4. 时区时间格式化函数
+      function formatTzTime(jsDate, tz, isAllDay = false) {
+        if (isAllDay) {
+          return (
+            jsDate.toLocaleDateString('zh-CN', {
+              timeZone: tz,
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+            }) + ' (全天 All-Day)'
+          )
+        }
+
+        const tzName = tz === 'Asia/Tokyo' ? 'JST (东京时间 UTC+9)' : 'CST (北京时间 UTC+8)'
+        const dateStr = jsDate.toLocaleDateString('zh-CN', {
+          timeZone: tz,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        })
+        const timeStr = jsDate.toLocaleTimeString('zh-CN', {
+          timeZone: tz,
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        })
+
+        return `${dateStr} ${timeStr} · ${tzName}`
+      }
+
+      // 5. 模态框控制
+      const modal = document.getElementById('eventModal')
+      const modalCard = document.getElementById('eventModalCard')
+      const closeModalBtn = document.getElementById('closeModalBtn')
+      const modalTitle = document.getElementById('modalTitle')
+      const modalBadge = document.getElementById('modalBadge')
+      const modalTime = document.getElementById('modalTime')
+      const modalLocationRow = document.getElementById('modalLocationRow')
+      const modalLocation = document.getElementById('modalLocation')
+      const modalDesc = document.getElementById('modalDesc')
+      const modalLinkBtn = document.getElementById('modalLinkBtn')
+
+      function openModal(eventObj) {
+        const ext = eventObj.extendedProps || {}
+        modalTitle.textContent = eventObj.title
+        modalBadge.textContent = ext.metaCategory?.label || '日程'
+        modalBadge.className = `w-fit text-xs font-mono px-2 py-0.5 rounded ${ext.metaCategory?.badgeClass || ''}`
+
+        const startStr = formatTzTime(eventObj.start, currentTz, eventObj.allDay)
+        let timeDisplay = startStr
+        if (eventObj.end && !eventObj.allDay) {
+          const endStr = formatTzTime(eventObj.end, currentTz, false)
+          timeDisplay = `${startStr} ~ ${endStr.split('·')[0]}`
+        }
+        modalTime.textContent = timeDisplay
+
+        if (ext.location) {
+          modalLocation.textContent = ext.location
+          modalLocationRow.classList.remove('hidden')
+        } else {
+          modalLocationRow.classList.add('hidden')
+        }
+
+        if (ext.description) {
+          modalDesc.textContent = ext.description
+          modalDesc.classList.remove('hidden')
+        } else {
+          modalDesc.classList.add('hidden')
+        }
+
+        if (ext.url) {
+          modalLinkBtn.href = ext.url
+          modalLinkBtn.classList.remove('hidden')
+        } else {
+          modalLinkBtn.classList.add('hidden')
+        }
+
+        modal.classList.remove('opacity-0', 'pointer-events-none')
+        modalCard.classList.remove('scale-95')
+      }
+
+      function closeModal() {
+        modal.classList.add('opacity-0', 'pointer-events-none')
+        modalCard.classList.add('scale-95')
+      }
+
+      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal)
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal()
+        })
+      }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal()
+      })
+
+      // 6. 将原始解析的事件渲染到 FullCalendar
+      function renderEvents(rawList) {
+        const fcEvents = rawList.map((item) => {
+          return {
+            id: item.uid,
+            title: item.summary,
+            start: item.start,
+            end: item.end,
+            allDay: item.allDay,
+            className: item.metaCategory.className,
+            extendedProps: {
+              location: item.location,
+              description: item.description,
+              url: item.url,
+              metaCategory: item.metaCategory,
+              rawStart: item.start,
+              rawEnd: item.end
+            }
+          }
+        })
+
+        calendar.removeAllEvents()
+        calendar.addEventSource(fcEvents)
+      }
+
+      // 7. 拉取并解析 ICS 文件
+      async function initCalendar() {
+        const loadingEl = document.getElementById('calendarLoading')
+        const calEl = document.getElementById('calendar')
+
+        try {
+          const res = await fetch(icsUrl)
+          if (!res.ok) throw new Error('Failed to fetch ' + icsUrl)
+          const icsData = await res.text()
+
+          // 使用 ical.js 解析
+          const jcal = ICAL.parse(icsData)
+          const comp = new ICAL.Component(jcal)
+          const vevents = comp.getAllSubcomponents('vevent')
+
+          rawEvents = vevents.map((vevent) => {
+            const ev = new ICAL.Event(vevent)
+            const summary = ev.summary || '无标题日程'
+            const description = ev.description || ''
+            const location = ev.location || ''
+            const categories = vevent.getFirstPropertyValue('categories') || ''
+            const url = vevent.getFirstPropertyValue('url') || ''
+
+            const startJs = ev.startDate.toJSDate()
+            const endJs = ev.endDate ? ev.endDate.toJSDate() : null
+            const isAllDay = ev.startDate.isDate
+
+            const metaCategory = categorizeEvent(summary, categories)
+
+            return {
+              uid: ev.uid,
+              summary,
+              description,
+              location,
+              url,
+              start: startJs,
+              end: endJs,
+              allDay: isAllDay,
+              metaCategory
+            }
+          })
+
+          if (loadingEl) loadingEl.style.display = 'none'
+
+          // 初始化 FullCalendar
+          calendar = new FullCalendar.Calendar(calEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,listMonth'
+            },
+            buttonText: {
+              today: '今天 Today',
+              month: '月视图 Month',
+              list: '议程 List'
+            },
+            locale: 'zh-cn',
+            firstDay: 1, // 星期一开始
+            dayMaxEvents: 3, // 每天最多显示 3 个胶囊，超出显示 +more
+            eventClick: function (info) {
+              info.jsEvent.preventDefault()
+              openModal(info.event)
+            }
+          })
+
+          calendar.render()
+          renderEvents(rawEvents)
+        } catch (err) {
+          console.error(err)
+          if (loadingEl) {
+            loadingEl.innerHTML = `
+              <div class="text-red-500 py-6">
+                <p>⚠️ 日历数据加载或解析失败。</p>
+                <p class="text-xs text-muted-foreground mt-1">${err.message}</p>
+              </div>
+            `
+          }
+        }
+      }
+
+      // 执行初始化
+      if (typeof FullCalendar !== 'undefined' && typeof ICAL !== 'undefined') {
+        initCalendar()
+      } else {
+        window.addEventListener('load', initCalendar)
+      }
+    })()
+  </script>
+</PageLayout>
