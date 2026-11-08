@@ -57,6 +57,8 @@ export const theme: ThemeUserConfig = {
     /** Optional details about the social media accounts for this site. */
     social: [
       { icon: 'github', label: 'GitHub', href: 'https://github.com/TetraAcc' },
+      { icon: 'bilibili', label: 'Bilibili', href: 'https://space.bilibili.com/15413289' },
+      { icon: 'steam', label: 'Steam', href: 'https://steamcommunity.com/id/TetraAcc/' },
       { icon: 'rss', label: 'RSS', href: '/rss.xml' }
     ]
   },
