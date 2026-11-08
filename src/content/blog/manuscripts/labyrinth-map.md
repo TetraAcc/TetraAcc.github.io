@@ -1,0 +1,587 @@
+---
+title: 'Labyrinth Map · 迷宫地图'
+description: '走出迷宫的地图就在这里，谁带我出去并不重要。实体手写本数字化文集。'
+publishDate: '2023-10-01'
+tags: ['手稿企划', '长篇文集']
+heroImage:
+  src: '@/assets/manuscripts/labyrinth-map/cover.jpg'
+  color: '#282828'
+pin: true
+---
+
+> 走出迷宫的地图就在这里，谁带我出去并不重要。
+
+## 开篇
+这首先是个长篇的企划。
+
+区别于日记的第一人称和叙事的第三人称，第二人称的信件是有对象、有所寄的。信件集这种东西我大一的时候尝试过。我个人是偏爱电子化存档的，但信件偏偏不适宜如此。附有心意的信件一经寄出便像离了母体的种子，虽有不舍，但更希望它能在别的土壤生根发芽。倘收信人也能好好保存则再好不过。而没有回应的信对我来说是无意义的飞禽，把它关在数据的笼中显得可悲又可怜。
+
+但这次不一样。
+
+没寄出去的信，甚至没写完的信，就没有问题。因为它的使命从寄出的那一刻才开始。在此之前都作为我的孩子在心里野蛮生长吧。
+
+这是写给刘淑琪的一封长长的信。
+
+寄出时间未知，寄出与否未知，要写多久也未知。本来准备起《答……问》这种名字，后来想想连你有什么问题我也甚不明白。我什么都不清楚，只是抱着绝对会写下去的信念在写。会慢慢增进了解的吧？我想。
+
+如果有一天，失去了寄出的理由，估计也会少难过一点吧。所有希望告诉你的事，也是要告诉我自己的事。
+到那时应该能与自己和解了吧？
+
+走出迷宫的地图就在这里
+
+谁带我出去并不重要。
+
+---
+
+## （一）
+我向来是随想随写的。灵感是像梦一样的东西。
+有一段时间我做多重梦。在最内层的梦里有了一个好的想法。结果醒来之后什么也不记得。于是后来在梦中的床边备了纸笔。记下来了！
+哪记得下来啊，一环套一环，好想法跑掉了。
+
+你那天说，爱是有条件的，只能诞生于平稳地基之上，而不能成为支柱。当时我有些沉浸在自己的思考里没能当场理解。现在我想，或许用一句借来的话也可以说明同样的意思。“不要在饿的时候逛超市，因为你会买很多不必要的东西。不要在孤独的时候寻找爱情，因为你会遇见错误的人。”情感匮乏的时候出于对现状的不满和对未来的恐惧会作出错误的选择。这一点上我是理解并认同的。
+
+讲逻辑嘛。我最爱讲逻辑了。任务如果能数值碾压，那就不是一个好任务。就这一点来谈谈吧。
+
+我说过，我是背负着好些个微不足道的秘密而生活着的人。我期待着有一天能把秘密说出去。所以虽然我一直表现得像个“忍者”，但总归是有表达欲望的。这是第一篇，因此我会渐渐把一些问题和秘密通过文字记录下来以待后效。毫无保留地写，但什么时候你能看到或者说你可以看我还说不准。
+
+一堆废话。先从现实时间最近的谈起。
+
+说说我为什么要在好像精神都还不太正常的时候唐突表白吧。
+
+人都是有点私心的，即使是自我认定为纯奉献的我自己。这次告白对我来说并不只是一场随性而为的行动。它更像是我前进路上一切必需完成的仪式。事实上你还记得18年有一次我去上海。那次最后我有些失控。因为我的目的也是完成这种仪式。这次的最后我说：“我五年的每一天都在希望这种状态能结束，现在好像开始了什么新的、不得了的东西。”
+
+这句话基本概括了我现在的状态。包括结论，种种解答都在此句中。我把我正在做的事情叫做
+青春补完计划。
+先做一件连我写了十年的日记都没写明的事情。
+我高中毕业之后的时间线。
+
+一七年毕业。入大学。入学一个月，申请退学。无论是城市还是教学水平都实在达不到我的要求。准备复读。父母悄悄给办成了休学。回合肥。找复读学校四处碰壁，错过高考报名。被我爸扔到西北边陲小城。身上什么也没有，包括手机、钱，甚至家里钥匙。每天起床在房里看试卷看到晚上。用了几个月时间攒出车票钱回合肥。还是什么都没有。我妈给了我一把钥匙。有床可以睡觉。我去找了一份送外卖的工作。就在我某个化竞同学家的楼下。当时合肥天气非常差。我接单经常会送到安大和科大。会遇到同学。省下钱买了一部手机。到手两天出了车祸。撞我的车直接开走了。我没有和公司租工服，身上唯一一件衣服破了好大洞。手机碎了，车坏了，骑不了。那一单被别人带走了，我推车回到站点。站长没扣我钱，但这天也没工资了。修不起手机。只能改到深夜班。
+
+改深夜班一周。那天最后一单是烧烤。我送的路上非常高兴。顺路可以回家。我现在都记得当时那位点了很多。跟我熟的烧烤店老板娘给了我一串土豆。我送到那家是小两口，我觉得看起来真幸福啊。回去路上突然开始下雨。凌晨三点没地方躲，公司发的车一涉深水容易断电。蹲在一个桥边上。女朋友发信息说要割腕自杀，打电话也不接，油盐不进。我说这样吧。你死得没我快。我现在跳下去，挣扎一下都算我输。我找不到活下去的理由了，只想好好睡一觉。她可能没见过这样，说自己现在就去医院。我说无所谓了，我好累。然后我把她删了。回家睡了几个小时，起床还车辞了职。辞职是十一月，身上有五百块钱。晚上不回家，或去网吧包夜睡一晚或躺在翠庭园的长椅上，取决于下不下雨。家里人越发讨厌我。
+我不是很有所谓。因为当时外公外婆还住在这边。早上会给老人买饭，然后出去流浪一天。最后身上还剩几块钱。也快过年了。我去常去的那家网吧问能不能当网管。老板说不招人了。我说我是外地人，过年不回家，可以上全天。老板动动瞎了的一只眼望望我，说行吧。一个月三千，每天十二小时以上。
+我开始当网管。一天十二小时，收银，水吧，清洁，对帐。旁边房地产公司和不知哪里来的中年人总喜欢找我聊天说有启发。我笑。搭班的小伙子其实年纪比我大，但总喊我老哥，因为我们的身份证都被老板收走了，他不知道我多大。他说他高中（或者中专）毕业之后就出来打工，真是外地人。我告诉他我现在是GAP YEAR，今年九月就去日本啦。他相信我。我教他玩炉石，告诉他不能困在这种地方。老板待我们很坏。他不怎么说话，我就代他反抗。所以老板很讨厌我。他一直招新人想换掉我，但是很难。工作水平不够或是太累受不了。我干到次年四月，被老板找理由扣掉不少钱。五月我准备去一次上海，所以辞职了。走之前我告诉他。要去上学。年纪不是问题，在社会里能遇见我这样的人的机率是很低的。他点点头，说几个月后也准备辞职回家重新上学。我说好，哪天在日本见吧。
+
+五月去上海一次，本想解开心结结果抱头鼠窜。九月回到学校重新开始大一。重度抑郁。但这届同学还挺好的。年纪大一些，大家从一开始也就把我当成学长。有问题的地方常来问问我。我后来当了心理委员，参加了心理支援团。开始认下自己的人生将不过如此。与你的距离也会越来越远。一边抑郁而沉默，一边又因要出面做事而不得不激昂。成功分出两种性格。关于你的一切信息从此开始封存在潜意识里。可靠自信而甚至有些不近人情的我收获了信任和痛恨。自卑的，失败的过去全在晚上，白天的我愈发难以忍受低下的教育水平和同学的某些“不上进”的表现。最后终于在有同学跟我倾诉爱人去世的时候脱口而出：“关我屁事，又不是我杀的？”
+
+沉默本身是无需注解的。我意识到我这颗太阳现在正在灼烧他人。我不是变正常了，而是变成了另一个极端。
+
+我去找心理支援中心的老师和辅导员。他知道我家境条件不好，告诉我如果需要帮助可以用他的医保帮我刷药，心理老师叫我去做一个医院的检查，给我批了一下午假。我父母三年大学一共给我打电话不超过一只手。我带着满心的感动决定治愈自己，给医生深深鞠了一躬。那天睡了一个安稳觉。
+
+第二天中午我被辅导员的电话叫醒。叫我去一趟办公室。我推开办公室的门。我父母在房间里，手里拿着休学通知。引以为豪的理解力成了我此时最痛恨的东西。
+
+抱歉，虽然想平静客观地叙事，但写到这里还是难过了一下。
+
+我现在还记得，当时我的表情从愕然到沉默再到狂喜。身处一场黑色幽默的中心，不好好配合可不成！我当场拒绝了辅导员休学从大一重新开始的提议，带着父母去教务处签下退学同意书，办理退学费。上午还是学生，下午已是自由人。呼吸着长春冰冷的空气，生活又一次回到原点。回寝室告诉同学，一直被我带着的室友半天蹦出来一句：“操，游戏没人带了。”我狂笑。被我训斥的他总算也能有了一些我独立自如的影子。
+
+一九年底回到合肥。做好了即刻留学日本的打算。20年初告别同学，在合肥过了我印象里最后一个不戴口罩的生日。
+
+你也明白发生什么了，对吧？
+
+我退学之后，新冠全球爆发。在没有经济来源又无所事事被人嫌弃的情况下度过了我的2020。
+
+2021年我在罗森上了班。由于能力较强很快升到了店长。度过了平平无奇等待开国的一年。同学们陆续毕业考研，而我还走在十七岁那年的老路上。准备高考，除去不幸的四年，一切都在循环里。
+
+今年四月，带着自己攒的一点钱来到日本。按原来的计划，这场联络本应发生于2020，既然已经太迟，而我也已经正常，那就到此为止吧。没有什么契机，也没有什么立场。
+失败的青春无法补完，毕竟我不是真的十七。
+
+得亏我不是什么真正的预言家啊。后面发生的事情我根本没想到过，完全计划外。
+
+所以告白的那一刻，我的目的已经达成了。我替当年那个拐弯抹角、扭扭捏捏的少年完成了心愿。心结也终于解开。
+
+记得我前面提到的网管吗，他后来微信告诉我，他进了湘潭医学职业学院重新上学，我由衷为他感到高兴。
+
+你还是你，说话的方式、令我着迷的特点，甚至拒绝我的理由都与从前别无二致。感谢你在我打破循环的努力中成为了我记忆最稳固的锚点。
+
+你知道吗，1976年拳王阿里和摔角手猪木进行了一场比赛。这场跨界比赛吸引了全球亿万观众。但自知不敌的猪木做出了令人大跌眼镜的举动——他躺下了。这种符合规则却让人无从下手的行为最终让比赛成为了平局。这种有些阿Q的举动现在是我的策略。被拒绝，没开始，非但不能吓倒我，甚至是在我计划内的。倒不如说如果你当时同意了我才会不知所措。因为如果真这样，那性质就变成了完全的循环重现，而在上一个循环我做得并不好。不配得到爱这点我其实也没说错。这四年我对你现在的生活，你的爱好，你的认知……一切都知之甚少。而相互之间的了解和认同是一段良好而稳定关系的先决条件。目前的状况至少我自己是不认可自己是一个合格的追求者的。提升自己，增进了解，当我能过得了自己这一关才行。
+
+当然了，描述得很平静，心情多少还是有些忐忑的。如果以上这些信息让你感到不适或者有些复杂的情感那我郑重向你道歉。可以在此终止阅读了。届时只要告诉我：“写得不是很好”即可。非常感谢。我自认还是知分寸的人，应该不会让你感到为难。
+
+坦诚是我的第一步。
+但问题在于，它也可能是最后一步。
+
+真的非常感谢你能出现在我的人生里。
+请保持幸福！
+
+## （二）
+不知道现在看着的会是谁。
+
+本来理应分类讨论，但好像意义也不大，姑且以为是你愿意给我一个机会而继续阅读下去吧。
+
+## （一）算是交完了底。一口气说出来好像着单衣在雪地里撒野。先来的热量会使人忽视随后的寒冷。
+
+你选的嘛，偶像。
+
+其实我还是挺喜欢冬天的。呼出的每一口气都像具体的热量展现眼前，能感觉到，活着。
+
+---
+
+说说我现在认知中的你吧。
+
+从高中那会儿你说自己是回避型依恋，到现在你问我MBTI人格，还有你常说的“接受自己设定”之类的话。
+
+身份认证对你来说好像是一件比较重要的事情。
+
+我能理解。但是对我个人来说不是很看重。由于病，我常去医院，做各种量表，最后把我的精神状态，具象化为数字，最终分到某个类别里。轻，中，重，双相，分裂，如此种种。我本应喜欢这种精确而客观的行为。
+
+如果我真是个机器人，如果分类的不是感性。
+
+我自认是一个固执的人，但固执并不总导向一成不变。有很多东西是可以定义分类的。
+
+通过喜欢事物的不同找到同好，通过学习目的的不同找到同学，通过病症的不同找到病友。人在抱团活动中找到认同感、安全感。这是自发的，而自发以外的分类呢？老师、医生、国家，把人按1或0划分到不同的类别，除了方便管理这个最基本的作用，其它恕我不能认同。
+
+我好像又看见你说自己是个普通人。我并不是在谈论分类的合理性，我的意思是，人类还没来到能被自己创造的分类法完美概括的地步。我们只不过在借用别的方式代表自己罢了。
+
+你知道RPG，你知道角色有各类数值，游戏的创作者分了好多类来细化、具象化人的能力。“捏人”。在自己的世界里做女娲。每一项都是确定可知的。
+
+但是我不相信“拟真”这种屁话。我不相信人类是由某种“类人”存在创造的。固然生活中有许多无法选择的事情，无可奈何的事情，比如说我写到这里突然被人喊走了。但这并不能作为生活是被安排、设计好的佐证。追求最优解是天性，是合乎行为规律的，但那真是最优解吗？还是在局限中仅存的“光”？我也不知道。但我是人类，所以我不相信人类目前的水准能做到分析人类自己，更遑论得到最优解了。
+
+总而言之。我欢迎、接受身份认同，但不接受身份认证。说人话就是，我对我是中国人有身份认同。因为这是定义上的、无法更改的概念，同理比如性别认同、取向认同……认识自己才能更好地活着。
+
+但我特意用了身份认证这个词想要说明的是，这是一种不一定合理的、外界定义的东西。好比我上班公司发门禁卡。这张卡代表了我是公司员工。或者甚至仅代表开门的权限而已。我不一定非要对它产生认同。对人性、感情等虚无事件的认识尚处早期。2000年前后星座说流行。仅靠出生日期就可把人划归不同性格。后来人知识水平高了，他们可能也觉得这样过于扯了，所以发明了一些新的“合理的”分类。本质上又有什么区别呢？一场自主选择的“考试”？我能在精神测评量表中拿到三次正常。你选择的是真实的还是仅仅是一个数值？别被这些定义。
+
+我是说。不认同也是可选项。
+
+---
+
+嘛，与其通过各种第三方推测去做侧写。
+我为什么不自己来了解你呢。
+
+## （三）
+突然要写(三)什么的老实说有点措手不及。
+但没有比这更合适的议题了。
+开始回答。关于我所知道的，李甜甜究竟发生了什么事。
+
+---
+
+2014.9.1 我进入合肥八中28班。班主任孙云云。
+在那之前我是参加了理实的考试，好像是军训之后没多久就出了成绩。我落选了。老实说按我当时的性格我太不能接受。至于事实不必详谈。我在理实班的替身不到一个月就转了文。当时我铁了心要去普通班，想打一下“校领导”的脸，因此我拒绝了科创班的邀请。而我当时是不知道还有外地班的。所以第一天看到名册上的学号的时候我几乎出离愤怒了。啊总也不至于分到倒数班级去吧？所以我带着一种先入为主的错误观念开始了高中。
+
+不过其实没两天我就明白了实际情况。大家都是很好的人。当时28有5个合肥本地生。除了我还有个胖胖的挺神经质的男生。名字忘了，剩下好像有个叫袁洪幸子的女生（后来是不是也在31班……）还有现在还有联系的王院长。总之我个人多少认为自己是那种有朋友吸引力的人。很快和大家打成了一片。江山易改，本性难移吧。我是那种比较喜欢开玩笑的人。但是对爱情相关的信息敬而远之。当时我每天中午都在班里自习。有时会有同班女同学在班里讨论男朋友什么的。我有些反感，每次这个时候就跑出去。（后来她们告诉我以为我害羞了）第一次和李甜甜同学的对话发生的有些莫名奇妙。某节课间我在走廊，突然被她叫住。“同学……”虽然已经开学一个月了，但我不是那种会主动认识“不必要”的人的性格，所以只是知道是一个班的，其它什么也不知道，结果她下一句直接给我问傻了“你讨厌我吗？”同桌恰好带着意味深长的笑容从身边走过。我看她表情非常紧张，心想不会真是……吧。想着缓和下气氛所以就说了：“你是谁呀？”（挺蠢的，但我当时真不知道说什么。）她就跟我介绍自己。然后又问了一遍。我说我都不知道你是谁怎么会讨厌你呢？她反复确认，我最后说你放心好了。我真不认识你。回座位被同桌揶揄自不必说，我也没太当回事。我从小就比较像那种带头搞事的人，但同时很矛盾的是我又比较尊重老师，所以一直也没出过什么问题。但我实在无法认同孙云云。后来有一次我晚自习被叫到办公室去罚站，她叫我打电话叫家长。简直奇耻大辱……从小学二年级之后再没有被叫过家长。久闻她对外地班同学也有同样不合理要求的我决定强出一头。我在那里站了两个小时一言不发。她最终是没憋住自己打的电话。这时李甜甜也在办公室，手里拿着一封信一样的东西。好像也挨了批评。我从那之后对她多少有些印象，感觉不像是“坏孩子”。当时班里除我之外的所有人都温顺地像孙云云的狗。我以为是怕外地的父母担心所以总是出头做一些“大逆不道”的事。但近朱者赤吧，久之我周围的朋友也硬气了起来，跟我一起被划进“管理对象之列”。我妈多少年没在家长会以外来过学校，那天突然被叫来，孙云云劈头盖脸一通训给她吓得直抹泪。我气不过，直接跑到梁华座位上把椅子拖过来跟我妈说“坐！”然后一言不发跟孙云云对视。就这样到了下晚自习的时间。我带我妈出门，发现她还在办公室。
+
+后来有一天她跑到我座位上又问了我同样的问题。我当时本可以好好回答，但突然想到她那天在办公室被训斥而不敢回应的样子不知为什么有些火起。可能是出于某种恶作剧的心态，我说：“你是谁啊？”
+
+她显然有些不知所措，而我的目的也达到了。我们重复了一次上次的对话。她塞给我一封信，我回家看了之后，发现内容多是关于女生宿舍和一些因我而起的纠纷。简言之，当时班里可能有好几个女生对我都有好感，有几个还是我认为关系不错的朋友。而她说自己并没有这种想法。但却是坐得离我最近的人。上课时由于感冒总是会抖桌子（说实话我一点都不知道。）掉橡皮之类的被认为是在吸引我注意力而被集体霸凌了。她感到非常痛苦，去找孙云云说反被训斥考得不好想得挺多。她也用大段文字说明自己原来非常优秀，只是被这件事影响得无法正常学习。本来很绝望不知道怎么办，看到我在办公室的表现觉得我很善良所以给我写了信。
+
+就像你说无法理解男生一样。我也无法理解女生。这事儿对当时的我来说简直有点离谱。我理解自己是有点吸引力的，甚至说不定还期待着某种模糊的 puppy love，但这种展开还是太怪了。我一方面怀疑其真实性，一方面对班上女生有了些别的看法。
+
+我写了一封诚挚的回信，内容大致是表示支持和对她学习优先的认同。最后表示我明白你的心意了，我们现在是朋友，以后有类似的问题请鼓起勇气来问我！在彼时不成熟的我看来可谓天衣无缝。那年元旦，我记得很清楚。我有个相声要表演。所以在台上布置。她经过讲台的时候，我拉住她把信放在她手里。非常高调，辅以微笑，我真切的以为自己是事件的中心。出面表态就万事休矣。
+我在自信的幻梦中度过了元旦。
+
+出于对她的保护我没有告诉同桌他们去信和回信的具体内容。他们自然是各种玩笑，我也不多说。结果突然有一天同桌告诉我，她拿着小刀去寝室堵他，还把他划伤了。原因是他告诉别人她喜欢我。
+
+我是个尤其护短的人。本就有些不满，这件事情的发生加上竞赛进度的推进，我和我的同学（小初中）交流增多，大家都觉得有些不可理喻。
+
+此时接近高一的期末考试，她又给我写了一封长长的信。长，且语无伦次，按现在我自己的经验来说，她显然已经出现了较为严重的精神问题。大致意思是自己已经受不了了，霸凌愈发严重。想杀人，但不是有意伤我同桌，只是意外，想再联络之类的。如果当时第一时间回或许就……总之我拖了一段时间，而那段时间里又发生了一些让我非常烦的事。最后落笔时越写越生气，最后安慰已经有些像在指责了。诸如“马上要考试了精力还是放在考试上吧”之类的话。带着气把信扔给她。紧接着就是考试。
+
+我那次考的并不好。再开学并没有看见她。
+
+同桌说她回家了。我有些意外。但也没想太多。
+
+毕竟在外地班我才是真正的外地人。我愈发感到一种局外人的、被边缘化而又格格不入的烦躁。我觉得她说的或许都是真的。但毕竟没有别的信息了。
+
+我仍是打着哈哈处理我在本班的人际关系。身在曹营心在汉。曾经感觉古灵精怪，沉默寡言的姑娘们都蒙上了一层怪异的滤镜。我话也越来越少。
+
+高二分了文理。那天什么晚会散会，我回去路上教务楼楼下遇到了转去文科的一个女同学。她说你现在变得好成熟噢，有点帅。我笑笑。她说当时我们班有好多女生都喜欢你。我假装惊讶，真的吗。结果她自己把当时发生了什么和盘托出。末了来一句，你不会生气吧？
+
+哪有。我没那个资格生气。我盯着她的眼睛。我当时挺喜欢你的。那你转文呀。那不是相当于追着孙云云了吗！
+
+不痛不痒。施暴者的眼里有未来的光，而我的手里全是汗。即使是现在。她说那只是当年的一个小错误。现在已经成长了。
+
+不是一个人了。我也没有那个资格代行责罚。
+于是我只能代人受过。我某种程度上毁掉了别人的前程。后来我也走在了相同的道路上。
+忏悔于事无补。斯人无处可循。
+用一场又一场的牺牲换来谨慎和周密。
+以后若牺牲的都是我也好。
+
+---
+
+## （四）
+我们今天玩了双人成行。
+在玩之前我去洗了个澡。那时我的心在怦怦跳，手在颤抖，脑子在胡思乱想。我在害怕。
+很奇怪吧。到底在害怕什么呢？我的害怕既复杂又单纯。为自己不成熟的反应感到害怕。我是希望能和你一起玩游戏的。对我来说这已经像做梦一样了。如果说我对梦的期待无非是做一些难以实现之事的话。从六月那次过后差不多已经过了一个多月的时间。我有些期待，又有些担心。会不会上次是为了照顾我的情绪，所以才一起玩的呢？现在还没有这个“必要”？毕竟我是能理解的。我也应该理解。我知道你很忙。所以如果最终没机会玩的话大概也不要紧。因为你说其实不玩也可以。我真的是在劝你吗？我心里明白。在各种地方我想的尤其实多。对不起。只要有最低限度的预想和对策，我的生活好像就过得下去。
+
+万一。万一结果是我失去了你呢？
+
+当你告诉我真的下好了的时候我的兴奋是超越理性的。一切假设都成了过时的谣言，没有存在的必要了。但我突然又开始质疑自己，为什么会这样兴奋呢？不是明明已经成为可靠而立派な大人了吗？想成为你的锚点把你从对未来的不确定里拉出来不是吗？可是现在的表现就好像一个小孩子。我讨厌的那种，什么计划也不做，不知轻重缓急的毛头小子……
+
+Fuck it. 那都是之前想的事情。连不上的时候我是真的血压飙升，同时在群里艾特朋友速度给我提供一个双人成行帐号。本来准备直接给你买一份，又怕你需要重新下载。游戏？游戏不重要，这种心情很重要。
+我想听见你的声音。我想想象大洋彼岸你的生活。我想占用你的一些时间。为此愿意支付所有青春的残余。你需要多久就拿多久走吧。余生太口头了对吗？
+
+我想和你虚度光阴。
+一秒也好，两秒也好。哪怕今天只剩下这一个半小时也好。
+今天居然有一个半小时！
+
+万一我又失去了你。我会在这你为我重新打开的爱的门扉里走出来。继续去扮演杀伐果决，处变不惊的成年人。我也许会爱上别人也说不定。大概会是优秀的丈夫和父亲。这是我可以预见的事情。
+
+我还可以预见一件事。
+
+那一刻我的青春就真的结束了。
+
+## （五）
+你好。我想先就这两天莫名其妙的举动道个歉。
+虽然连道歉这个行为都显得有些莫名其妙。但是我并不想在世界上增添一对无法沟通的人类。那无疑会增添我的挫败感。
+
+用通俗的话来说，我就是有点破防了。而这跟你其实没有太大的关系。我实在太矛盾。破防是因为自己理清了自己破防的点。而后又为自己居然能这么轻易就破防感到不齿。想的太多了，为这种不适宜的沉默道歉。
+
+前天上班之前小睡了一会。那种时间其实我是睡不着的。所以其实就是闭着眼在想东西。随时可以睁眼醒过来。什么时候想的画面变的离奇了就是做梦了。而那天我梦见自己穿着正装坐在电车靠门的位置托着半边脸打瞌睡。而我爸妈在下一站上车了。就坐在我对面的位置。不知出于什么心态，梦中的我把托着想的手张开盖住了脸。或许是希望不被发现，但他们还是认出了我而问了很多问题。我始终捂着脸，嗯嗯啊啊地回答着。直到他们下车。我完全不记得他们问了什么，而且空空的电车谁也没有坐到一步之遥的对面来，仿佛中间隔着的是一道银河。在梦里我感到一种难以言喻的痛苦。因为我意识到我不知多久才能回去一次。现实的列车隔着一道海峡。来了这么久，我可能还是第一次有了一点想家的念头，还是在梦里。我睁眼结束了梦境，比预定的闹铃还早了十五分钟。但是一睁眼所有情感都消失了。只有梦境像刚看过的故事一样鲜活。我又是那个不知道家在哪里的机器人。窗外的东京和合肥、长春、武汉都没有什么分别。熟悉感反而让我有些无所适从。
+
+晚上谈房子的时候老实说有些被自己刺激到了。我是真心实意的羡慕你。能把家人作为动力和支持的来源生活是一件太美好的事情了。我就像阴沟里的老鼠，一般有这种光照进来的时候我就会关上井盖，继续做我的春秋大梦。但这光太柔和了。
+我好像被架在火上烤。你可能没明白是什么意思，这不是一种“挺好”的体验。你的反应让我切实撞上了那层我本来就知道了的认识壁垒。而最痛苦的无非又是“我能理解”。
+
+我能理解，我应理解，我不理解。
+我没有因为自己的理解力得到奖励，反而因此受到了伤害。人类或许就是没法互相理解的。我好多事情都不明白。
+但你有一句话说的是对的。如果做不到的事情就不应该不做不想。
+
+我是这么做的，我认真计算了工资、买房难度之类的，甚至做了功课要怎么拿到上海户口，得到了一个困难而可行的方案。而最滑稽的事情是我突然发现这么做的理由何在？立场呢？我自然而然地策划了一个有你的未来，而这个大前提或许一开始就不存在。所以并不是因为难度而不做不想，而根本是走错了考场。
+谁知道呢。我不知道，你知道。我不知道。
+我也可能是错误的方向上想的太远了。这是一件非常坏的事情。
+怎敢误佳人啊。趁还没有变得更糟之前。
+
+写完这个我就去邮局寄EMS。你说自己扔东西很干脆，我就权且当真吧。不然相信什么呢。
+高考完那个暑假我写过一些很恶心的东西。当时我说我想把它寄给你。真敢说啊。
+但我现在23岁了，已经做不到了。
+感谢你能见证我发神经。
+
+我就知道我发不出去这个版本。我只有手写的东西是诚实的。脑内到笔下削弱50%，笔下转数据削弱30%。最后出来一个疑问不明确、态度不肯定的东西。
+……
+没有得到回答也算正常。
+“破罐子破摔又不敢，无非拾起碎片把它修复还要为此自豪”
+我是真太懂自己了。
+缩着吧您。
+
+
+
+## （六）
+我很喜欢你。
+我想在各种时点、各种场合、各种心情下重复地告诉你这句话。
+可以清早的6:00，可以是深夜的低吟。可以就着酒里暧昧的气氛娓娓道来，也可以是在逛街时脱口而出。
+毕竟事实不论时空。它的存在比一切都要稳固。
+说是酒壮怂人膽，我并不认为自己是怂人。
+但我说不出口。
+
+我看着自己预想中的无回复的画面感到尴尬。即使是在酒精作用下，“理智”还是没有允许我说出来。我有些懊恼，可能再多喝一点我就能说出口了。
+为什么实话说不出来呢。
+
+我知道为什么。不需要用这么多前戏麻醉自己。
+你有八成不会回应。剩下两成是我预想外的回答。加起来是百分百的沉默。
+你是个冷酷的人，我是上头的小孩。
+但事实并不是这样。
+我早就是出色的成年人了。
+
+我们目前的相处让我有一种主动反而会处于下风的感觉
+但爱是一份温暖而积极的事情。
+我不会因为表达而变蠢或是变弱。
+普通的人际交往中回应也是一种表态的方式。
+为了保持体面或优势。
+
+我不需要这种体面，喜欢就是喜欢，是事实，说出来与否并不影响它的客观存在。
+
+但是这种心情应被尊重。我不管别人的想法，甚至是你。
+我现在感觉非常好。因为我总算可以把它从“喜欢”升级到“爱”了。以前那种一味付出的感情是真正幼稚不成熟的。我知道你看的云里雾里，哪跟哪儿都？因为写这篇确实一点草稿哪怕是脑内的组织都没有。所以或许还是需要用人类的语言去解释下。自言自语是不能有什么正面作用的。
+
+我还是很喜欢你。这一点不会变，跨越五年，十年，我剩下的所有年。你不擅长或者有理由的无回应，我又想的很多。“是不是我也沉默更好呢”。最终我放弃了这种想法。但过去的我总认为自己能接受一种忍辱负重式对墙练习的关系。这也被否定了。我还是想得到你的回应的，什么都好。一味贬低自己的存在是病态的。问题不总在于我把你看的太高，而是有时我把自己放的太低。很矛盾。有时我觉得自己简直无所不能。但在你这里我有太多的不确定和疑问，最终又往往被解读成“不够格”。
+因为。因为也能说得通嘛。
+这个本子本身就是最好的证明。
+我甚至不知道最终你是否真的能看见。
+可能也不过是个较长的自言自语集而已。
+但我真的很喜欢你。
+我想站在与你平等的立场上对话。
+最大的难点是让自己先认同自己。
+
+一切思考都可悲又可笑。
+
+---
+
+## （七）
+被说想的太多，我有点生气的。
+想很多反驳的角度。
+发现印证“想的多”这点上了。
+笑死。就写到这儿，不想了。
+
+---
+
+## （八）
+喝多了。如果有点头晕算喝多的话。
+困。累。跟站台上另一个喝醉的日本人互动。他唱歌我跟着打响指。他说小哥也是20年代的人吧！我说是的。有看过龙珠吗？我说没有哦，而且我日语也不是很好！
+我看到“清醒”两字重新回到了他的眼睛里。
+失礼します。他戴上眼镜，提上口罩。站到另一个候车口。
+
+在等待终电的大久保站
+所有快乐的喧哗都消失在一分钟前
+
+所以人大概是喝不醉的。借机伸出试探之手，该缩也缩的很干脆。收放自如的“成年人”。
+但装醉那一刻的快乐是真实的。他想像中的我，我眼中的他。
+一分钟前我们是这世界上最好的双人乐队。
+我很喜欢你。
+我说了。借机。但我不会说谎。我说我没有醉。
+没有回应。
+我也想戴上帽子站到另一个站台。
+
+在梦里我们是世界上最幸福的人。
+
+酒的效力甚至没有撑到我走出笹塚站。
+况且本来也没有醉。就这样清醒着，等待，计划早上的事情。
+
+笑死。吃了一万块。既然是新生活能不能不付钱啊。
+
+## （九）
+下大雨了。
+冷。我想起余光中的《听听那冷雨》。
+吃不下饭。考试压力大。感觉在离你越来越远。
+哎。
+有办法，但不完全有。
+我一直在为着未来做准备。好事或坏事。
+但我不知道未来它来不来。
+准备有时是完全无用的。令人感到挫败的是
+我要反复摧毁自己的准备。
+那走一步算一步不好吗？不好。
+总是会发生想象以外的事情。
+已经没什么别的想法了。
+想远远地看你一眼。
+多看几眼吧。
+
+---
+
+## （十）
+发誓的时候一般怎么说
+我愿意为你去死。
+我没有发过誓，没有必要，也不是我的作风。
+上班的时候理论不能戴手表。但一个人的夜班总可通融。
+我搬东西的时候，扫地洗碗的时候，手只要活动 表盘就会亮起来。我就能从那寸小小的屏幕里看到你恬静的笑容。
+真好。真的。
+我喜欢你，我愿意为你活着。
+
+但是看看我这双手。这具孱弱躯体上我最不反感的器官。
+满是伤痕和污渍。
+我想象不出来也记不起曾附在它之上的各种温柔的未来。
+
+写不下去了。我不是要卖惨也非求同情。
+
+把你像一只美丽的金丝雀一样关在我的手上的镣铐里并非我的意愿。你有更广阔的天地可供飞翔遨游。虽是偶随月光一道停在我牢狱的窗前。借你的歌声我也能在尘世多留些时日，我的心中充满感激。
+我喜欢你，你是可爱的，正常的，自由的，活着的。
+这个世界也会爱着你。你值得被爱。
+
+我说不出来。
+我最缺失的就是时间。最不缺的也是时间。
+
+什么时候有资格喜欢你呢。
+
+---
+
+## （十一）
+时间过得好快啊。
+我刚刚在查聊天记录。因为记得你说过要换耳机。
+从6月10号开始，已经四个月了。
+有点吓到了。感觉那种有点畏缩和不知所措的心情还持续着，还没有习惯。
+“一切都像发生在昨天。”原来是这个意思啊。
+我在想生日礼物的事情。10月20号。
+虽然这么说显得有些刻意。
+但我是一直记到现在而不是现查的。
+礼物就像我现在的处境一样。说不出口，送不出手。
+立场模糊，以何自居？沉默的注视在我这里发生了太多次。“打扰了”亦显得造作而不自然……
+所以这次不会只是做个旁观者了，唐突也好，麻烦也好。
+说说就说说吧。
+失礼比遗憾可接受得多。
+
+但我不知道送些什么。
+既无侵略性又能表达心意的礼物存在吗？
+我没有这种体验。
+如果写的这个集子能算对你当时送的本子的一个拙劣回应的话。
+但性质明显不一样吧。
+而且不会带来快乐的东西真的能算礼物吗。
+侵略性和冒犯感来自很多方面。有人说直视是一种侵略性行为。还有人说突然的事情都让人猝不及防。你还用了一场争吵告诉我你厌恶辩论。
+我有点迷茫。
+
+我觉得不看着对方的眼睛无法传达心意，一味准备有时反而不如惊喜。酣畅淋漓的观点碰撞让我感到兴奋而又放松。
+这样看来我好像是个攻击性拉满的人。
+是的。
+是吗？
+
+我有时真心实意地希望我妈能恨我。指着我说我伤了她的心或是毁了她的人生。那样我便有足够的理由去发泄怨气，指责他们为何不像别人的父母能给些有用的支持。无论是钱还是药。哪怕是一个电话。
+但是她没有。
+没有恨我，但也没有帮助。
+
+这种感情像塞子堵住了我的嘴。我像只压力很大的气球。
+我是这样疯掉的，又怎么会这样好起来呢。
+我见过太多混蛋。只要给我一个导火索，他们就会承受我狂风暴雨般的回击。但我不会因为别人的无能为力而指责他们。对他们来说，做不到就是做不到。徒增他们的压力无济于事。
+我自已就是个弱者。打击弱者不是我的行事风格。
+被伤了心的是我，被毁了人生的也是我。
+要继续这样沉默生活下去的也是我。
+我是个攻击性很强的人，我想对世界释放怨气。
+但是我没有。
+疲惫和苦难封住了我的嘴。
+使我保持友善而能干。
+
+已经受了那么多罪，再多一些也没关系。
+如果能替我爱的人代而受过，使不幸不至加诸其身。
+怎么都行。
+伤害到你是与我的目的相悖的事情。
+所以我不想让你不开心：或是展露出攻击性。
+那只会让我更累。
+希望着。祈祷着。这份单纯的礼物。
+能让你感到开心。
+
+生日快乐！
+希望以后也有机会为你庆祝。
+
+「后记」
+我下课去了一趟新宿APPLE。到了线下才发现除了想买Apple Watch之外还要买什么颜色、什么型号完全不清楚……而且现在还要出新型号不如等等，但是要怎么问呢……闷了。
+
+得到了一些预想之外的回答。而且我也意识到了考虑的确实太早了。不知不觉提前超长时间考虑事情已经成为本能了。您完全不必考虑回礼或是价格的事情。单纯的礼物正是这么个意思。只要能用上、能开心就好。
+
+我也很开心。真的。大家都知道我只是在例行发癫释放压力而已。没有关系。我一直这样。
+但是...我不知道怎么说了。真是太好了。
+其实那杯不是弹珠汽水。不是鸡尾酒。
+而且如它绚丽的色彩一样
+很好喝。
+
+## （十二）
+我不知道怎么开头。
+我从来都不知道。
+初中王老师说我是蛇头虎尾，抓不住读者。但阅卷老师看完会觉得全篇还是可圈可点的。
+我问老师，那怎么办呢？如果别人连开头都不愿意看？
+老师点点我的脑门。
+要靠你的小脑袋去悟了。
+
+我终究是没悟出来。我的开头到现在写得都像结尾。
+也许我并不聪明。
+
+---
+
+## 尾声
+
+给大家讲个故事。
+
+少年突然有一天发现自己是勇者。即使镇上从来没有什么魔王，也根本没有铁匠铺。他还是决定要走。
+传说心上人的信物是最好的护身符。他们约在镇里的小教堂见面。他说：我爱你。给我些什么吧，什么都行。
+在皎洁明亮的月光下。他望着姑娘恬静又带些惊讶的脸庞。“为什么呢？”他呆住了。因为……因为爱不需要理由？姑娘摇摇头，在他手里放了一枚金币。
+他离开了小镇，到处寻找魔王。但没有人知道他在哪里，是什么样子。他终于有些想放弃了。
+五年间他没有打开过那个装有金币的手帕。他给姑娘写信，要把金币寄回去。她问：“为什么呢？”因为爱？“不是，这金币是什么东西啊？”
+他感到疑惑。是什么？
+他打开了布包。在一个同样明亮的夜晚，在当地华丽的教堂，他打开了布包。
+是金币，圣母像沉静温和的面部笼罩在月光下。
+他抬头。这里的圣母像太高，看不真切。
+“为什么呢？”圣母问。
+“因为这原是我从神龛里偷来的东西。”
+圣母笑着。那神像的脸像那姑娘，又像他自己。
+
+---
+
+我没有什么遗憾。我也不想遗憾。
+即使我自己都忘记了，这仍然是一种盗窃行为。
+我爱精妙的故事情节胜过爱自己。我也终于悟了。
+开头像结尾，结尾而又何尝不是开头呢。
+像你说的一样，这本书还没到完结的时候。
+人生也是，我们都还年轻得很。
+
+今夜月色真美。生日快乐。Premier amour.
+
+
+## 手稿原件影印
+
+> 本篇转录自实体手写本《Labyrinth Map》。以下为 23 页手写手稿及封底的完整扫描件归档：
+
+<details class="not-prose my-6 rounded-xl border border-border/70 bg-card/40 p-4">
+  <summary class="cursor-pointer font-medium text-foreground hover:text-primary transition-colors py-1">
+    📖 点击展开查看 23 页手写本原件扫描件
+  </summary>
+  <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <a href="/manuscripts/labyrinth-map/1.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/1.jpg" alt="手稿第 1 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 1 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/2.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/2.jpg" alt="手稿第 2 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 2 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/3.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/3.jpg" alt="手稿第 3 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 3 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/4.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/4.jpg" alt="手稿第 4 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 4 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/5.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/5.jpg" alt="手稿第 5 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 5 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/6.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/6.jpg" alt="手稿第 6 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 6 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/7.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/7.jpg" alt="手稿第 7 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 7 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/8.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/8.jpg" alt="手稿第 8 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 8 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/9.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/9.jpg" alt="手稿第 9 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 9 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/10.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/10.jpg" alt="手稿第 10 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 10 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/11.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/11.jpg" alt="手稿第 11 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 11 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/12.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/12.jpg" alt="手稿第 12 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 12 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/13.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/13.jpg" alt="手稿第 13 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 13 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/14.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/14.jpg" alt="手稿第 14 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 14 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/15.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/15.jpg" alt="手稿第 15 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 15 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/16.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/16.jpg" alt="手稿第 16 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 16 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/17.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/17.jpg" alt="手稿第 17 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 17 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/18.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/18.jpg" alt="手稿第 18 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 18 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/19.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/19.jpg" alt="手稿第 19 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 19 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/20.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/20.jpg" alt="手稿第 20 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 20 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/21.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/21.jpg" alt="手稿第 21 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 21 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/22.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/22.jpg" alt="手稿第 22 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 22 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/23.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/23.jpg" alt="手稿第 23 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 23 页 ↗</span>
+    </a>
+    <a href="/manuscripts/labyrinth-map/封底.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/封底.jpg" alt="手稿封底" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">封底 ↗</span>
+    </a>
+  </div>
+</details>
+

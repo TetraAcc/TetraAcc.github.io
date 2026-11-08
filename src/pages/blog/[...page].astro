@@ -53,7 +53,52 @@ const paginationProps = {
   <Button title='Back' href='/' variant='back' />
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>Blog</h1>
+      <h1 class='mb-2 mt-6 text-3xl font-medium sm:mt-10'>Blog</h1>
+      <p class='text-sm text-muted-foreground mb-5'>
+        <span data-i18n='zh'>手稿企划、散文随笔与按年份编排的生活日记。</span>
+        <span data-i18n='ja'>手稿アーカイブ、エッセイ随筆、年代順の日記記録。</span>
+        <span data-i18n='en'>Handwritten archives, essays, and chronological journals.</span>
+      </p>
+
+      {/* 快速分类导航 pills */}
+      <div class='mb-6 flex flex-wrap items-center gap-2 text-xs'>
+        <a
+          href='/blog'
+          class='rounded-full border border-foreground/30 bg-muted px-3 py-1 font-medium text-foreground no-underline transition-colors'
+        >
+          全部 All
+        </a>
+        <a
+          href='/tags/手稿企划'
+          class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
+        >
+          📚 手稿企划
+        </a>
+        <a
+          href='/tags/长篇文集'
+          class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
+        >
+          📖 长篇文集
+        </a>
+        <a
+          href='/tags/随笔'
+          class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
+        >
+          📝 散文随笔
+        </a>
+        <a
+          href='/tags/日记'
+          class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
+        >
+          📅 编年日记
+        </a>
+        <a
+          href='/archives'
+          class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors sm:ms-auto'
+        >
+          时间轴 Archives →
+        </a>
+      </div>
     </div>
     {
       page.data.length === 0 ? (
