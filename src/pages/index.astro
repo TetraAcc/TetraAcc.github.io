@@ -7,7 +7,6 @@ import { Button, Card, Icon, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import Section from '@/components/home/Section.astro'
 import SkillLayout from '@/components/home/SkillLayout.astro'
-import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 import config from '@/site-config'
 
 const languages = ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
@@ -74,7 +73,6 @@ if (!images[imagePath])
             <Icon name='steam' class='size-5' slot='icon' />
           </Label>
         </div>
-        <SpotifyNowPlaying class='mt-1' />
       </div>
     </section>
 
@@ -178,7 +176,7 @@ if (!images[imagePath])
           />
         </div>
 
-        <Button title='More projects & music' class='w-fit self-end' href='/projects' variant='ahead' />
+        <Button title='More projects' class='w-fit self-end' href='/projects' variant='ahead' />
       </Section>
 
       <Section title='Education'>
