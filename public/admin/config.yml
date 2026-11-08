@@ -1,0 +1,58 @@
+backend:
+  name: github
+  repo: TetraAcc/TetraAcc.github.io
+  branch: main
+
+# Media upload settings
+media_folder: 'public/images/uploads'
+public_folder: '/images/uploads'
+
+# UI configuration
+locale: 'zh_CN'
+site_url: 'https://tetraacc.me'
+display_url: 'https://tetraacc.me'
+
+collections:
+  - name: 'manuscripts'
+    label: '📚 手稿企划 (Manuscripts)'
+    label_singular: '手稿企划'
+    folder: 'src/content/blog/manuscripts'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { label: '标题 (Title)', name: 'title', widget: 'string' }
+      - { label: '简介描述 (Description)', name: 'description', widget: 'string' }
+      - { label: '发布日期 (Publish Date)', name: 'publishDate', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+      - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['手稿企划', '长篇文集'] }
+      - { label: '置顶 (Pin)', name: 'pin', widget: 'boolean', default: false, required: false }
+      - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
+      - { label: '正文内容 (Markdown)', name: 'body', widget: 'markdown' }
+
+  - name: 'essays'
+    label: '📝 散文随笔 (Essays)'
+    label_singular: '随笔'
+    folder: 'src/content/blog/essays'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { label: '标题 (Title)', name: 'title', widget: 'string' }
+      - { label: '简介描述 (Description)', name: 'description', widget: 'string' }
+      - { label: '发布日期 (Publish Date)', name: 'publishDate', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+      - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['随笔'] }
+      - { label: '置顶 (Pin)', name: 'pin', widget: 'boolean', default: false, required: false }
+      - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
+      - { label: '正文内容 (Markdown)', name: 'body', widget: 'markdown' }
+
+  - name: 'journals'
+    label: '📅 编年日记 (Journals)'
+    label_singular: '日记合辑'
+    folder: 'src/content/blog/journals'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { label: '标题 (Title)', name: 'title', widget: 'string' }
+      - { label: '简介描述 (Description)', name: 'description', widget: 'string' }
+      - { label: '年份/日期 (Date)', name: 'publishDate', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
+      - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['日记', '编年记事'] }
+      - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
+      - { label: '日记正文 (Markdown)', name: 'body', widget: 'markdown' }
