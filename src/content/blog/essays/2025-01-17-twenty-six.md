@@ -1,0 +1,9 @@
+---
+title: '26了四舍五入也可以算30'
+description: '26了四舍五入也可以算30。余下的所有日子里我的时间都将不再流动。I will keep fresh and high till the end.'
+publishDate: '2025-01-17'
+tags: ["随笔","生活"]
+draft: false
+---
+
+26了四舍五入也可以算30。30四舍五入也可以算中年。中年四舍五入也可以算一辈子了。这太好了。余下的所有日子里我的时间都将不再流动。I will keep fresh and high till the end.
