@@ -1,0 +1,82 @@
+---
+import { CURATED_TRACKS, SPOTIFY_FEATURED_PLAYLIST } from '@/data/music'
+
+/**
+ * 将任意 Spotify 分享链接转换为官方 Embed 播放器地址
+ * 支持格式如：
+ * - https://open.spotify.com/track/xxx?si=yyy
+ * - https://open.spotify.com/intl-ja/track/xxx
+ * - https://open.spotify.com/playlist/xxx
+ */
+function toSpotifyEmbedUrl(rawUrl: string): string {
+  if (!rawUrl) return ''
+  try {
+    const u = new URL(rawUrl)
+    const parts = u.pathname.split('/').filter(Boolean)
+    // 过滤掉 intl-ja / intl-zh 等语言前缀
+    const cleanParts = parts.filter((p) => !p.startsWith('intl-'))
+    if (cleanParts.length >= 2) {
+      const [type, id] = cleanParts
+      return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`
+    }
+  } catch {
+    // ignore invalid url
+  }
+  return rawUrl
+}
+
+const playlistEmbed = toSpotifyEmbedUrl(SPOTIFY_FEATURED_PLAYLIST)
+---
+
+<div class='not-prose my-4 flex flex-col gap-y-6'>
+  {/* 单曲推荐卡片 + 私人随感 */}
+  <div class='flex flex-col gap-y-4'>
+    {
+      CURATED_TRACKS.map((item) => {
+        const embedUrl = toSpotifyEmbedUrl(item.spotifyUrl)
+        return (
+          <div class='rounded-2xl border bg-muted/60 p-3.5 transition-colors hover:border-foreground/25'>
+            <iframe
+              style='border-radius:12px'
+              src={embedUrl}
+              width='100%'
+              height='80'
+              frameborder='0'
+              allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
+              loading='lazy'
+              title={`${item.title} - ${item.artist}`}
+            />
+            <div class='mt-2.5 px-1.5 text-sm text-muted-foreground'>
+              <p data-i18n='zh'>“{item.note.zh}”</p>
+              <p data-i18n='ja'>「{item.note.ja || item.note.zh}」</p>
+              <p data-i18n='en'>“{item.note.en || item.note.zh}”</p>
+            </div>
+          </div>
+        )
+      })
+    }
+  </div>
+
+  {/* 常驻同步歌单（可选） */}
+  {
+    playlistEmbed && (
+      <div class='mt-2'>
+        <div class='mb-2 flex items-center justify-between text-xs font-medium uppercase tracking-wider text-muted-foreground'>
+          <span data-i18n='zh'>Spotify 同步歌单（App 内增删自动更新）</span>
+          <span data-i18n='ja'>Spotify 同期プレイリスト</span>
+          <span data-i18n='en'>Synced Spotify Playlist</span>
+        </div>
+        <iframe
+          style='border-radius:12px'
+          src={playlistEmbed}
+          width='100%'
+          height='352'
+          frameborder='0'
+          allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
+          loading='lazy'
+          title='Spotify Playlist'
+        />
+      </div>
+    )
+  }
+</div>

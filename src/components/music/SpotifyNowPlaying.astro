@@ -1,0 +1,100 @@
+---
+import { SPOTIFY_NOW_PLAYING_API } from '@/data/music'
+
+interface Props {
+  /** Cloudflare Worker endpoint returning Spotify Now Playing JSON */
+  apiEndpoint?: string
+  class?: string
+}
+
+const {
+  apiEndpoint = SPOTIFY_NOW_PLAYING_API,
+  class: className = ''
+} = Astro.props
+---
+
+<div class={`not-prose inline-block spotify-np-container ${className}`}>
+  <a
+    href='https://open.spotify.com'
+    target='_blank'
+    rel='noopener noreferrer'
+    data-endpoint={apiEndpoint}
+    class='spotify-np-link group flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-all hover:border-foreground/30 hover:bg-muted'
+  >
+    <span class='relative flex items-center justify-center'>
+      <span
+        class='spotify-np-ping absolute size-2 animate-ping rounded-full border border-green-500 bg-green-500 opacity-75'
+      ></span>
+      <span class='spotify-np-dot size-2 rounded-full bg-green-500'></span>
+    </span>
+
+    <img
+      src=''
+      alt='Album Cover'
+      class='spotify-np-cover hidden size-6 rounded-full object-cover border'
+    />
+
+    <div class='flex items-center gap-x-1.5 truncate max-w-[260px] sm:max-w-[420px]'>
+      <span class='spotify-np-status font-mono text-xs text-muted-foreground'>
+        SPOTIFY ·
+      </span>
+      <span class='spotify-np-track font-medium text-foreground truncate'>
+        Long Season (Live)
+      </span>
+      <span class='spotify-np-artist text-muted-foreground truncate'>
+        — Fishmans
+      </span>
+    </div>
+  </a>
+</div>
+
+<script is:inline>
+  ;(function () {
+    const containers = document.querySelectorAll('.spotify-np-container')
+    if (!containers.length) return
+
+    containers.forEach((container) => {
+      const linkEl = container.querySelector('.spotify-np-link')
+      if (!linkEl) return
+      const endpoint = linkEl.getAttribute('data-endpoint')
+      if (!endpoint) return
+
+      const statusEl = container.querySelector('.spotify-np-status')
+      const trackEl = container.querySelector('.spotify-np-track')
+      const artistEl = container.querySelector('.spotify-np-artist')
+      const coverEl = container.querySelector('.spotify-np-cover')
+      const pingEl = container.querySelector('.spotify-np-ping')
+
+      async function refreshNowPlaying() {
+        try {
+          const res = await fetch(endpoint, { mode: 'cors' })
+          if (!res.ok) return
+          const data = await res.json()
+          if (!data || !data.title) return
+
+          if (trackEl) trackEl.textContent = data.title
+          if (artistEl) artistEl.textContent = data.artist ? `— ${data.artist}` : ''
+          if (data.songUrl) linkEl.href = data.songUrl
+
+          if (data.albumImageUrl && coverEl) {
+            coverEl.src = data.albumImageUrl
+            coverEl.classList.remove('hidden')
+          }
+
+          if (data.isPlaying) {
+            if (statusEl) statusEl.textContent = 'NOW PLAYING ·'
+            if (pingEl) pingEl.classList.remove('hidden')
+          } else {
+            if (statusEl) statusEl.textContent = 'RECENTLY PLAYED ·'
+            if (pingEl) pingEl.classList.add('hidden')
+          }
+        } catch {
+          // Keep clean fallback track when worker is not yet deployed
+        }
+      }
+
+      refreshNowPlaying()
+      setInterval(refreshNowPlaying, 30000)
+    })
+  })()
+</script>

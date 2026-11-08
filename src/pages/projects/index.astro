@@ -1,214 +1,140 @@
 ---
-import { Image } from 'astro:assets'
-
-import { Button, Collapse, Icon } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
-import Sponsors from '@/components/projects/Sponsors.astro'
-import Sponsorship from '@/components/projects/Sponsorship.astro'
-import alipay from '@/assets/alipay-qrcode.jpg'
-import KeyIcon from '@/assets/icons/key.svg'
-import wechat from '@/assets/wechat-qrcode.jpg'
+import SpotifyCrate from '@/components/music/SpotifyCrate.astro'
+import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 
 const headings = [
-  { depth: 2, slug: 'programs', text: 'Programs' },
-  { depth: 2, slug: 'learnings', text: 'Learnings' },
-  { depth: 2, slug: 'others', text: 'Others' },
-  { depth: 2, slug: 'gpg-signature', text: 'GPG Signature' },
-  { depth: 2, slug: 'sponsorship', text: 'Sponsorship' }
+  { depth: 2, slug: 'open-source', text: 'Open Source' },
+  { depth: 2, slug: 'music-crate', text: 'Music Crate' },
+  { depth: 2, slug: 'subdomains', text: 'Subdomain Gateways' }
 ]
 ---
 
-<PageLayout title='Projects' {headings} view>
-  {/* About astro-pure */}
-  <div class='not-prose flex justify-center'>
-    <a
-      href='/docs/advanced/about'
-      target='_blank'
-      class='flex items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
-    >
-      <span class='size-2 rounded-full bg-green-400'></span>
-      <p class='font-medium text-muted-foreground'>About Astro-Theme-Pure Project</p>
-    </a>
-  </div>
-  <p>Github Activities:</p>
+<PageLayout title='Projects & Crate' {headings}>
+  <p>GitHub Activities (@TetraAcc):</p>
   <p>
-    <Image
-      src='https://ghchart.rshah.org/659eb9/cworld1'
-      format='svg'
+    <img
+      src='https://ghchart.rshah.org/659eb9/TetraAcc'
       alt='github activities'
-      inferSize
       loading='lazy'
     />
   </p>
-  <p>
-    If you think it would be useful or interesting to collaborate on a project, you can donate to
-    support my work or contact me to discuss a project.
-  </p>
-  <Button title='Checkout sponsorship' class='w-fit' href='#sponsorship'>
-    <Icon class='size-5' name='receive-money' slot='before' />
-  </Button>
 
-  <h2 id='programs'>Programs</h2>
-  <ProjectSection
-    projects={[
-      {
-        name: '🎨 Astro Theme Pure',
-        description: 'A simple, fast and powerful blog & document theme built by Astro',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/astro-theme-pure' },
-          { type: 'site', href: 'https://astro-pure.js.org/' },
-          { type: 'doc', href: 'https://astro-pure.js.org/docs/list' },
-          { type: 'release', href: 'https://www.npmjs.com/package/astro-pure' }
-        ]
-      },
-      {
-        name: '💄 PKU Art',
-        description: 'A script to beautify pku course website',
-        links: [
-          { type: 'github', href: 'https://github.com/zhuozhiyongde/pku-art' },
-          { type: 'site', href: 'https://github.com/zhuozhiyongde/pku-art' },
-          { type: 'doc', href: 'https://docs.arthals.ink/docs/pku-art' }
-        ]
-      }
-    ]}
-  />
-  <Collapse title='Some old projects'>
+  <h2 id='open-source'>Open Source</h2>
+  <div data-i18n='zh'>
     <ProjectSection
       projects={[
         {
-          name: '🧩 rehype-autolink-headings-simple',
-          description: 'A simple version of rehype-autolink-headings',
+          name: '🎯 astrbot_plugin_deadbot',
+          description:
+            '适用于 AstrBot 的 Deadlock 群友战报、打法分析、详情补全、个人六维建议与本地化成就插件（免 API Key）',
           links: [
-            { type: 'github', href: 'https://github.com/cworld1/rehype-autolink-headings-simple' },
-            {
-              type: 'release',
-              href: 'https://www.npmjs.com/package/rehype-autolink-headings-simple'
-            }
+            { type: 'github', href: 'https://github.com/TetraAcc/astrbot_plugin_deadbot' }
           ]
         },
         {
-          name: 'Gaussian NB',
+          name: '🔍 astrbot_plugin_tavily_quota',
           description:
-            'Simulating the Parsimonious Bayesian Algorithm with Python and Finding the Probability Prediction of Breast Cancer ',
-          links: [{ type: 'github', href: 'https://github.com/cworld1/gaussian-nb' }]
+            '适用于 AstrBot 的 Tavily 搜索引擎与 OpenRouter API 额度/余额查询插件（自动读取凭证免配置）',
+          links: [
+            { type: 'github', href: 'https://github.com/TetraAcc/astrbot_plugin_tavily_quota' }
+          ]
         }
       ]}
     />
-  </Collapse>
+  </div>
 
-  <h2 id='learnings'>Learnings</h2>
-  <ProjectSection
-    class='my-2'
-    projects={[
-      {
-        name: 'R Learning',
-        description: 'Some notes and code about learning R language',
-        links: [
-          { type: 'github', href: 'https://github.com/cworld1/r-learning' },
-          { type: 'site', href: 'https://cworld1.github.io/r-learning' }
-        ]
-      },
-      {
-        name: 'CS 213 Learning',
-        description: 'Notes, code and experiences for Introduction to Computer Systems course',
-        links: [
-          {
-            type: 'github',
-            href: 'https://github.com/zhuozhiyongde/Introduction-To-Computer-System-2023Fall-PKU'
-          }
-        ]
-      }
-    ]}
-  />
+  <div data-i18n='ja'>
+    <ProjectSection
+      projects={[
+        {
+          name: '🎯 astrbot_plugin_deadbot',
+          description:
+            'APIキー不要で利用できる、AstrBot向けDeadlock戦績レポート・プレイスタイル分析・ローカライズ実績プラグイン',
+          links: [
+            { type: 'github', href: 'https://github.com/TetraAcc/astrbot_plugin_deadbot' }
+          ]
+        },
+        {
+          name: '🔍 astrbot_plugin_tavily_quota',
+          description:
+            '設定不要で認証情報を自動検出し、Tavily検索エンジンとOpenRouter APIの残高・クォータを照会するプラグイン',
+          links: [
+            { type: 'github', href: 'https://github.com/TetraAcc/astrbot_plugin_tavily_quota' }
+          ]
+        }
+      ]}
+    />
+  </div>
 
-  <h2 id='others'>Others</h2>
-  <ProjectSection
-    projects={[
-      {
-        name: 'CWorld',
-        description: "CWorld's Github",
-        links: [{ type: 'github', href: 'https://github.com/cworld1' }]
-      },
-      {
-        name: 'Arthals',
-        description: 'Arthals Github',
-        links: [{ type: 'github', href: 'https://github.com/zhuozhiyongde' }]
-      }
-    ]}
-  />
+  <div data-i18n='en'>
+    <ProjectSection
+      projects={[
+        {
+          name: '🎯 astrbot_plugin_deadbot',
+          description:
+            'Keyless Deadlock match report, playstyle radar analysis, and localized achievement plugin for AstrBot.',
+          links: [
+            { type: 'github', href: 'https://github.com/TetraAcc/astrbot_plugin_deadbot' }
+          ]
+        },
+        {
+          name: '🔍 astrbot_plugin_tavily_quota',
+          description:
+            'Zero-config plugin for querying Tavily Search & OpenRouter API quota and balance with automatic credential discovery.',
+          links: [
+            { type: 'github', href: 'https://github.com/TetraAcc/astrbot_plugin_tavily_quota' }
+          ]
+        }
+      ]}
+    />
+  </div>
 
-  <h2 id='gpg-signature'>GPG Signature</h2>
-  <p>
-    You can verify the authenticity of the files I signed by checking the GPG signature. My GPG key
-    is <code>114514</code>, and you can find it on the opengpg key servers or download from it.
+  <h2 id='music-crate'>Music Crate</h2>
+  <div class='my-3'>
+    <SpotifyNowPlaying />
+  </div>
+  <p data-i18n='zh'>
+    平时写代码、看书或散步时常听的曲目与歌单（直接在 <code>src/data/music.ts</code> 里粘贴任意 Spotify 分享链接即可）：
   </p>
-  <Button href='https://keys.openpgp.org/search?q=114514' title='Checkout my key' target='_blank'>
-    <KeyIcon class='size-5' slot='before' />
-  </Button>
+  <p data-i18n='ja'>
+    コーディングや読書、散歩中によく聴いているお気に入りの楽曲・プレイリスト（<code>src/data/music.ts</code> にSpotify共有リンクを貼り付け可能）：
+  </p>
+  <p data-i18n='en'>
+    Tracks and playlists on rotation while coding, reading, or walking (paste any Spotify share URL into <code>src/data/music.ts</code>):
+  </p>
 
-  <h2 id='sponsorship'>Sponsorship</h2>
-  <p>
-    Chinese methods: <a href='https://afdian.com/a/cworld' target='_blank'>Afadian</a>, Wechat or
-    Alipay
-  </p>
-  <Sponsorship
-    methods={[
-      { name: 'WeChat', icon: 'wechat-pay', image: wechat },
-      { name: 'Alipay', icon: 'alipay', image: alipay }
-    ]}
-  />
-  <p>Global methods: <a href='https://ko-fi.com/cworld0' target='_blank'>Ko-fi</a></p>
-  <p>
-    Please leave a message or contact me proactively after sponsorship. My email is:
-    <code
-      style='cursor: pointer'
-      onclick='const m=atob(this.textContent);alert(m);window.open(`mailto:${m}`,"_blank")'
-      >Y3dvcmxkMEBxcS5jb20=</code
-    >
-    (click code to transform base64).
-  </p>
-  <p>Thanks to the following sponsors:</p>
-  <Sponsors
-    progressMax={50}
-    sponsors={[
-      { name: 'd2be8', platform: 'Afdian', amount: 5, date: '2026-05-22' },
-      { name: 'Saneko', platform: 'Wechat', amount: 188, date: '2026-02-25' },
-      { name: '边缘星2020', platform: 'Afdian', amount: 20.26, date: '2026-02-17' },
-      { name: 'Juyao Huang', platform: 'Wechat', amount: 5, date: '2026-01-15' },
-      { name: 'hoochanlon', platform: 'Wechat', amount: 5, date: '2025-11-09' },
-      { name: 'Arthals', platform: 'Wechat', amount: 50, date: '2025-11-06' },
-      { name: '边缘星2020 (byx2020.com)', platform: 'Alipay', amount: 50, date: '2025-11-01' },
-      { name: '小哲', platform: 'Wechat', amount: 50, date: '2025-08-19' },
-      { name: 'Open1V', platform: 'Wechat', amount: 2, date: '2025-08-14' },
-      { name: 'Luis Xu', platform: 'Alipay', amount: 30, date: '2025-08-03' },
-      { name: '顾**', platform: 'Wechat', amount: 28, date: '2025-06-23' },
-      { name: 'Hans J.Han', platform: 'Wechat', amount: 10, date: '2025-04-04' },
-      { name: '**青', platform: 'Alipay', amount: 12, date: '2024-05-21' },
-      { name: 'Anonymous', platform: 'Wechat', amount: 20, date: '2022-04-06' },
-      { name: '华雄', platform: 'QQ', amount: 5, date: '2019-12-30' },
-      { name: '◌', platform: 'QQ', amount: 3, date: '2019-12-30' },
-      { name: 'C*a (酷安@暴走の蜗牛)', amount: 2, date: '2019-07-02' }
-    ]}
-  />
+  <SpotifyCrate />
+
+  <h2 id='subdomains'>Subdomain Gateways (*.tetraacc.me)</h2>
+  <div data-i18n='zh'>
+    <p>
+      主域名 <code>tetraacc.me</code> 托管静态主页，子域名通过 Cloudflare Tunnel 指向个人设备（受 Zero Trust 访问保护）：
+    </p>
+    <ul>
+      <li><code>ssh.tetraacc.me</code> — Windows 11 主力机远程终端隧道</li>
+      <li><code>deck.tetraacc.me</code> — Steam Deck 常驻服务节点（AstrBot 与挂载资源库）</li>
+    </ul>
+  </div>
+
+  <div data-i18n='ja'>
+    <p>
+      メインドメイン <code>tetraacc.me</code> は静的サイトをホスティングし、サブドメインは Cloudflare Tunnel 経由で自宅ノードへルーティングしています（Zero Trust 認証保護）：
+    </p>
+    <ul>
+      <li><code>ssh.tetraacc.me</code> — Windows 11 メインマシン リモートSSHトンネル</li>
+      <li><code>deck.tetraacc.me</code> — Steam Deck 常駐サーバーノード（AstrBot・ストレージ）</li>
+    </ul>
+  </div>
+
+  <div data-i18n='en'>
+    <p>
+      Root domain <code>tetraacc.me</code> hosts this static site, while subdomains route to self-hosted nodes via Cloudflare Tunnel (protected by Zero Trust):
+    </p>
+    <ul>
+      <li><code>ssh.tetraacc.me</code> — Windows 11 workstation remote SSH tunnel</li>
+      <li><code>deck.tetraacc.me</code> — Steam Deck always-on node (AstrBot &amp; media library)</li>
+    </ul>
+  </div>
 </PageLayout>
-
-<style>
-  .sponsorship-card {
-    & .sponsorship-card-img {
-      opacity: 0.3;
-      --un-blur: blur(4px);
-      filter: var(--un-blur);
-    }
-
-    &:hover {
-      & .sponsorship-card-icon {
-        opacity: 0;
-      }
-      & .sponsorship-card-img {
-        opacity: 1;
-        --un-blur: blur(0);
-      }
-    }
-  }
-</style>

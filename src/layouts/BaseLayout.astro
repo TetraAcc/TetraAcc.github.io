@@ -21,10 +21,20 @@ const {
 } = Astro.props
 ---
 
-<html lang={config.locale.lang}>
+<html lang={config.locale.lang} data-lang='zh'>
   <head>
     <BaseHead {articleDate} {description} {ogImage} {title} />
     <ThemeProvider />
+    <script is:inline>
+      ;(function () {
+        const saved = localStorage.getItem('site-lang') || 'zh'
+        document.documentElement.setAttribute('data-lang', saved)
+        document.documentElement.setAttribute(
+          'lang',
+          saved === 'ja' ? 'ja' : saved === 'en' ? 'en' : 'zh-CN'
+        )
+      })()
+    </script>
   </head>
 
   <body class='flex justify-center bg-background text-foreground' {...props}>
@@ -48,8 +58,99 @@ const {
       <Footer />
     </div>
 
-    {/* Set highlight color */}
+    <script is:inline>
+      ;(function () {
+        const NAV_LABELS = {
+          zh: { '/blog': '随笔', '/projects': '项目与歌单', '/about': '关于' },
+          ja: { '/blog': '随筆', '/projects': 'プロジェクト', '/about': '経歴・紹介' },
+          en: { '/blog': 'Blog', '/projects': 'Projects', '/about': 'About' }
+        }
+
+        function applyLang(lang) {
+          document.documentElement.setAttribute('data-lang', lang)
+          document.documentElement.setAttribute(
+            'lang',
+            lang === 'ja' ? 'ja' : lang === 'en' ? 'en' : 'zh-CN'
+          )
+          localStorage.setItem('site-lang', lang)
+
+          // Update header brand
+          const brandEl = document.querySelector('header-component a[aria-label="Brand"]')
+          if (brandEl) {
+            brandEl.textContent =
+              lang === 'ja'
+                ? 'Tetra · 侯潤田'
+                : lang === 'en'
+                  ? 'Tetra · Runtian Hou'
+                  : 'Tetra · 侯润田'
+          }
+
+          // Update header nav links
+          const labels = NAV_LABELS[lang] || NAV_LABELS.zh
+          document.querySelectorAll('header-component a[aria-label="Nav menu item"]').forEach((a) => {
+            const href = a.getAttribute('href')
+            if (href && labels[href]) {
+              a.textContent = labels[href]
+            }
+          })
+
+          // Update active button state
+          document.querySelectorAll('#langSwitcher button[data-set-lang]').forEach((btn) => {
+            const isAct = btn.getAttribute('data-set-lang') === lang
+            btn.classList.toggle('lang-active', isAct)
+          })
+        }
+
+        function mountLangSwitcher() {
+          const btnGroup = document.querySelector('header-component .z-30.flex')
+          if (btnGroup && !document.getElementById('langSwitcher')) {
+            const wrap = document.createElement('div')
+            wrap.id = 'langSwitcher'
+            wrap.className =
+              'inline-flex items-center rounded-md border p-0.5 text-xs font-medium sm:group-[.not-top]:rounded-xl'
+            wrap.innerHTML = `
+              <button type="button" data-set-lang="zh" class="lang-btn px-1.5 py-1 rounded transition-colors">中</button>
+              <button type="button" data-set-lang="ja" class="lang-btn px-1.5 py-1 rounded transition-colors">日</button>
+              <button type="button" data-set-lang="en" class="lang-btn px-1.5 py-1 rounded transition-colors">EN</button>
+            `
+            wrap.querySelectorAll('button[data-set-lang]').forEach((b) => {
+              b.addEventListener('click', () => {
+                applyLang(b.getAttribute('data-set-lang'))
+              })
+            })
+            btnGroup.insertBefore(wrap, btnGroup.firstChild)
+          }
+          applyLang(localStorage.getItem('site-lang') || 'zh')
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', mountLangSwitcher)
+        } else {
+          mountLangSwitcher()
+        }
+      })()
+    </script>
+
+    {/* Set highlight color & i18n visibility rules */}
     <style define:vars={{ highlightColor }}>
+      :global(html[data-lang='zh'] [data-i18n]:not([data-i18n='zh'])),
+      :global(html[data-lang='ja'] [data-i18n]:not([data-i18n='ja'])),
+      :global(html[data-lang='en'] [data-i18n]:not([data-i18n='en'])) {
+        display: none !important;
+      }
+
+      :global(#langSwitcher .lang-btn) {
+        color: hsl(var(--muted-foreground));
+      }
+      :global(#langSwitcher .lang-btn:hover) {
+        color: hsl(var(--foreground));
+      }
+      :global(#langSwitcher .lang-btn.lang-active) {
+        background-color: hsl(var(--border));
+        color: hsl(var(--foreground));
+        font-weight: 600;
+      }
+
       :global(.highlight) {
         --highlight-fg: color-mix(
           in srgb,
@@ -65,10 +166,6 @@ const {
         ) !important;
       }
 
-      /* Extend safe area for some special screens
-       * https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env
-       * https://webkit.org/blog/7929/designing-websites-for-iphone-x/
-       */
       #main-container {
         padding-top: env(safe-area-inset-top);
         padding-left: calc(1rem + env(safe-area-inset-left));

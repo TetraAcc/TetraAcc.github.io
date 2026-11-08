@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "spotify-now-playing",
+  "main": "spotify-worker.js",
+  "compatibility_date": "2026-11-08",
+  "vars": {
+    "SPOTIFY_CLIENT_ID": "b362bf129bff4d05893b6d5c5ff8c2c8"
+  }
+}
