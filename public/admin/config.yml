@@ -2,6 +2,7 @@ backend:
   name: github
   repo: TetraAcc/TetraAcc.github.io
   branch: main
+  base_url: https://cms-auth.tetrahrt.workers.dev
 
 # Media upload settings
 media_folder: 'public/images/uploads'
