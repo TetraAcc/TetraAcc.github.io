@@ -27,6 +27,13 @@ export const SPOTIFY_NOW_PLAYING_API = 'https://spotifynowplayin.tetrahrt.worker
 export const SPOTIFY_FEATURED_PLAYLIST = 'https://open.spotify.com/playlist/7FzgzQfDXemSt1jqA5KIQl'
 
 /**
+ * 网易云音乐常驻歌单配置（我喜欢的音乐）
+ */
+export const NETEASE_FEATURED_PLAYLIST_ID = '431954493'
+export const NETEASE_FEATURED_PLAYLIST_URL =
+  'https://music.163.com/playlist?id=431954493&uct2=U2FsdGVkX18oYdnK5HwpJup2atHcPCok4FY3jppbgJ4='
+
+/**
  * 方案一（B）：单曲推荐与随想列表
  * 平时想推新歌，只需要从 Spotify 复制歌曲链接粘到下面数组里即可。
  */
