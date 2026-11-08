@@ -10,12 +10,12 @@ import '@/assets/styles/global.css'
 import '@/assets/styles/app.css'
 
 interface Props {
-  meta: SiteMeta
+  meta: SiteMeta & { noindex?: boolean }
   highlightColor?: string
 }
 
 const {
-  meta: { articleDate, description = config.description, ogImage, title },
+  meta: { articleDate, description = config.description, ogImage, title, noindex },
   highlightColor,
   ...props
 } = Astro.props
@@ -24,6 +24,7 @@ const {
 <html lang={config.locale.lang} data-lang='zh'>
   <head>
     <BaseHead {articleDate} {description} {ogImage} {title} />
+    {noindex && <meta name='robots' content='noindex, nofollow' />}
     <ThemeProvider />
     <script is:inline>
       ;(function () {
@@ -61,9 +62,9 @@ const {
     <script is:inline>
       ;(function () {
         const NAV_LABELS = {
-          zh: { '/blog': '博客', '/projects': '项目', '/music': '音乐', '/calendar': '日历', '/about': '关于' },
-          ja: { '/blog': 'ブログ', '/projects': 'プロジェクト', '/music': '音楽', '/calendar': 'カレンダー', '/about': '自己紹介' },
-          en: { '/blog': 'Blog', '/projects': 'Projects', '/music': 'Music', '/calendar': 'Calendar', '/about': 'About' }
+          zh: { '/blog': '博客', '/projects': '项目', '/music': '音乐', '/about': '关于' },
+          ja: { '/blog': 'ブログ', '/projects': 'プロジェクト', '/music': '音楽', '/about': '自己紹介' },
+          en: { '/blog': 'Blog', '/projects': 'Projects', '/music': 'Music', '/about': 'About' }
         }
 
         function applyLang(lang) {

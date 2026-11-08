@@ -7,12 +7,13 @@ import PageLayout from '@/layouts/BaseLayout.astro'
 import { integ } from '@/site-config'
 
 interface Props {
-  meta: SiteMeta
+  meta: SiteMeta & { noindex?: boolean }
   highlightColor?: string
   back?: string
+  pagefind?: boolean
 }
 
-const { meta, highlightColor, back = '/', ...props } = Astro.props
+const { meta, highlightColor, back = '/', pagefind = true, ...props } = Astro.props
 ---
 
 <PageLayout {meta} {highlightColor} {...props}>
@@ -33,7 +34,11 @@ const { meta, highlightColor, back = '/', ...props } = Astro.props
     >
     </div>
 
-    <article data-pagefind-body class='min-w-0 grow'>
+    <article
+      data-pagefind-body={pagefind ? '' : undefined}
+      data-pagefind-ignore={!pagefind ? '' : undefined}
+      class='min-w-0 grow'
+    >
       {/* Content header */}
       <div id='content-header' class='animate'>
         <slot name='header' />

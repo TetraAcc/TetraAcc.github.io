@@ -10,12 +10,22 @@ interface Props {
   headings?: MarkdownHeading[]
   view?: boolean
   comment?: boolean
+  pagefind?: boolean
+  noindex?: boolean
 }
 
-const { title, headings, view, comment: enableComment, ...props } = Astro.props
+const {
+  title,
+  headings,
+  view,
+  comment: enableComment,
+  pagefind = true,
+  noindex = false,
+  ...props
+} = Astro.props
 ---
 
-<PageLayout meta={{ title }} {...props}>
+<PageLayout meta={{ title, noindex }} {pagefind} {...props}>
   {headings?.length && <TOC headings={headings} slot='sidebar' />}
 
   <Fragment slot='header'>
