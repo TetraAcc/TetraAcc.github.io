@@ -7,6 +7,7 @@ import { Button, Card, Icon, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import Section from '@/components/home/Section.astro'
 import SkillLayout from '@/components/home/SkillLayout.astro'
+import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 import config from '@/site-config'
 
 const languages = ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
@@ -45,7 +46,13 @@ if (!images[imagePath])
           <span data-i18n='en'>Runtian Hou (Tetra)</span>
         </h1>
         <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='Yamagata, Japan'>
+          <Label title='日本 · 山形' data-i18n='zh'>
+            <Icon name='location' class='size-5' slot='icon' />
+          </Label>
+          <Label title='山形県米沢市' data-i18n='ja'>
+            <Icon name='location' class='size-5' slot='icon' />
+          </Label>
+          <Label title='Yamagata, Japan' data-i18n='en'>
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
           <Label
@@ -73,6 +80,7 @@ if (!images[imagePath])
             <Icon name='steam' class='size-5' slot='icon' />
           </Label>
         </div>
+        <SpotifyNowPlaying class='mt-1' />
       </div>
     </section>
 
@@ -176,7 +184,15 @@ if (!images[imagePath])
           />
         </div>
 
-        <Button title='More projects' class='w-fit self-end' href='/projects' variant='ahead' />
+        <div data-i18n='zh' class='flex justify-end'>
+          <Button title='更多项目' class='w-fit' href='/projects' variant='ahead' />
+        </div>
+        <div data-i18n='ja' class='flex justify-end'>
+          <Button title='他のプロジェクト' class='w-fit' href='/projects' variant='ahead' />
+        </div>
+        <div data-i18n='en' class='flex justify-end'>
+          <Button title='More projects' class='w-fit' href='/projects' variant='ahead' />
+        </div>
       </Section>
 
       <Section title='Education'>
