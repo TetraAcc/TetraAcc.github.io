@@ -1,19 +1,18 @@
 ---
 import { Image } from 'astro:assets'
 
-import { Quote } from 'astro-pure/advanced'
 import { PostPreview } from 'astro-pure/components/pages'
 import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import { Button, Card, Icon, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import ProjectCard from '@/components/home/ProjectCard.astro'
 import Section from '@/components/home/Section.astro'
 import SkillLayout from '@/components/home/SkillLayout.astro'
+import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 import config from '@/site-config'
 
-const languages = ['Html', 'JavaScript', 'CSS', 'Shell']
-const frontend = ['TypeScript', 'Vite', 'Webpack', 'Astro']
-const backend = ['Vercel', 'Waline']
+const languages = ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
+const toolsAndFrameworks = ['Git', 'Linux', 'Astro', 'Node.js', 'Docker']
+const environment = ['Windows 11', 'SteamOS / Arch', 'Cloudflare Tunnel']
 
 const MAX_POSTS = 10
 const allPosts = await getBlogCollection()
@@ -41,51 +40,58 @@ if (!images[imagePath])
       />
 
       <div class='flex flex-col items-center gap-y-4'>
-        <h1 class='text-3xl font-medium'>{config.author}</h1>
+        <h1 class='text-3xl font-medium'>
+          <span data-i18n='zh'>侯润田 · Runtian Hou</span>
+          <span data-i18n='ja'>侯潤田 · Runtian Hou</span>
+          <span data-i18n='en'>Runtian Hou (Tetra)</span>
+        </h1>
         <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='Somewhere'>
+          <Label title='Yamagata, Japan'>
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
           <Label
-            title='Source code'
+            title='GitHub @TetraAcc'
             as='a'
-            href='https://github.com/cworld1/astro-theme-pure'
+            href='https://github.com/TetraAcc'
             target='_blank'
           >
             <Icon name='github' class='size-5' slot='icon' />
           </Label>
         </div>
+        <SpotifyNowPlaying class='mt-1' />
       </div>
-
-      {/* Get template */}
-      <a
-        href='https://github.com/cworld1/astro-theme-pure'
-        target='_blank'
-        class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
-      >
-        <span class='relative flex items-center justify-center'>
-          <span
-            class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
-          ></span>
-          <span class='size-2 rounded-full bg-green-400'></span>
-        </span>
-        <p class='font-medium text-muted-foreground'>Get Template</p>
-      </a>
     </section>
 
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
       <Section title='About'>
-        <p class='text-muted-foreground'>Developer / Designer</p>
-        <p class='text-muted-foreground'>
-          Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione
-          indoctum dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel,
-          at eum oratio possit voluptatum.
+        <p class='text-muted-foreground' data-i18n='zh'>软件工程 · 情报科学 / Software Engineering</p>
+        <p class='text-muted-foreground' data-i18n='ja'>ソフトウェアエンジニアリング · 情報科学</p>
+        <p class='text-muted-foreground' data-i18n='en'>Software Engineering &amp; Computer Science</p>
+
+        <p class='text-muted-foreground' data-i18n='zh'>
+          山形大学情报学背景，现居日本山形县米泽市。这里主要用来存放平时写的个人随笔、顺手写下的代码项目与配置笔记，以及不同季节常听的歌。
         </p>
-        <Button title='More about me' class='w-fit self-end' href='/about' variant='ahead' />
+        <p class='text-muted-foreground' data-i18n='ja'>
+          山形大学にて情報科学を専攻（山形県米沢市在住）。ソフトウェア開発や日常のツール構築に関心があり、ここでは日々の随筆、個人開発のオープンソースプロジェクト、よく聴く音楽の記録をまとめています。
+        </p>
+        <p class='text-muted-foreground' data-i18n='en'>
+          Studying Computer Science &amp; Informatics at Yamagata University (based in Yonezawa, Japan). This space collects my personal essays, open-source software projects, and favorite music rotations.
+        </p>
+
+        <div data-i18n='zh' class='flex justify-end'>
+          <Button title='更多关于我' class='w-fit' href='/about' variant='ahead' />
+        </div>
+        <div data-i18n='ja' class='flex justify-end'>
+          <Button title='詳しい自己紹介' class='w-fit' href='/about' variant='ahead' />
+        </div>
+        <div data-i18n='en' class='flex justify-end'>
+          <Button title='More about me' class='w-fit' href='/about' variant='ahead' />
+        </div>
       </Section>
+
       {
         allPostsByDate.length > 0 && (
-          <Section title='Posts'>
+          <Section title='Writing'>
             <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
               {allPostsByDate.map((p) => (
                 <li class='flex flex-col gap-x-2 sm:flex-row'>
@@ -93,105 +99,101 @@ if (!images[imagePath])
                 </li>
               ))}
             </ul>
-            <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
+            <Button title='All posts' class='w-fit self-end' href='/blog' variant='ahead' />
           </Section>
         )
       }
 
-      {
-        /* <Section title='Experience'>
-      <Card
-        heading='Lorem Ipsum'
-        subheading='Sit amet consectetur'
-        date='Dec 2022 - Nov 2023'
-        imagePath='/src/assets/about-astro.png'
-        altText='Lorem, ipsum dolor sit'
-        imageClass='h-12 w-auto md:-start-16'
-      >
-        <ul class='ms-4 list-disc text-muted-foreground'>
-          <li>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-            molestiae laboriosam pariatur!
+      <Section title='Open Source'>
+        <div class='flex flex-col gap-y-3' data-i18n='zh'>
+          <Card
+            as='a'
+            heading='astrbot_plugin_deadbot'
+            subheading='适用于 AstrBot 的 Deadlock 群友战报、打法分析、详情补全、个人六维建议与本地化成就插件（免 API Key）'
+            date='Python · GitHub'
+            href='https://github.com/TetraAcc/astrbot_plugin_deadbot'
+            target='_blank'
+          />
+          <Card
+            as='a'
+            heading='astrbot_plugin_tavily_quota'
+            subheading='适用于 AstrBot 的 Tavily 搜索引擎与 OpenRouter API 额度/余额查询插件（自动读取凭证免配置）'
+            date='Python · GitHub'
+            href='https://github.com/TetraAcc/astrbot_plugin_tavily_quota'
+            target='_blank'
+          />
+        </div>
 
-            <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
-          </li>
-        </ul>
-      </Card>
-      <Card
-        heading='Lorem Ipsum'
-        subheading='Sit amet consectetur'
-        date='Dec 2022 - Nov 2023'
-        imagePath='/src/assets/about-astro.png'
-        altText='Lorem, ipsum dolor sit'
-        imageClass='h-12 w-auto md:-start-16'
-      />
-    </Section> */
-      }
-      <Section title='Education'>
-        <Card
-          as='a'
-          heading='Lorem ipsum'
-          subheading='Lorem ipsum dolor sit amet, vidit suscipit at mei.'
-          date='August 2021 - July 2025'
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        >
-          {
-            /* <ul class='ms-4 list-disc text-muted-foreground'>
-          <li>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-            molestiae laboriosam pariatur!
-          </li>
-          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
-        </ul> */
-          }
-        </Card>
+        <div class='flex flex-col gap-y-3' data-i18n='ja'>
+          <Card
+            as='a'
+            heading='astrbot_plugin_deadbot'
+            subheading='APIキー不要で利用できる、AstrBot向けDeadlock戦績レポート・プレイスタイル分析・ローカライズ実績プラグイン'
+            date='Python · GitHub'
+            href='https://github.com/TetraAcc/astrbot_plugin_deadbot'
+            target='_blank'
+          />
+          <Card
+            as='a'
+            heading='astrbot_plugin_tavily_quota'
+            subheading='設定不要で認証情報を自動読み込みし、Tavily検索エンジンとOpenRouter APIの残高・利用枠を照会するプラグイン'
+            date='Python · GitHub'
+            href='https://github.com/TetraAcc/astrbot_plugin_tavily_quota'
+            target='_blank'
+          />
+        </div>
+
+        <div class='flex flex-col gap-y-3' data-i18n='en'>
+          <Card
+            as='a'
+            heading='astrbot_plugin_deadbot'
+            subheading='Keyless Deadlock match report, playstyle radar analysis, and localized achievement plugin for AstrBot.'
+            date='Python · GitHub'
+            href='https://github.com/TetraAcc/astrbot_plugin_deadbot'
+            target='_blank'
+          />
+          <Card
+            as='a'
+            heading='astrbot_plugin_tavily_quota'
+            subheading='Zero-config plugin for querying Tavily Search & OpenRouter API quota and balance with automatic credential discovery.'
+            date='Python · GitHub'
+            href='https://github.com/TetraAcc/astrbot_plugin_tavily_quota'
+            target='_blank'
+          />
+        </div>
+
+        <Button title='More projects & music' class='w-fit self-end' href='/projects' variant='ahead' />
       </Section>
 
-      <Section title='Website List'>
-        <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Do not go gentle into that good night'
-            imagePath='/src/assets/projects/1.avif'
+      <Section title='Education'>
+        <div data-i18n='zh'>
+          <Card
+            heading='山形大学 (Yamagata University)'
+            subheading='工学部 · 情报科学方向'
+            date='Yonezawa, Yamagata, Japan'
           />
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Old age burn and rave at close of day'
-            imagePath='/src/assets/projects/2.avif'
+        </div>
+        <div data-i18n='ja'>
+          <Card
+            heading='山形大学 (Yamagata University)'
+            subheading='工学部 · 情報科学分野'
+            date='山形県米沢市'
           />
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Rage, rage against the dying of the light'
-            imagePath='/src/assets/projects/3.avif'
-          />
-          <ProjectCard
-            href='/projects'
-            heading='More projects'
-            subheading='Check out more projects'
-            imagePath='/src/assets/projects/4.avif'
+        </div>
+        <div data-i18n='en'>
+          <Card
+            heading='Yamagata University'
+            subheading='Faculty of Engineering · Computer Science & Informatics'
+            date='Yonezawa, Yamagata, Japan'
           />
         </div>
       </Section>
 
-      <Section title='Certifications'>
-        <Card
-          as='a'
-          heading='Lorem ipsum'
-          subheading='Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at eum oratio possit voluptatum. Dicat ceteros cu vim. Impetus fuisset ullamcorper pri cu, his posse iisque ad, aliquam honestatis usu id.'
-          date='July 2024'
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        />
-      </Section>
-
       <Section title='Skills'>
         <SkillLayout title='Languages' skills={languages} />
-        <SkillLayout title='Frontend' skills={frontend} />
-        <SkillLayout title='Backend' skills={backend} />
+        <SkillLayout title='Tools' skills={toolsAndFrameworks} />
+        <SkillLayout title='Environment' skills={environment} />
       </Section>
     </div>
-    <Quote class='mt-12' />
   </main>
 </PageLayout>
