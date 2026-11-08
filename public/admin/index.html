@@ -3,10 +3,87 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content Manager · Tetra</title>
-    <!-- Sveltia CMS: Lightweight, modern, zero-backend Git CMS -->
+    <title>Tetra Studio · 内容管理后台</title>
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
+    <!-- Preload Satoshi Webfont to match main site -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" />
+
+    <!-- Sveltia CMS Core -->
     <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+
+    <script>
+      // 注册与 tetraacc.me 主站完全一致的 Markdown 实时预览样式
+      window.addEventListener('DOMContentLoaded', () => {
+        if (typeof CMS !== 'undefined' && CMS.registerPreviewStyle) {
+          CMS.registerPreviewStyle('/admin/preview.css');
+        }
+      });
+    </script>
+
+    <style>
+      :root {
+        --font-satoshi: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      body {
+        font-family: var(--font-satoshi);
+      }
+      /* 快捷导航悬浮胶囊：无缝直达前台、私人日历、音乐与源码 */
+      #tetra-quick-hub {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: rgba(18, 18, 20, 0.88);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 9999px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        font-family: var(--font-satoshi);
+        font-size: 12px;
+        color: #e4e4e7;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+      #tetra-quick-hub:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+      }
+      #tetra-quick-hub a {
+        color: #d4d4d8;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: color 0.15s ease, background-color 0.15s ease;
+      }
+      #tetra-quick-hub a:hover {
+        color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.12);
+      }
+      #tetra-quick-hub .sep {
+        color: rgba(255, 255, 255, 0.25);
+        font-size: 11px;
+      }
+    </style>
   </head>
   <body>
+    <!-- 快捷跳转条 -->
+    <nav id="tetra-quick-hub" aria-label="Studio Quick Actions">
+      <a href="/" target="_blank" title="打开博客前台首页">🏠 tetraacc.me</a>
+      <span class="sep">/</span>
+      <a href="/calendar" target="_blank" title="查看私人日历与日程台账">📅 私密日程</a>
+      <span class="sep">/</span>
+      <a href="/music" target="_blank" title="查看私人歌单与电台">🎵 音乐</a>
+      <span class="sep">/</span>
+      <a href="https://github.com/TetraAcc/TetraAcc.github.io" target="_blank" title="前往 GitHub 仓库">🐙 GitHub</a>
+    </nav>
   </body>
 </html>

@@ -4,6 +4,11 @@ backend:
   branch: main
   base_url: https://cms-auth.tetrahrt.workers.dev
 
+# Visual & Branding
+app_title: 'Tetra Studio · 内容管理'
+logo:
+  src: '/images/avatar.jpg'
+
 # Media upload settings
 media_folder: 'public/images/uploads'
 public_folder: '/images/uploads'
@@ -12,6 +17,7 @@ public_folder: '/images/uploads'
 locale: 'zh_CN'
 site_url: 'https://tetraacc.me'
 display_url: 'https://tetraacc.me'
+show_preview_links: true
 
 collections:
   - name: 'manuscripts'
@@ -57,3 +63,27 @@ collections:
       - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['日记', '编年记事'] }
       - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
       - { label: '日记正文 (Markdown)', name: 'body', widget: 'markdown' }
+
+  # 可视化配置文件集合
+  - name: 'settings'
+    label: '⚙️ 站点配置与友链 (Settings)'
+    files:
+      - name: 'links'
+        label: '🔗 友链与灵感站列表 (Links)'
+        file: 'public/links.json'
+        format: 'json'
+        fields:
+          - label: '友链分组 (Friends Groups)'
+            name: 'friends'
+            widget: 'list'
+            fields:
+              - { label: '分组标识 (ID)', name: 'id_name', widget: 'string' }
+              - { label: '分组说明 (Desc)', name: 'desc', widget: 'string' }
+              - label: '成员链接列表 (Links)'
+                name: 'link_list'
+                widget: 'list'
+                fields:
+                  - { label: '站点名称 (Name)', name: 'name', widget: 'string' }
+                  - { label: '站点简介 (Intro)', name: 'intro', widget: 'string' }
+                  - { label: '站点链接 (URL)', name: 'link', widget: 'string' }
+                  - { label: '头像图片 (Avatar URL)', name: 'avatar', widget: 'string' }
