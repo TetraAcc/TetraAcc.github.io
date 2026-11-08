@@ -14,7 +14,29 @@ const {
 const embedUrl = `https://music.163.com/outchain/player?type=0&id=${id}&auto=0&height=430`
 ---
 
-<div class='not-prose my-4 flex flex-col gap-y-2'>
+<div class='not-prose my-4 flex flex-col gap-y-3'>
+  {/* 提示栏：标明完整曲目数与外链版权机制 */}
+  <div class='flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border/60 bg-muted/30 px-3.5 py-2 text-xs text-muted-foreground'>
+    <div class='flex items-center gap-2'>
+      <span class='size-2 rounded-full bg-red-500/80'></span>
+      <span>
+        <strong class='text-foreground font-medium'>我喜欢的音乐</strong> · 共收录 2,739 首曲目
+      </span>
+    </div>
+    <a
+      href={url}
+      target='_blank'
+      rel='noopener noreferrer'
+      class='inline-flex items-center gap-1 font-mono text-[11px] text-foreground hover:text-primary transition-colors no-underline'
+    >
+      <span data-i18n='zh'>客户端收听完整歌单</span>
+      <span data-i18n='ja'>アプリで全曲を聴く</span>
+      <span data-i18n='en'>Open Full Playlist (2,739)</span>
+      <span>↗</span>
+    </a>
+  </div>
+
+  {/* 外链播放器容器：利用暗色模式滤镜适配全站深色主题 */}
   <div class='overflow-hidden rounded-xl border border-border/70 bg-card/40 transition-colors hover:border-foreground/25'>
     <iframe
       src={embedUrl}
@@ -25,23 +47,19 @@ const embedUrl = `https://music.163.com/outchain/player?type=0&id=${id}&auto=0&h
       marginheight='0'
       loading='lazy'
       title='NetEase Cloud Music Playlist'
-      class='w-full block'
+      class='w-full block transition-all duration-300 dark:invert-[0.88] dark:hue-rotate-180 dark:contrast-90 dark:brightness-95'
     />
   </div>
-  <div class='flex items-center justify-between text-xs text-muted-foreground px-1'>
-    <span data-i18n='zh'>网易云音乐 · 我喜欢的音乐</span>
-    <span data-i18n='ja'>NetEase Cloud Music · お気に入りの曲</span>
-    <span data-i18n='en'>NetEase Cloud Music · Liked Songs</span>
-    <a
-      href={url}
-      target='_blank'
-      rel='noopener noreferrer'
-      class='inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground hover:text-primary transition-colors no-underline'
-    >
-      <span data-i18n='zh'>网易云直达</span>
-      <span data-i18n='ja'>アプリで開く</span>
-      <span data-i18n='en'>Open in NetEase</span>
-      <span>↗</span>
-    </a>
+
+  <div class='px-1 text-[11px] text-muted-foreground/80 leading-relaxed'>
+    <p data-i18n='zh'>
+      * 注：网易云音乐对外部免登播放器启用了严格的版权与 VIP 限制，大部分唱片公司版权歌曲无法在外链中公开播放，仅展示开放的 6 首曲目。点击右上角即可在网易云 App 或网页端收听完整红心歌单。
+    </p>
+    <p data-i18n='ja'>
+      * 注：NetEase Cloud Music の仕様により、著作権保護またはVIP限定楽曲は外部埋め込みで再生制限がかかるため、一部の曲のみ表示されます。全曲はお気に入りのアプリでお楽しみいただけます。
+    </p>
+    <p data-i18n='en'>
+      * Note: Due to NetEase Cloud Music copyright & VIP restrictions, most licensed tracks are hidden in public embeds. Only unprotected tracks are playable here. Open in app to listen to all 2,739 tracks.
+    </p>
   </div>
 </div>
