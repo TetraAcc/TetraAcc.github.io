@@ -1,0 +1,47 @@
+---
+import { NETEASE_FEATURED_PLAYLIST_ID, NETEASE_FEATURED_PLAYLIST_URL } from '@/data/music'
+
+interface Props {
+  id?: string
+  url?: string
+}
+
+const {
+  id = NETEASE_FEATURED_PLAYLIST_ID,
+  url = NETEASE_FEATURED_PLAYLIST_URL
+} = Astro.props
+
+const embedUrl = `https://music.163.com/outchain/player?type=0&id=${id}&auto=0&height=430`
+---
+
+<div class='not-prose my-4 flex flex-col gap-y-2'>
+  <div class='overflow-hidden rounded-xl border border-border/70 bg-card/40 transition-colors hover:border-foreground/25'>
+    <iframe
+      src={embedUrl}
+      width='100%'
+      height='450'
+      frameborder='0'
+      marginwidth='0'
+      marginheight='0'
+      loading='lazy'
+      title='NetEase Cloud Music Playlist'
+      class='w-full block'
+    />
+  </div>
+  <div class='flex items-center justify-between text-xs text-muted-foreground px-1'>
+    <span data-i18n='zh'>网易云音乐 · 我喜欢的音乐</span>
+    <span data-i18n='ja'>NetEase Cloud Music · お気に入りの曲</span>
+    <span data-i18n='en'>NetEase Cloud Music · Liked Songs</span>
+    <a
+      href={url}
+      target='_blank'
+      rel='noopener noreferrer'
+      class='inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground hover:text-primary transition-colors no-underline'
+    >
+      <span data-i18n='zh'>网易云直达</span>
+      <span data-i18n='ja'>アプリで開く</span>
+      <span data-i18n='en'>Open in NetEase</span>
+      <span>↗</span>
+    </a>
+  </div>
+</div>
