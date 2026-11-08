@@ -1,16 +1,13 @@
 ---
 import PageLayout from '@/layouts/CommonPage.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
-import SpotifyCrate from '@/components/music/SpotifyCrate.astro'
-import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 
 const headings = [
-  { depth: 2, slug: 'open-source', text: 'Open Source' },
-  { depth: 2, slug: 'music-crate', text: 'Music Crate' }
+  { depth: 2, slug: 'open-source', text: 'Open Source' }
 ]
 ---
 
-<PageLayout title='Projects & Crate' {headings}>
+<PageLayout title='Projects' {headings}>
   <p>GitHub Activities (@TetraAcc):</p>
   <p>
     <img
@@ -20,7 +17,7 @@ const headings = [
     />
   </p>
 
-  <h2 id='open-source'>Open Source</h2>
+  <h2 id='open-source'>Open Source &amp; Tools</h2>
   <div data-i18n='zh'>
     <ProjectSection
       projects={[
@@ -89,20 +86,4 @@ const headings = [
       ]}
     />
   </div>
-
-  <h2 id='music-crate'>Music Crate</h2>
-  <div class='my-3'>
-    <SpotifyNowPlaying />
-  </div>
-  <p data-i18n='zh'>
-    平时写代码、看书或散步时常听的曲目与歌单：
-  </p>
-  <p data-i18n='ja'>
-    コーディングや読書、散歩中によく聴いているお気に入りのプレイリスト：
-  </p>
-  <p data-i18n='en'>
-    Tracks and playlists on rotation while coding, reading, or walking:
-  </p>
-
-  <SpotifyCrate />
 </PageLayout>
