@@ -2,24 +2,28 @@
 import PageLayout from '@/layouts/CommonPage.astro'
 import SpotifyCrate from '@/components/music/SpotifyCrate.astro'
 import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
+import BilibiliCard from '@/components/music/BilibiliCard.astro'
+import { bilibiliArchive } from '@/data/bilibili'
 
 const headings = [
   { depth: 2, slug: 'now-playing', text: 'Now Playing' },
   { depth: 2, slug: 'spotify-playlist', text: 'Spotify' },
-  { depth: 2, slug: 'netease-music', text: 'NetEase Music' },
-  { depth: 2, slug: 'bilibili-radio', text: 'Bilibili Radio' }
+  { depth: 2, slug: 'radio', text: 'Radio' },
+  { depth: 2, slug: 'cover', text: 'Cover' },
+  { depth: 2, slug: 'live', text: 'Live' },
+  { depth: 2, slug: 'netease-music', text: 'NetEase Music' }
 ]
 ---
 
-<PageLayout title='Music & Radio' {headings}>
+<PageLayout title='Music & Sound' {headings}>
   <p data-i18n='zh'>
-    这里是我的私人视听角落。存放不同季节常听的歌单、电台投稿，以及当前的实时听歌状态。
+    这里是我的私人视听角落。存放不同时期常听的歌单、电台漫谈、翻唱录音与现场见证足迹。
   </p>
   <p data-i18n='ja'>
-    プライベートな音楽・ラジオのアーカイブスペース。季節ごとのプレイリストやラジオ投稿、現在のリアルタイム再生状況を記録しています。
+    プライベートな音楽・ラジオのアーカイブスペース。常聴プレイリスト、ラジオエピソード、弾き語りカバー、ライブ現地記録をまとめています。
   </p>
   <p data-i18n='en'>
-    My personal music &amp; audio corner. A collection of playlists, radio episodes, and live listening status.
+    My personal music &amp; audio corner. A collection of playlists, podcast episodes, cover sessions, and live concert footprints.
   </p>
 
   <h2 id='now-playing'>Now Playing · 实时收听</h2>
@@ -30,17 +34,32 @@ const headings = [
   <h2 id='spotify-playlist'>Spotify · 专属歌单</h2>
   <SpotifyCrate />
 
+  {
+    bilibiliArchive.map((section) => (
+      <section class='mt-8'>
+        <h2 id={section.id}>
+          <span data-i18n='zh'>{section.title.zh}</span>
+          <span data-i18n='ja'>{section.title.ja}</span>
+          <span data-i18n='en'>{section.title.en}</span>
+        </h2>
+        <p class='text-sm text-muted-foreground -mt-2 mb-4'>
+          <span data-i18n='zh'>{section.description.zh}</span>
+          <span data-i18n='ja'>{section.description.ja}</span>
+          <span data-i18n='en'>{section.description.en}</span>
+        </p>
+        <div class='grid grid-cols-1 md:grid-cols-2 gap-3'>
+          {section.items.map((item) => (
+            <BilibiliCard {item} />
+          ))}
+        </div>
+      </section>
+    ))
+  }
+
   <h2 id='netease-music'>NetEase Music · 网易云音乐</h2>
   <div class='my-4 rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground'>
     <p data-i18n='zh'>网易云外链歌单准备接入中（发送歌单链接或 ID 后即可自动挂载）</p>
     <p data-i18n='ja'>NetEase Cloud Music プレイリスト準備中</p>
     <p data-i18n='en'>NetEase Cloud Music playlist coming soon.</p>
-  </div>
-
-  <h2 id='bilibili-radio'>Bilibili Radio · 个人电台精选</h2>
-  <div class='my-4 rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground'>
-    <p data-i18n='zh'>B 站电台播客卡片准备接入中（发送几期视频/音频链接后即可自动挂载）</p>
-    <p data-i18n='ja'>Bilibili ラジオ・ポッドキャスト準備中</p>
-    <p data-i18n='en'>Bilibili radio episodes coming soon.</p>
   </div>
 </PageLayout>
