@@ -7,10 +7,12 @@ import { CURATED_TRACKS, SPOTIFY_FEATURED_PLAYLIST } from '@/data/music'
  * - https://open.spotify.com/track/xxx?si=yyy
  * - https://open.spotify.com/intl-ja/track/xxx
  * - https://open.spotify.com/playlist/xxx
+ * - https://open.spotify.com/embed/playlist/xxx
  */
 function toSpotifyEmbedUrl(rawUrl: string): string {
   if (!rawUrl) return ''
   try {
+    if (rawUrl.includes('/embed/')) return rawUrl
     const u = new URL(rawUrl)
     const parts = u.pathname.split('/').filter(Boolean)
     // 过滤掉 intl-ja / intl-zh 等语言前缀
@@ -30,34 +32,36 @@ const playlistEmbed = toSpotifyEmbedUrl(SPOTIFY_FEATURED_PLAYLIST)
 
 <div class='not-prose my-4 flex flex-col gap-y-6'>
   {/* 单曲推荐卡片 + 私人随感 */}
-  <div class='flex flex-col gap-y-4'>
-    {
-      CURATED_TRACKS.map((item) => {
-        const embedUrl = toSpotifyEmbedUrl(item.spotifyUrl)
-        return (
-          <div class='rounded-2xl border bg-muted/60 p-3.5 transition-colors hover:border-foreground/25'>
-            <iframe
-              style='border-radius:12px'
-              src={embedUrl}
-              width='100%'
-              height='80'
-              frameborder='0'
-              allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
-              loading='lazy'
-              title={`${item.title} - ${item.artist}`}
-            />
-            <div class='mt-2.5 px-1.5 text-sm text-muted-foreground'>
-              <p data-i18n='zh'>“{item.note.zh}”</p>
-              <p data-i18n='ja'>「{item.note.ja || item.note.zh}」</p>
-              <p data-i18n='en'>“{item.note.en || item.note.zh}”</p>
+  {
+    CURATED_TRACKS.length > 0 && (
+      <div class='flex flex-col gap-y-4'>
+        {CURATED_TRACKS.map((item) => {
+          const embedUrl = toSpotifyEmbedUrl(item.spotifyUrl)
+          return (
+            <div class='rounded-2xl border bg-muted/60 p-3.5 transition-colors hover:border-foreground/25'>
+              <iframe
+                style='border-radius:12px'
+                src={embedUrl}
+                width='100%'
+                height='80'
+                frameborder='0'
+                allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
+                loading='lazy'
+                title={`${item.title} - ${item.artist}`}
+              />
+              <div class='mt-2.5 px-1.5 text-sm text-muted-foreground'>
+                <p data-i18n='zh'>“{item.note.zh}”</p>
+                <p data-i18n='ja'>「{item.note.ja || item.note.zh}」</p>
+                <p data-i18n='en'>“{item.note.en || item.note.zh}”</p>
+              </div>
             </div>
-          </div>
-        )
-      })
-    }
-  </div>
+          )
+        })}
+      </div>
+    )
+  }
 
-  {/* 常驻同步歌单（可选） */}
+  {/* 常驻同步歌单 */}
   {
     playlistEmbed && (
       <div class='mt-2'>
