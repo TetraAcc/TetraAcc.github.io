@@ -1,65 +1,79 @@
 ---
-import { NETEASE_FEATURED_PLAYLIST_ID, NETEASE_FEATURED_PLAYLIST_URL } from '@/data/music'
+import { NETEASE_FEATURED_PLAYLIST_URL } from '@/data/music'
 
-interface Props {
-  id?: string
-  url?: string
-}
-
-const {
-  id = NETEASE_FEATURED_PLAYLIST_ID,
-  url = NETEASE_FEATURED_PLAYLIST_URL
-} = Astro.props
-
-const embedUrl = `https://music.163.com/outchain/player?type=0&id=${id}&auto=0&height=430`
+const neteaseCards = [
+  {
+    type: 'Playlist',
+    tag: '2,739 首精选',
+    title: '我喜欢的音乐 · Liked Songs',
+    desc: '“保持幻想 保持冷静 不要活的时间太长 不要无聊。”',
+    meta: '2,069 次收听 · 点击收听完整歌单',
+    href: NETEASE_FEATURED_PLAYLIST_URL,
+    pic: 'https://p1.music.126.net/hchaGch0kKwh-ejHRljxVw==/109951173582402399.jpg',
+    badge: '163'
+  },
+  {
+    type: 'Profile',
+    tag: 'UID: 310896659',
+    title: 'VirusT · 网易云主页',
+    desc: '个人音乐动态、完整歌单与听歌排行榜',
+    meta: '网易云音乐个人空间',
+    href: 'https://music.163.com/#/user/home?id=310896659',
+    pic: 'https://p1.music.126.net/76MU-fyebZuk9oYDGjtiRQ==/109951163714120886.jpg',
+    badge: 'User'
+  }
+]
 ---
 
-<div class='not-prose my-4 flex flex-col gap-y-3'>
-  {/* 提示栏：标明完整曲目数与外链版权机制 */}
-  <div class='flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border/60 bg-muted/30 px-3.5 py-2 text-xs text-muted-foreground'>
-    <div class='flex items-center gap-2'>
-      <span class='size-2 rounded-full bg-red-500/80'></span>
-      <span>
-        <strong class='text-foreground font-medium'>我喜欢的音乐</strong> · 共收录 2,739 首曲目
-      </span>
-    </div>
-    <a
-      href={url}
-      target='_blank'
-      rel='noopener noreferrer'
-      class='inline-flex items-center gap-1 font-mono text-[11px] text-foreground hover:text-primary transition-colors no-underline'
-    >
-      <span data-i18n='zh'>客户端收听完整歌单</span>
-      <span data-i18n='ja'>アプリで全曲を聴く</span>
-      <span data-i18n='en'>Open Full Playlist (2,739)</span>
-      <span>↗</span>
-    </a>
-  </div>
+<div class='not-prose my-4'>
+  <div class='grid grid-cols-1 md:grid-cols-2 gap-3'>
+    {
+      neteaseCards.map((item) => (
+        <a
+          href={item.href}
+          target='_blank'
+          rel='noopener noreferrer'
+          class='group relative flex flex-row items-center gap-3.5 rounded-xl border border-border/70 bg-card/40 p-2.5 transition-all duration-200 hover:border-foreground/30 hover:bg-muted/40 no-underline'
+        >
+          <div class='relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-lg bg-muted border border-border/40'>
+            <img
+              src={item.pic}
+              alt={item.title}
+              loading='lazy'
+              referrerpolicy='no-referrer'
+              class='h-full w-full object-cover transition-transform duration-300 group-hover:scale-105'
+            />
+            <div class='absolute inset-0 bg-black/10 transition-opacity group-hover:opacity-0' />
+            <span class='absolute bottom-1 right-1 rounded bg-black/60 px-1 py-0.5 text-[10px] font-mono leading-none text-white/90 backdrop-blur-sm'>
+              {item.badge}
+            </span>
+          </div>
 
-  {/* 外链播放器容器：利用暗色模式滤镜适配全站深色主题 */}
-  <div class='overflow-hidden rounded-xl border border-border/70 bg-card/40 transition-colors hover:border-foreground/25'>
-    <iframe
-      src={embedUrl}
-      width='100%'
-      height='450'
-      frameborder='0'
-      marginwidth='0'
-      marginheight='0'
-      loading='lazy'
-      title='NetEase Cloud Music Playlist'
-      class='w-full block transition-all duration-300 dark:invert-[0.88] dark:hue-rotate-180 dark:contrast-90 dark:brightness-95'
-    />
-  </div>
+          <div class='flex min-w-0 flex-1 flex-col justify-center gap-y-1'>
+            <div class='flex items-center justify-between gap-1 text-[11px] font-mono text-muted-foreground'>
+              <span class='rounded bg-muted px-1.5 py-0.5 text-foreground/80 font-medium'>
+                {item.tag}
+              </span>
+              <span class='text-[10px] text-muted-foreground/80'>{item.type}</span>
+            </div>
 
-  <div class='px-1 text-[11px] text-muted-foreground/80 leading-relaxed'>
-    <p data-i18n='zh'>
-      * 注：网易云音乐对外部免登播放器启用了严格的版权与 VIP 限制，大部分唱片公司版权歌曲无法在外链中公开播放，仅展示开放的 6 首曲目。点击右上角即可在网易云 App 或网页端收听完整红心歌单。
-    </p>
-    <p data-i18n='ja'>
-      * 注：NetEase Cloud Music の仕様により、著作権保護またはVIP限定楽曲は外部埋め込みで再生制限がかかるため、一部の曲のみ表示されます。全曲はお気に入りのアプリでお楽しみいただけます。
-    </p>
-    <p data-i18n='en'>
-      * Note: Due to NetEase Cloud Music copyright & VIP restrictions, most licensed tracks are hidden in public embeds. Only unprotected tracks are playable here. Open in app to listen to all 2,739 tracks.
-    </p>
+            <div class='line-clamp-1 text-sm font-medium text-foreground transition-colors group-hover:text-primary leading-snug'>
+              {item.title}
+            </div>
+
+            <div class='line-clamp-1 text-xs text-muted-foreground/80'>
+              {item.desc}
+            </div>
+
+            <div class='flex items-center justify-between text-xs text-muted-foreground mt-0.5'>
+              <span class='truncate text-[11px]'>{item.meta}</span>
+              <span class='ml-1 shrink-0 text-muted-foreground/60 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary font-mono'>
+                ↗
+              </span>
+            </div>
+          </div>
+        </a>
+      ))
+    }
   </div>
 </div>
