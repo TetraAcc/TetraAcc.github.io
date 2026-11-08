@@ -3,23 +3,25 @@ import { CURATED_TRACKS, SPOTIFY_FEATURED_PLAYLIST } from '@/data/music'
 
 /**
  * 将任意 Spotify 分享链接转换为官方 Embed 播放器地址
- * 支持格式如：
- * - https://open.spotify.com/track/xxx?si=yyy
- * - https://open.spotify.com/intl-ja/track/xxx
- * - https://open.spotify.com/playlist/xxx
- * - https://open.spotify.com/embed/playlist/xxx
+ * 支持根据当前主题自动注入 theme=0 (暗色) 或 theme=1 (浅色)
  */
-function toSpotifyEmbedUrl(rawUrl: string): string {
+function toSpotifyEmbedUrl(rawUrl: string, defaultTheme: '0' | '1' = '0'): string {
   if (!rawUrl) return ''
   try {
-    if (rawUrl.includes('/embed/')) return rawUrl
+    if (rawUrl.includes('/embed/')) {
+      const u = new URL(rawUrl)
+      if (!u.searchParams.has('theme')) {
+        u.searchParams.set('theme', defaultTheme)
+      }
+      return u.toString()
+    }
     const u = new URL(rawUrl)
     const parts = u.pathname.split('/').filter(Boolean)
     // 过滤掉 intl-ja / intl-zh 等语言前缀
     const cleanParts = parts.filter((p) => !p.startsWith('intl-'))
     if (cleanParts.length >= 2) {
       const [type, id] = cleanParts
-      return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`
+      return `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=${defaultTheme}`
     }
   } catch {
     // ignore invalid url
@@ -40,6 +42,7 @@ const playlistEmbed = toSpotifyEmbedUrl(SPOTIFY_FEATURED_PLAYLIST)
           return (
             <div class='rounded-2xl border bg-muted/60 p-3.5 transition-colors hover:border-foreground/25'>
               <iframe
+                class='spotify-embed-iframe'
                 style='border-radius:12px'
                 src={embedUrl}
                 width='100%'
@@ -66,6 +69,7 @@ const playlistEmbed = toSpotifyEmbedUrl(SPOTIFY_FEATURED_PLAYLIST)
     playlistEmbed && (
       <div class='mt-2'>
         <iframe
+          class='spotify-embed-iframe'
           style='border-radius:12px'
           src={playlistEmbed}
           width='100%'
@@ -79,3 +83,48 @@ const playlistEmbed = toSpotifyEmbedUrl(SPOTIFY_FEATURED_PLAYLIST)
     )
   }
 </div>
+
+<script is:inline>
+  ;(function () {
+    function updateSpotifyIframes() {
+      const isDark = document.documentElement.classList.contains('dark')
+      const targetTheme = isDark ? 'theme=0' : 'theme=1'
+      const oldTheme = isDark ? 'theme=1' : 'theme=0'
+
+      const iframes = document.querySelectorAll('iframe.spotify-embed-iframe')
+      iframes.forEach((iframe) => {
+        const src = iframe.getAttribute('src')
+        if (!src || !src.includes('open.spotify.com/embed')) return
+
+        if (src.includes(oldTheme)) {
+          iframe.setAttribute('src', src.replace(oldTheme, targetTheme))
+        } else if (!src.includes('theme=')) {
+          const sep = src.includes('?') ? '&' : '?'
+          iframe.setAttribute('src', src + sep + targetTheme)
+        }
+      })
+    }
+
+    // 立即执行一次检查与同步
+    updateSpotifyIframes()
+
+    // 监听 Astro 客户端视图跳转
+    document.addEventListener('astro:page-load', updateSpotifyIframes)
+
+    // 监听全站明暗主题切换（html class="dark" 动态增删）
+    if (!window.__spotifyThemeObserver) {
+      window.__spotifyThemeObserver = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          if (m.type === 'attributes' && m.attributeName === 'class') {
+            updateSpotifyIframes()
+            break
+          }
+        }
+      })
+      window.__spotifyThemeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+      })
+    }
+  })()
+</script>
