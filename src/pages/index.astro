@@ -121,7 +121,15 @@ if (!images[imagePath])
                 </li>
               ))}
             </ul>
-            <Button title='All posts' class='w-fit self-end' href='/blog' variant='ahead' />
+            <div data-i18n='zh' class='flex justify-end'>
+              <Button title='所有文章' class='w-fit' href='/blog' variant='ahead' />
+            </div>
+            <div data-i18n='ja' class='flex justify-end'>
+              <Button title='すべての記事' class='w-fit' href='/blog' variant='ahead' />
+            </div>
+            <div data-i18n='en' class='flex justify-end'>
+              <Button title='All posts' class='w-fit' href='/blog' variant='ahead' />
+            </div>
           </Section>
         )
       }

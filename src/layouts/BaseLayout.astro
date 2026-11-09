@@ -129,15 +129,45 @@ const {
         } else {
           mountLangSwitcher()
         }
+        document.addEventListener('astro:page-load', mountLangSwitcher)
       })()
     </script>
 
-    {/* Set highlight color & i18n visibility rules */}
+    {/* Set highlight color & i18n visibility rules & Japanese font optimization */}
     <style define:vars={{ highlightColor }}>
       :global(html[data-lang='zh'] [data-i18n]:not([data-i18n='zh'])),
       :global(html[data-lang='ja'] [data-i18n]:not([data-i18n='ja'])),
       :global(html[data-lang='en'] [data-i18n]:not([data-i18n='en'])) {
         display: none !important;
+      }
+
+      /* 针对日文字体专门排版：优先采用 Windows/Mac 现代高解析日文字体，避免字符回退导致字形杂乱 */
+      :global(html[data-lang='ja']),
+      :global(html[data-lang='ja'] body),
+      :global(html[lang='ja']),
+      :global(html[lang='ja'] body) {
+        font-family: var(--font-satoshi), -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic", "YuGothic", "Meiryo", "Noto Sans JP", sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      /* 中文字体排版 */
+      :global(html[data-lang='zh']),
+      :global(html[data-lang='zh'] body),
+      :global(html[lang='zh-CN']),
+      :global(html[lang='zh-CN'] body) {
+        font-family: var(--font-satoshi), -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* 英文字体排版 */
+      :global(html[data-lang='en']),
+      :global(html[data-lang='en'] body),
+      :global(html[lang='en']),
+      :global(html[lang='en'] body) {
+        font-family: var(--font-satoshi), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "PingFang SC", "Hiragino Sans", "Microsoft YaHei", "Yu Gothic" !important;
       }
 
       :global(#langSwitcher .lang-btn) {

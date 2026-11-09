@@ -4,20 +4,44 @@ import { NETEASE_FEATURED_PLAYLIST_URL } from '@/data/music'
 const neteaseCards = [
   {
     type: 'Playlist',
-    tag: '2,739 首精选',
-    title: '我喜欢的音乐 · Liked Songs',
-    desc: '“保持幻想 保持冷静 不要活的时间太长 不要无聊。”',
-    meta: '2,069 次收听 · 点击收听完整歌单',
+    tag: { zh: '2,739 首精选', ja: '2,739曲 厳選', en: '2,739 Tracks' },
+    title: {
+      zh: '我喜欢的音乐 · Liked Songs',
+      ja: 'お気に入り音楽 · Liked Songs',
+      en: 'Liked Songs'
+    },
+    desc: {
+      zh: '“保持幻想 保持冷静 不要活的时间太长 不要无聊。”',
+      ja: '「幻想を保ち、冷静さを保ち、退屈に生きるな。」',
+      en: '“Stay imaginative, stay calm, and never be bored.”'
+    },
+    meta: {
+      zh: '2,069 次收听 · 点击收听完整歌单',
+      ja: '2,069回再生 · プレイリストを開く',
+      en: '2,069 Listens · Open Playlist'
+    },
     href: NETEASE_FEATURED_PLAYLIST_URL,
     pic: 'https://p1.music.126.net/hchaGch0kKwh-ejHRljxVw==/109951173582402399.jpg',
     badge: '163'
   },
   {
     type: 'Profile',
-    tag: 'UID: 310896659',
-    title: 'VirusT · 网易云主页',
-    desc: '个人音乐动态、完整歌单与听歌排行榜',
-    meta: '网易云音乐个人空间',
+    tag: { zh: 'UID: 310896659', ja: 'UID: 310896659', en: 'UID: 310896659' },
+    title: {
+      zh: 'VirusT · 网易云主页',
+      ja: 'VirusT · NetEaseプロフィール',
+      en: 'VirusT · NetEase Profile'
+    },
+    desc: {
+      zh: '个人音乐动态、完整歌单与听歌排行榜',
+      ja: '音楽アクティビティ、公開プレイリスト、リスニングランキング',
+      en: 'Personal music feed, public playlists & rankings'
+    },
+    meta: {
+      zh: '网易云音乐个人空间',
+      ja: 'NetEaseクラウド音楽個人ページ',
+      en: 'NetEase Music Profile'
+    },
     href: 'https://music.163.com/#/user/home?id=310896659',
     pic: 'https://p1.music.126.net/76MU-fyebZuk9oYDGjtiRQ==/109951163714120886.jpg',
     badge: 'User'
@@ -38,7 +62,7 @@ const neteaseCards = [
           <div class='relative size-24 sm:size-28 shrink-0 overflow-hidden rounded-lg bg-muted border border-border/40'>
             <img
               src={item.pic}
-              alt={item.title}
+              alt='NetEase Cover'
               loading='lazy'
               referrerpolicy='no-referrer'
               class='h-full w-full object-cover transition-transform duration-300 group-hover:scale-105'
@@ -52,21 +76,31 @@ const neteaseCards = [
           <div class='flex min-w-0 flex-1 flex-col justify-center gap-y-1'>
             <div class='flex items-center justify-between gap-1 text-[11px] font-mono text-muted-foreground'>
               <span class='rounded bg-muted px-1.5 py-0.5 text-foreground/80 font-medium'>
-                {item.tag}
+                <span data-i18n='zh'>{item.tag.zh}</span>
+                <span data-i18n='ja'>{item.tag.ja}</span>
+                <span data-i18n='en'>{item.tag.en}</span>
               </span>
               <span class='text-[10px] text-muted-foreground/80'>{item.type}</span>
             </div>
 
             <div class='line-clamp-1 text-sm font-medium text-foreground transition-colors group-hover:text-primary leading-snug'>
-              {item.title}
+              <span data-i18n='zh'>{item.title.zh}</span>
+              <span data-i18n='ja'>{item.title.ja}</span>
+              <span data-i18n='en'>{item.title.en}</span>
             </div>
 
             <div class='line-clamp-1 text-xs text-muted-foreground/80'>
-              {item.desc}
+              <span data-i18n='zh'>{item.desc.zh}</span>
+              <span data-i18n='ja'>{item.desc.ja}</span>
+              <span data-i18n='en'>{item.desc.en}</span>
             </div>
 
             <div class='flex items-center justify-between text-xs text-muted-foreground mt-0.5'>
-              <span class='truncate text-[11px]'>{item.meta}</span>
+              <span class='truncate text-[11px]'>
+                <span data-i18n='zh'>{item.meta.zh}</span>
+                <span data-i18n='ja'>{item.meta.ja}</span>
+                <span data-i18n='en'>{item.meta.en}</span>
+              </span>
               <span class='ml-1 shrink-0 text-muted-foreground/60 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary font-mono'>
                 ↗
               </span>

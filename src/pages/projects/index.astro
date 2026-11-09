@@ -3,12 +3,20 @@ import PageLayout from '@/layouts/CommonPage.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
 
 const headings = [
-  { depth: 2, slug: 'open-source', text: 'Open Source' }
+  {
+    depth: 2,
+    slug: 'open-source',
+    text: '<span data-i18n="zh">开源项目</span><span data-i18n="ja">オープンソース</span><span data-i18n="en">Open Source</span>'
+  }
 ]
 ---
 
 <PageLayout title='Projects' {headings}>
-  <p>GitHub Activities (@TetraAcc):</p>
+  <p>
+    <span data-i18n='zh'>GitHub 活动动态 (@TetraAcc)：</span>
+    <span data-i18n='ja'>GitHub アクティビティ (@TetraAcc)：</span>
+    <span data-i18n='en'>GitHub Activities (@TetraAcc):</span>
+  </p>
   <p>
     <img
       src='https://ghchart.rshah.org/659eb9/TetraAcc'
@@ -17,7 +25,11 @@ const headings = [
     />
   </p>
 
-  <h2 id='open-source'>Open Source &amp; Tools</h2>
+  <h2 id='open-source'>
+    <span data-i18n='zh'>开源项目与工具 · Open Source</span>
+    <span data-i18n='ja'>オープンソース＆ツール · Open Source</span>
+    <span data-i18n='en'>Open Source &amp; Tools</span>
+  </h2>
   <div data-i18n='zh'>
     <ProjectSection
       projects={[

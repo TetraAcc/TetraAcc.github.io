@@ -4,14 +4,30 @@ import PageLayout from '@/layouts/CommonPage.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
 
 const headings = [
-  { depth: 2, slug: 'about-me', text: 'About Me' },
-  { depth: 2, slug: 'tools', text: 'Tools & Environment' },
-  { depth: 2, slug: 'about-site', text: 'About Site' }
+  {
+    depth: 2,
+    slug: 'about-me',
+    text: '<span data-i18n="zh">关于我</span><span data-i18n="ja">自己紹介</span><span data-i18n="en">About Me</span>'
+  },
+  {
+    depth: 2,
+    slug: 'tools',
+    text: '<span data-i18n="zh">开发环境与工具</span><span data-i18n="ja">開発環境＆ツール</span><span data-i18n="en">Tools & Environment</span>'
+  },
+  {
+    depth: 2,
+    slug: 'about-site',
+    text: '<span data-i18n="zh">关于本站</span><span data-i18n="ja">このサイトについて</span><span data-i18n="en">About Site</span>'
+  }
 ]
 ---
 
 <PageLayout title='About' {headings}>
-  <h2 id='about-me'>About Me</h2>
+  <h2 id='about-me'>
+    <span data-i18n='zh'>关于我 · About Me</span>
+    <span data-i18n='ja'>自己紹介 · Profile</span>
+    <span data-i18n='en'>About Me</span>
+  </h2>
   <div data-i18n='zh'>
     <p>
       我是侯润田（Tetra），目前常驻日本山形县米泽市，于山形大学修读情报学，专注于软件工程方向。
@@ -39,7 +55,11 @@ const headings = [
     </p>
   </div>
 
-  <h2 id='tools'>Tools &amp; Environment</h2>
+  <h2 id='tools'>
+    <span data-i18n='zh'>开发环境与工具 · Environment</span>
+    <span data-i18n='ja'>開発環境＆ツール</span>
+    <span data-i18n='en'>Tools &amp; Environment</span>
+  </h2>
   <ToolSection
     class='mb-5'
     title='Development'
@@ -77,14 +97,42 @@ const headings = [
     ]}
   />
 
-  <h2 id='about-site'>About Site</h2>
-  <Timeline
-    events={[
-      {
-        date: '2026-11-07',
-        content:
-          '使用 <a href="https://astro.build/" target="_blank">Astro</a> 与 <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a> 搭建个人主页，绑定域名 <code>tetraacc.me</code>。'
-      }
-    ]}
-  />
+  <h2 id='about-site'>
+    <span data-i18n='zh'>关于本站 · About Site</span>
+    <span data-i18n='ja'>このサイトについて</span>
+    <span data-i18n='en'>About Site</span>
+  </h2>
+  <div data-i18n='zh'>
+    <Timeline
+      events={[
+        {
+          date: '2026-11-07',
+          content:
+            '使用 <a href="https://astro.build/" target="_blank">Astro</a> 与 <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a> 搭建个人主页，绑定域名 <code>tetraacc.me</code>。'
+        }
+      ]}
+    />
+  </div>
+  <div data-i18n='ja'>
+    <Timeline
+      events={[
+        {
+          date: '2026-11-07',
+          content:
+            '<a href="https://astro.build/" target="_blank">Astro</a> と <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a> を用いて個人ホームページを構築、独自ドメイン <code>tetraacc.me</code> を設定。'
+        }
+      ]}
+    />
+  </div>
+  <div data-i18n='en'>
+    <Timeline
+      events={[
+        {
+          date: '2026-11-07',
+          content:
+            'Launched personal website with <a href="https://astro.build/" target="_blank">Astro</a> &amp; <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>, deployed to <code>tetraacc.me</code>.'
+        }
+      ]}
+    />
+  </div>
 </PageLayout>

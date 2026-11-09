@@ -25,7 +25,11 @@ const headings = [
   </p>
 
   {/* 顶部一键订阅与操作栏 */}
-  <h2 id='subscribe'>Subscribe · 一键导入与订阅</h2>
+  <h2 id='subscribe'>
+    <span data-i18n='zh'>Subscribe · 一键导入与订阅</span>
+    <span data-i18n='ja'>Subscribe · カレンダー購読</span>
+    <span data-i18n='en'>Subscribe</span>
+  </h2>
   <div class='not-prose my-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs font-mono'>
     <a
       href={CALENDAR_CONFIG.webcalUrl}
@@ -94,7 +98,11 @@ const headings = [
   </div>
 
   {/* 日历控制条：时区切换、图例、视图切换 */}
-  <h2 id='calendar-view'>Schedule · 日历视图</h2>
+  <h2 id='calendar-view'>
+    <span data-i18n='zh'>Schedule · 日历视图</span>
+    <span data-i18n='ja'>Schedule · カレンダー表示</span>
+    <span data-i18n='en'>Schedule</span>
+  </h2>
 
   <div class='not-prose my-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-3 rounded-xl border border-border/70 bg-card/40 text-xs'>
     {/* 分类颜色图例 */}
