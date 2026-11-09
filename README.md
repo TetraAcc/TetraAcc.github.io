@@ -6,6 +6,8 @@
 [![Website](https://img.shields.io/badge/Website-tetraacc.me-659EB9?logo=google-chrome&logoColor=white)](https://tetraacc.me/)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/Content-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![License: Apache-2.0](https://img.shields.io/badge/Code-Apache--2.0-blue.svg)](LICENSE)
+![Code Quality](https://img.shields.io/badge/code_quality-it_works_on_my_machine-orange)
+![Powered by](https://img.shields.io/badge/powered_by-Bipolar_%26_Gintonic-purple)
 
 ---
 
