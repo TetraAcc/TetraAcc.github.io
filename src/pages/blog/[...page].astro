@@ -14,9 +14,12 @@ export const getStaticPaths = (async ({ paginate }) => {
   const collections = sortMDByDate(await getBlogCollection())
   const uniqueTags = getUniqueTagsWithCount(collections).map(([tag]) => tag)
   const collectionsCount = collections.length
+  const essayUrls = collections
+    .filter((post) => post.id.startsWith('essays/') || post.data.tags.includes('随笔'))
+    .map((post) => `/blog/${post.id}`)
   return paginate(collections, {
     pageSize: config.content.blogPageSize,
-    props: { uniqueTags, collectionsCount }
+    props: { uniqueTags, collectionsCount, essayUrls }
   })
 }) satisfies GetStaticPaths
 
@@ -24,9 +27,10 @@ interface Props {
   page: Page<CollectionEntry<'blog'>>
   uniqueTags: string[]
   collectionsCount: number
+  essayUrls: string[]
 }
 
-const { page, uniqueTags, collectionsCount } = Astro.props
+const { page, uniqueTags, collectionsCount, essayUrls } = Astro.props
 
 const meta = {
   description: 'Some posts or archives of my blog',
@@ -94,14 +98,28 @@ const paginationProps = {
         >
           📅 <span data-i18n='zh'>编年日记</span><span data-i18n='ja'>編年日記</span><span data-i18n='en'>Chronicles</span>
         </a>
-        <a
-          href='/archives'
-          class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors sm:ms-auto'
-        >
-          <span data-i18n='zh'>时间轴 Archives →</span>
-          <span data-i18n='ja'>年表アーカイブ →</span>
-          <span data-i18n='en'>Timeline →</span>
-        </a>
+        <div class='flex flex-wrap items-center gap-2 sm:ms-auto'>
+          <a
+            id='random-post-btn'
+            href='#'
+            class='group flex items-center gap-1.5 rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors cursor-pointer'
+            data-essay-urls={JSON.stringify(essayUrls)}
+            title='随机阅读一篇公开随笔'
+          >
+            <span class='inline-block transition-transform duration-300 group-hover:rotate-45'>🎲</span>
+            <span data-i18n='zh'>随机读一篇</span>
+            <span data-i18n='ja'>ランダム随筆</span>
+            <span data-i18n='en'>Random Essay</span>
+          </a>
+          <a
+            href='/archives'
+            class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
+          >
+            <span data-i18n='zh'>时间轴 Archives →</span>
+            <span data-i18n='ja'>年表アーカイブ →</span>
+            <span data-i18n='en'>Timeline →</span>
+          </a>
+        </div>
       </div>
     </div>
     {
@@ -164,4 +182,52 @@ const paginationProps = {
       )
     }
   </main>
+
+  <script>
+    function setupRandomPostButton() {
+      const btn = document.getElementById('random-post-btn') as HTMLAnchorElement | null
+      if (!btn) return
+
+      let urls: string[] = []
+      try {
+        urls = JSON.parse(btn.dataset.essayUrls || '[]')
+      } catch {
+        urls = []
+      }
+      if (!urls.length) return
+
+      const pickRandomUrl = () => {
+        const currentPath = window.location.pathname.replace(/\/$/, '')
+        const available = urls.filter((u) => u.replace(/\/$/, '') !== currentPath)
+        const candidates = available.length > 0 ? available : urls
+        const idx = Math.floor(Math.random() * candidates.length)
+        return candidates[idx]
+      }
+
+      // Pre-set a random link so right-click / middle-click works natively
+      btn.href = pickRandomUrl()
+
+      // Refresh target when hovering
+      btn.onpointerenter = () => {
+        btn.href = pickRandomUrl()
+      }
+
+      // On click, immediately navigate to a freshly picked random essay
+      btn.onclick = (e) => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey) {
+          setTimeout(() => {
+            btn.href = pickRandomUrl()
+          }, 100)
+          return
+        }
+        e.preventDefault()
+        const target = pickRandomUrl()
+        btn.href = target
+        window.location.href = target
+      }
+    }
+
+    setupRandomPostButton()
+    document.addEventListener('astro:page-load', setupRandomPostButton)
+  </script>
 </PageLayout>
