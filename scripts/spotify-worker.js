@@ -2,15 +2,22 @@
  * Cloudflare Worker: Spotify Now Playing & Recently Played Bridge
  *
  * 优化特性：
- * 1. 支持正在播放实时展示 (NOW PLAYING)
- * 2. 智能边缘缓存记忆上一首听过的曲目，彻底规避 Spotify 官方对开发模式 recently-played 接口的 429 限流
- * 3. 停播时自动无缝展示 (RECENTLY PLAYED)，无需频繁请求受限的历史接口
+ * 1. 实时展示正在播放 (NOW PLAYING)；
+ * 2. 停播后主动保留上一首曲目 (RECENTLY PLAYED)，规避 Spotify 429 限流；
+ * 3. 超过指定时长未听歌（如超过 24 小时），自动淡出恢复为干净的“未在播放”休眠状态。
  */
 
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 const NOW_PLAYING_ENDPOINT = 'https://api.spotify.com/v1/me/player/currently-playing'
 const RECENTLY_PLAYED_ENDPOINT = 'https://api.spotify.com/v1/me/player/recently-played?limit=1'
 const CACHE_KEY = 'https://spotify-cache.internal/last-played'
+
+/**
+ * 历史曲目最长保留时间（毫秒）
+ * 默认 24 小时：听完歌 24 小时之内显示 RECENTLY PLAYED；
+ * 超过 24 小时没开 Spotify，则自动变回纯粹的“未在播放”。
+ */
+const RECENT_TRACK_TTL_MS = 24 * 60 * 60 * 1000
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -90,7 +97,8 @@ export default {
             artist: song.item.artists?.map((a) => a.name).join(', ') || '',
             album: song.item.album?.name || '',
             albumImageUrl: song.item.album?.images?.[0]?.url || '',
-            songUrl: song.item.external_urls?.spotify || ''
+            songUrl: song.item.external_urls?.spotify || '',
+            playedAt: Date.now()
           }
 
           // 记忆此曲目到边缘缓存
@@ -106,16 +114,22 @@ export default {
         }
       }
 
-      // 2. 当前未在播放 (204) 时，优先读取记忆中的上一首曲目（避免触发 Spotify 429 Quota Exceeded）
+      // 2. 当前未在播放 (204) 时，优先读取记忆中的上一首曲目
       const rememberedTrack = await getLastTrackFromCache()
-      if (rememberedTrack) {
-        return new Response(
-          JSON.stringify({
-            isPlaying: false,
-            ...rememberedTrack
-          }),
-          { headers: CORS_HEADERS }
-        )
+      if (rememberedTrack && rememberedTrack.title) {
+        const playedAt = rememberedTrack.playedAt || 0
+        const age = Date.now() - playedAt
+
+        // 仅在保留时长（默认24小时）内展示 RECENTLY PLAYED，超期自动回归“未在播放”
+        if (playedAt === 0 || age <= RECENT_TRACK_TTL_MS) {
+          return new Response(
+            JSON.stringify({
+              isPlaying: false,
+              ...rememberedTrack
+            }),
+            { headers: CORS_HEADERS }
+          )
+        }
       }
 
       // 3. 若缓存为空，才尝试向 Spotify 请求最近播放记录
@@ -129,7 +143,8 @@ export default {
             artist: track.artists?.map((a) => a.name).join(', ') || '',
             album: track.album?.name || '',
             albumImageUrl: track.album?.images?.[0]?.url || '',
-            songUrl: track.external_urls?.spotify || ''
+            songUrl: track.external_urls?.spotify || '',
+            playedAt: Date.now()
           }
           await saveLastTrackToCache(trackData, ctx)
           return new Response(
@@ -142,7 +157,7 @@ export default {
         }
       }
 
-      // 4. 完全无数据回退
+      // 4. 超期或无数据时，干净休眠返回“未在播放”
       return new Response(JSON.stringify({ isPlaying: false }), { headers: CORS_HEADERS })
     } catch (err) {
       return new Response(
