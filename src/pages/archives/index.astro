@@ -9,6 +9,7 @@ export const prerender = true
 const allPosts = await getBlogCollection()
 const allPostsByDate = sortMDByDate(allPosts)
 const allPostsByYear = groupCollectionsByYear(allPostsByDate)
+const years = allPostsByYear.map(([year]) => year)
 
 const meta = {
   description: 'A list of all the years of creating my posts',
@@ -21,29 +22,100 @@ const meta = {
 
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-6 text-3xl font-medium'>
+      <h1 class='mb-4 text-3xl font-medium'>
         <span data-i18n='zh'>时间轴 · 年表</span>
         <span data-i18n='ja'>アーカイブ · 年表</span>
         <span data-i18n='en'>Archives</span>
       </h1>
+      <p class='text-sm text-muted-foreground mb-6'>
+        <span data-i18n='zh'>按年份归档的所有随笔、手稿与生活记事（共 {allPosts.length} 篇）。</span>
+        <span data-i18n='ja'>年次別にアーカイブされたすべての随筆・手稿・日記（全 {allPosts.length} 件）。</span>
+        <span data-i18n='en'>All essays, manuscripts, and chronicles by year ({allPosts.length} posts).</span>
+      </p>
+
+      {/* 快捷工具栏：年份直达标签 + 正序/倒序翻转按钮 */}
+      {
+        years.length > 0 && (
+          <div class='mb-8 flex flex-wrap items-center justify-between gap-3 text-xs'>
+            {/* 年份直达标签 */}
+            <div class='flex flex-wrap items-center gap-1.5 sm:gap-2'>
+              <span class='text-muted-foreground me-1'>
+                <span data-i18n='zh'>直达年份：</span>
+                <span data-i18n='ja'>年次ジャンプ：</span>
+                <span data-i18n='en'>Jump:</span>
+              </span>
+              {years.map((year) => (
+                <a
+                  href={`#year-${year}`}
+                  class='rounded-full border border-border/70 bg-muted/30 px-2.5 py-1 text-muted-foreground hover:border-foreground/40 hover:bg-muted hover:text-foreground no-underline transition-colors font-mono'
+                >
+                  {year}
+                </a>
+              ))}
+            </div>
+
+            {/* 正序 / 倒序一键翻转按钮 */}
+            <button
+              id='toggleSortBtn'
+              type='button'
+              class='inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-muted/60 px-3 py-1 font-medium text-foreground hover:bg-muted transition-colors cursor-pointer'
+              title='切换时间正序/倒序排列'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='14'
+                height='14'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                stroke-width='2'
+                stroke-linecap='round'
+                stroke-linejoin='round'
+                class='text-muted-foreground'
+              >
+                <path d='m3 16 4 4 4-4' />
+                <path d='M7 20V4' />
+                <path d='m21 8-4-4-4 4' />
+                <path d='M17 4v16' />
+              </svg>
+              <span id='sortBtnText' data-i18n='zh'>
+                倒序 (最新在前)
+              </span>
+              <span id='sortBtnTextJa' data-i18n='ja'>
+                降順 (新しい順)
+              </span>
+              <span id='sortBtnTextEn' data-i18n='en'>
+                Newest First
+              </span>
+            </button>
+          </div>
+        )
+      }
     </div>
 
     {allPosts.length === 0 && <p>No posts yet.</p>}
 
-    <section id='content' class='animate' aria-label='Blog post list'>
+    <section id='content' class='animate flex flex-col' aria-label='Blog post list'>
       {
         allPostsByYear.map(([year, posts]) => (
-          <div class='relative mt-20'>
+          <div id={`year-${year}`} class='year-group relative mt-16 scroll-mt-24'>
             <h2
-              class='absolute -start-6 -top-16 z-0 text-9xl font-bold text-transparent opacity-12 dark:opacity-25'
+              class='absolute -start-6 -top-16 z-0 text-9xl font-bold text-transparent opacity-12 dark:opacity-25 select-none pointer-events-none'
               style='-webkit-text-stroke-width:2px;-webkit-text-stroke-color:hsl(var(--foreground)/var(--un-text-opacity))'
             >
               <samp>{year}</samp>
             </h2>
-            <p class='px-5 text-muted-foreground'>
-              <span data-i18n='zh'>{posts.length} 篇文章</span>
-              <span data-i18n='ja'>{posts.length} 件の記録</span>
-              <span data-i18n='en'>{posts.length} post{posts.length > 1 && 's'}</span>
+            <p class='px-5 text-muted-foreground flex items-center justify-between'>
+              <span>
+                <span data-i18n='zh'>{posts.length} 篇文章</span>
+                <span data-i18n='ja'>{posts.length} 件の記録</span>
+                <span data-i18n='en'>
+                  {posts.length} post{posts.length > 1 && 's'}
+                </span>
+              </span>
+              <a href='#content-header' class='text-xs text-muted-foreground/60 hover:text-foreground no-underline transition-colors'>
+                ↑ Top
+              </a>
             </p>
             <ul class='flex flex-col text-start'>
               {posts.map((p) => (
@@ -55,4 +127,38 @@ const meta = {
       }
     </section>
   </main>
+
+  <script is:inline>
+    ;(function () {
+      const btn = document.getElementById('toggleSortBtn')
+      const container = document.getElementById('content')
+      if (!btn || !container) return
+
+      let isAsc = false
+
+      btn.addEventListener('click', () => {
+        isAsc = !isAsc
+
+        // Reverse year cards
+        const groups = Array.from(container.querySelectorAll('.year-group'))
+        groups.reverse().forEach((g) => {
+          container.appendChild(g)
+          // Also reverse posts within the year
+          const postList = g.querySelector('ul')
+          if (postList) {
+            const items = Array.from(postList.children).reverse()
+            items.forEach((item) => postList.appendChild(item))
+          }
+        })
+
+        // Update label
+        const zh = document.getElementById('sortBtnText')
+        const ja = document.getElementById('sortBtnTextJa')
+        const en = document.getElementById('sortBtnTextEn')
+        if (zh) zh.textContent = isAsc ? '正序 (最早在前)' : '倒序 (最新在前)'
+        if (ja) ja.textContent = isAsc ? '昇順 (古い順)' : '降順 (新しい順)'
+        if (en) en.textContent = isAsc ? 'Oldest First' : 'Newest First'
+      })
+    })()
+  </script>
 </PageLayout>
