@@ -1,0 +1,64 @@
+---
+import { cn } from 'astro-pure/utils'
+
+export interface GearItem {
+  name: string
+  spec?: string
+  desc: string
+  icon?: string
+  tag?: string
+}
+
+interface Props {
+  class?: string
+  title: string
+  items: GearItem[]
+}
+
+const { class: className, title, items, ...props } = Astro.props
+---
+
+<div
+  class={cn(
+    'not-prose flex flex-col rounded-xl border p-4 sm:p-5 gap-y-3.5 mb-5 transition-colors',
+    className
+  )}
+  {...props}
+>
+  <div class='flex items-center justify-between border-b pb-2 text-base font-medium text-foreground sm:text-lg'>
+    <span>{title}</span>
+    <span class='text-xs font-normal text-muted-foreground'>{items.length} 件</span>
+  </div>
+
+  <div class='grid grid-cols-1 gap-2.5 sm:grid-cols-2'>
+    {
+      items.map((item) => (
+        <div class='group flex items-start gap-x-3 rounded-lg border border-transparent bg-muted/30 p-2.5 transition-all hover:border-border/70 hover:bg-muted/70'>
+          {item.icon && (
+            <span class='mt-0.5 select-none text-xl sm:text-2xl shrink-0 transition-transform group-hover:scale-110'>
+              {item.icon}
+            </span>
+          )}
+          <div class='flex min-w-0 flex-1 flex-col'>
+            <div class='flex items-center justify-between gap-1.5'>
+              <span class='text-sm font-medium text-foreground truncate'>{item.name}</span>
+              {item.tag && (
+                <span class='shrink-0 rounded border border-border/50 bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground'>
+                  {item.tag}
+                </span>
+              )}
+            </div>
+            {item.spec && (
+              <span class='mt-0.5 font-mono text-xs text-primary/85 leading-tight'>
+                {item.spec}
+              </span>
+            )}
+            <span class='mt-1 text-xs text-muted-foreground leading-relaxed'>
+              {item.desc}
+            </span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
