@@ -9,6 +9,7 @@ import Section from '@/components/home/Section.astro'
 import SkillLayout from '@/components/home/SkillLayout.astro'
 import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 import config from '@/site-config'
+import nowData from '@/content/now.json'
 
 const languages = ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
 const toolsAndFrameworks = ['Git', 'Linux', 'Astro', 'Node.js', 'Docker']
@@ -56,6 +57,13 @@ if (!images[imagePath])
           </Label>
           <Label title='Yamagata, Japan' data-i18n='en'>
             <Icon name='location' class='size-5' slot='icon' />
+          </Label>
+          <Label
+            title='Email'
+            as='a'
+            href='mailto:Tetrahrt@gmail.com'
+          >
+            <Icon name='email' class='size-5' slot='icon' />
           </Label>
           <Label
             title='GitHub'
@@ -135,6 +143,77 @@ if (!images[imagePath])
           </Section>
         )
       }
+
+      {/* Now */}
+      <Section title='Now'>
+        <div class='flex flex-col gap-y-3 rounded-xl border p-4 sm:p-5 text-sm sm:text-base'>
+          <div class='flex flex-wrap items-center justify-between gap-2 border-b pb-3 text-xs text-muted-foreground'>
+            <div class='flex items-center gap-x-2'>
+              <span class='relative flex size-2'>
+                <span class='absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75'></span>
+                <span class='relative inline-flex size-2 rounded-full bg-emerald-500'></span>
+              </span>
+              <span class='font-medium text-foreground'>{nowData.status}</span>
+            </div>
+            {
+              nowData.updated && (
+                <span>
+                  <span data-i18n='zh'>最近更新 · {nowData.updated}</span>
+                  <span data-i18n='ja'>最終更新 · {nowData.updated}</span>
+                  <span data-i18n='en'>Updated · {nowData.updated}</span>
+                </span>
+              )
+            }
+          </div>
+
+          <div class='grid grid-cols-1 gap-y-2.5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-3'>
+            {
+              nowData.reading && (
+                <div class='flex items-start gap-x-2'>
+                  <span class='text-muted-foreground shrink-0'>
+                    <span data-i18n='zh'>📖 正在阅读：</span>
+                    <span data-i18n='ja'>📖 読書中：</span>
+                    <span data-i18n='en'>📖 Reading: </span>
+                  </span>
+                  <span class='text-foreground'>{nowData.reading}</span>
+                </div>
+              )
+            }
+            {
+              nowData.listening && (
+                <div class='flex items-start gap-x-2'>
+                  <span class='text-muted-foreground shrink-0'>
+                    <span data-i18n='zh'>🎧 正在收听：</span>
+                    <span data-i18n='ja'>🎧 再生中：</span>
+                    <span data-i18n='en'>🎧 Listening: </span>
+                  </span>
+                  <span class='text-foreground'>{nowData.listening}</span>
+                </div>
+              )
+            }
+            {
+              nowData.working && (
+                <div class='flex items-start gap-x-2 sm:col-span-2'>
+                  <span class='text-muted-foreground shrink-0'>
+                    <span data-i18n='zh'>💻 正在进行：</span>
+                    <span data-i18n='ja'>💻 取り組み：</span>
+                    <span data-i18n='en'>💻 Working on: </span>
+                  </span>
+                  <span class='text-foreground'>{nowData.working}</span>
+                </div>
+              )
+            }
+          </div>
+
+          {
+            nowData.note && (
+              <p class='mt-1 text-sm text-muted-foreground leading-relaxed italic'>
+                “{nowData.note}”
+              </p>
+            )
+          }
+        </div>
+      </Section>
 
       <Section title='Open Source'>
         <div class='flex flex-col gap-y-3' data-i18n='zh'>
