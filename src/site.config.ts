@@ -142,9 +142,9 @@ export const integ: IntegrationUserConfig = {
   },
   // Comment system
   waline: {
-    enable: false,
+    enable: true,
     // Server service link
-    server: '',
+    server: 'https://website-comment-pi.vercel.app',
     // Show meta info for comments
     showMeta: false,
     // Refer https://waline.js.org/en/guide/features/emoji.html
@@ -153,11 +153,11 @@ export const integ: IntegrationUserConfig = {
     additionalConfigs: {
       // search: false,
       locale: {
-        nick: 'Name',
-        mail: 'Email',
-        login: 'Login (Optional)',
-        placeholder: 'Comment here... (Email to receive replies)',
-        reaction0: 'Like'
+        nick: '昵称',
+        mail: '邮箱',
+        link: '网址 (可选)',
+        placeholder: '欢迎畅所欲言...（填写邮箱可收到回复提醒）',
+        reaction0: '点赞'
       }
     }
   }
