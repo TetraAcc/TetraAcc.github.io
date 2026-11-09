@@ -20,7 +20,7 @@ pin: true
 
 没寄出去的信，甚至没写完的信，就没有问题。因为它的使命从寄出的那一刻才开始。在此之前都作为我的孩子在心里野蛮生长吧。
 
-这是写给刘淑琪的一封长长的信。
+这是写给蹄总的一封长长的信。
 
 寄出时间未知，寄出与否未知，要写多久也未知。本来准备起《答……问》这种名字，后来想想连你有什么问题我也甚不明白。我什么都不清楚，只是抱着绝对会写下去的信念在写。会慢慢增进了解的吧？我想。
 
@@ -149,18 +149,18 @@ pin: true
 ## （三）
 突然要写(三)什么的老实说有点措手不及。
 但没有比这更合适的议题了。
-开始回答。关于我所知道的，李甜甜究竟发生了什么事。
+开始回答。关于我所知道的，李同学究竟发生了什么事。
 
 ---
 
-2014.9.1 我进入合肥八中28班。班主任孙云云。
+2014.9.1 我进入八中28班。班主任孙。
 在那之前我是参加了理实的考试，好像是军训之后没多久就出了成绩。我落选了。老实说按我当时的性格我太不能接受。至于事实不必详谈。我在理实班的替身不到一个月就转了文。当时我铁了心要去普通班，想打一下“校领导”的脸，因此我拒绝了科创班的邀请。而我当时是不知道还有外地班的。所以第一天看到名册上的学号的时候我几乎出离愤怒了。啊总也不至于分到倒数班级去吧？所以我带着一种先入为主的错误观念开始了高中。
 
-不过其实没两天我就明白了实际情况。大家都是很好的人。当时28有5个合肥本地生。除了我还有个胖胖的挺神经质的男生。名字忘了，剩下好像有个叫袁洪幸子的女生（后来是不是也在31班……）还有现在还有联系的王院长。总之我个人多少认为自己是那种有朋友吸引力的人。很快和大家打成了一片。江山易改，本性难移吧。我是那种比较喜欢开玩笑的人。但是对爱情相关的信息敬而远之。当时我每天中午都在班里自习。有时会有同班女同学在班里讨论男朋友什么的。我有些反感，每次这个时候就跑出去。（后来她们告诉我以为我害羞了）第一次和李甜甜同学的对话发生的有些莫名奇妙。某节课间我在走廊，突然被她叫住。“同学……”虽然已经开学一个月了，但我不是那种会主动认识“不必要”的人的性格，所以只是知道是一个班的，其它什么也不知道，结果她下一句直接给我问傻了“你讨厌我吗？”同桌恰好带着意味深长的笑容从身边走过。我看她表情非常紧张，心想不会真是……吧。想着缓和下气氛所以就说了：“你是谁呀？”（挺蠢的，但我当时真不知道说什么。）她就跟我介绍自己。然后又问了一遍。我说我都不知道你是谁怎么会讨厌你呢？她反复确认，我最后说你放心好了。我真不认识你。回座位被同桌揶揄自不必说，我也没太当回事。我从小就比较像那种带头搞事的人，但同时很矛盾的是我又比较尊重老师，所以一直也没出过什么问题。但我实在无法认同孙云云。后来有一次我晚自习被叫到办公室去罚站，她叫我打电话叫家长。简直奇耻大辱……从小学二年级之后再没有被叫过家长。久闻她对外地班同学也有同样不合理要求的我决定强出一头。我在那里站了两个小时一言不发。她最终是没憋住自己打的电话。这时李甜甜也在办公室，手里拿着一封信一样的东西。好像也挨了批评。我从那之后对她多少有些印象，感觉不像是“坏孩子”。当时班里除我之外的所有人都温顺地像孙云云的狗。我以为是怕外地的父母担心所以总是出头做一些“大逆不道”的事。但近朱者赤吧，久之我周围的朋友也硬气了起来，跟我一起被划进“管理对象之列”。我妈多少年没在家长会以外来过学校，那天突然被叫来，孙云云劈头盖脸一通训给她吓得直抹泪。我气不过，直接跑到梁华座位上把椅子拖过来跟我妈说“坐！”然后一言不发跟孙云云对视。就这样到了下晚自习的时间。我带我妈出门，发现她还在办公室。
+不过其实没两天我就明白了实际情况。大家都是很好的人。当时28有5个合肥本地生。除了我还有个胖胖的挺神经质的男生。名字忘了，剩下好像有个叫袁xx的女生（后来是不是也在31班……）还有现在还有联系的王院长。总之我个人多少认为自己是那种有朋友吸引力的人。很快和大家打成了一片。江山易改，本性难移吧。我是那种比较喜欢开玩笑的人。但是对爱情相关的信息敬而远之。当时我每天中午都在班里自习。有时会有同班女同学在班里讨论男朋友什么的。我有些反感，每次这个时候就跑出去。（后来她们告诉我以为我害羞了）第一次和李同学的对话发生的有些莫名奇妙。某节课间我在走廊，突然被她叫住。“同学……”虽然已经开学一个月了，但我不是那种会主动认识“不必要”的人的性格，所以只是知道是一个班的，其它什么也不知道，结果她下一句直接给我问傻了“你讨厌我吗？”同桌恰好带着意味深长的笑容从身边走过。我看她表情非常紧张，心想不会真是……吧。想着缓和下气氛所以就说了：“你是谁呀？”（挺蠢的，但我当时真不知道说什么。）她就跟我介绍自己。然后又问了一遍。我说我都不知道你是谁怎么会讨厌你呢？她反复确认，我最后说你放心好了。我真不认识你。回座位被同桌揶揄自不必说，我也没太当回事。我从小就比较像那种带头搞事的人，但同时很矛盾的是我又比较尊重老师，所以一直也没出过什么问题。但我实在无法认同孙。后来有一次我晚自习被叫到办公室去罚站，她叫我打电话叫家长。简直奇耻大辱……从小学二年级之后再没有被叫过家长。久闻她对外地班同学也有同样不合理要求的我决定强出一头。我在那里站了两个小时一言不发。她最终是没憋住自己打的电话。这时李同学也在办公室，手里拿着一封信一样的东西。好像也挨了批评。我从那之后对她多少有些印象，感觉不像是“坏孩子”。当时班里除我之外的所有人都温顺地像孙的狗。我以为是怕外地的父母担心所以总是出头做一些“大逆不道”的事。但近朱者赤吧，久之我周围的朋友也硬气了起来，跟我一起被划进“管理对象之列”。我妈多少年没在家长会以外来过学校，那天突然被叫来，孙劈头盖脸一通训给她吓得直抹泪。我气不过，直接跑到x华座位上把椅子拖过来跟我妈说“坐！”然后一言不发跟孙对视。就这样到了下晚自习的时间。我带我妈出门，发现她还在办公室。
 
 后来有一天她跑到我座位上又问了我同样的问题。我当时本可以好好回答，但突然想到她那天在办公室被训斥而不敢回应的样子不知为什么有些火起。可能是出于某种恶作剧的心态，我说：“你是谁啊？”
 
-她显然有些不知所措，而我的目的也达到了。我们重复了一次上次的对话。她塞给我一封信，我回家看了之后，发现内容多是关于女生宿舍和一些因我而起的纠纷。简言之，当时班里可能有好几个女生对我都有好感，有几个还是我认为关系不错的朋友。而她说自己并没有这种想法。但却是坐得离我最近的人。上课时由于感冒总是会抖桌子（说实话我一点都不知道。）掉橡皮之类的被认为是在吸引我注意力而被集体霸凌了。她感到非常痛苦，去找孙云云说反被训斥考得不好想得挺多。她也用大段文字说明自己原来非常优秀，只是被这件事影响得无法正常学习。本来很绝望不知道怎么办，看到我在办公室的表现觉得我很善良所以给我写了信。
+她显然有些不知所措，而我的目的也达到了。我们重复了一次上次的对话。她塞给我一封信，我回家看了之后，发现内容多是关于女生宿舍和一些因我而起的纠纷。简言之，当时班里可能有好几个女生对我都有好感，有几个还是我认为关系不错的朋友。而她说自己并没有这种想法。但却是坐得离我最近的人。上课时由于感冒总是会抖桌子（说实话我一点都不知道。）掉橡皮之类的被认为是在吸引我注意力而被集体霸凌了。她感到非常痛苦，去找孙说反被训斥考得不好想得挺多。她也用大段文字说明自己原来非常优秀，只是被这件事影响得无法正常学习。本来很绝望不知道怎么办，看到我在办公室的表现觉得我很善良所以给我写了信。
 
 就像你说无法理解男生一样。我也无法理解女生。这事儿对当时的我来说简直有点离谱。我理解自己是有点吸引力的，甚至说不定还期待着某种模糊的 puppy love，但这种展开还是太怪了。我一方面怀疑其真实性，一方面对班上女生有了些别的看法。
 
@@ -183,7 +183,7 @@ pin: true
 
 高二分了文理。那天什么晚会散会，我回去路上教务楼楼下遇到了转去文科的一个女同学。她说你现在变得好成熟噢，有点帅。我笑笑。她说当时我们班有好多女生都喜欢你。我假装惊讶，真的吗。结果她自己把当时发生了什么和盘托出。末了来一句，你不会生气吧？
 
-哪有。我没那个资格生气。我盯着她的眼睛。我当时挺喜欢你的。那你转文呀。那不是相当于追着孙云云了吗！
+哪有。我没那个资格生气。我盯着她的眼睛。我当时挺喜欢你的。那你转文呀。那不是相当于追着孙了吗！
 
 不痛不痒。施暴者的眼里有未来的光，而我的手里全是汗。即使是现在。她说那只是当年的一个小错误。现在已经成长了。
 
@@ -479,104 +479,20 @@ Fuck it. 那都是之前想的事情。连不上的时候我是真的血压飙�
 
 ## 手稿原件影印
 
-> 本篇转录自实体手写本《Labyrinth Map》。以下为 23 页手写手稿及封底的完整扫描件归档：
+> 本篇转录自实体手写本《Labyrinth Map》。以下为手稿封面、扉页及封底影印归档：
 
-<details class="not-prose my-6 rounded-xl border border-border/70 bg-card/40 p-4">
+<details class="not-prose my-6 rounded-xl border border-border/70 bg-card/40 p-4" open>
   <summary class="cursor-pointer font-medium text-foreground hover:text-primary transition-colors py-1">
-    📖 点击展开查看 23 页手写本原件扫描件
+    📖 手写本原件影印归档（封面 / 扉页 / 封底）
   </summary>
-  <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
-    <a href="/manuscripts/labyrinth-map/1.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/1.jpg" alt="手稿第 1 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 1 页 ↗</span>
+  <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <a href="/manuscripts/labyrinth-map/封面.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/封面.jpg" alt="手稿封面" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">封面 ↗</span>
     </a>
-    <a href="/manuscripts/labyrinth-map/2.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/2.jpg" alt="手稿第 2 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 2 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/3.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/3.jpg" alt="手稿第 3 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 3 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/4.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/4.jpg" alt="手稿第 4 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 4 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/5.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/5.jpg" alt="手稿第 5 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 5 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/6.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/6.jpg" alt="手稿第 6 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 6 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/7.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/7.jpg" alt="手稿第 7 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 7 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/8.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/8.jpg" alt="手稿第 8 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 8 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/9.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/9.jpg" alt="手稿第 9 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 9 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/10.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/10.jpg" alt="手稿第 10 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 10 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/11.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/11.jpg" alt="手稿第 11 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 11 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/12.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/12.jpg" alt="手稿第 12 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 12 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/13.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/13.jpg" alt="手稿第 13 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 13 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/14.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/14.jpg" alt="手稿第 14 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 14 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/15.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/15.jpg" alt="手稿第 15 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 15 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/16.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/16.jpg" alt="手稿第 16 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 16 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/17.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/17.jpg" alt="手稿第 17 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 17 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/18.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/18.jpg" alt="手稿第 18 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 18 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/19.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/19.jpg" alt="手稿第 19 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 19 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/20.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/20.jpg" alt="手稿第 20 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 20 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/21.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/21.jpg" alt="手稿第 21 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 21 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/22.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/22.jpg" alt="手稿第 22 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 22 页 ↗</span>
-    </a>
-    <a href="/manuscripts/labyrinth-map/23.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/23.jpg" alt="手稿第 23 页" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
-      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">第 23 页 ↗</span>
+    <a href="/manuscripts/labyrinth-map/扉页.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/扉页.jpg" alt="手稿扉页 · Labyrinth Map" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+      <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">扉页 ↗</span>
     </a>
     <a href="/manuscripts/labyrinth-map/封底.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
       <img src="/manuscripts/labyrinth-map/封底.jpg" alt="手稿封底" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -584,4 +500,3 @@ Fuck it. 那都是之前想的事情。连不上的时候我是真的血压飙�
     </a>
   </div>
 </details>
-
