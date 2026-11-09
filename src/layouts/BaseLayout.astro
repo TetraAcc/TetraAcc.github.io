@@ -107,56 +107,60 @@ const {
         }
 
         function applyLang(lang) {
-          document.documentElement.setAttribute('data-lang', lang)
-          document.documentElement.setAttribute(
-            'lang',
-            lang === 'ja' ? 'ja' : lang === 'en' ? 'en' : 'zh-CN'
-          )
-          localStorage.setItem('site-lang', lang)
+          try {
+            document.documentElement.setAttribute('data-lang', lang)
+            document.documentElement.setAttribute(
+              'lang',
+              lang === 'ja' ? 'ja' : lang === 'en' ? 'en' : 'zh-CN'
+            )
+            localStorage.setItem('site-lang', lang)
 
-          // Update header brand
-          const brandEl = document.querySelector('header-component a[aria-label="Brand"]')
-          if (brandEl) {
-            brandEl.textContent =
-              lang === 'ja'
-                ? 'Tetra · 侯潤田'
-                : lang === 'en'
-                  ? 'Tetra · Runtian Hou'
-                  : 'Tetra · 侯润田'
-          }
-
-          // Update header nav links
-          const labels = NAV_LABELS[lang] || NAV_LABELS.zh
-          document.querySelectorAll('header-component a[aria-label="Nav menu item"]').forEach((a) => {
-            const href = a.getAttribute('href')
-            if (href && labels[href]) {
-              a.textContent = labels[href]
+            // Update header brand
+            const brandEl = document.querySelector('header-component a[aria-label="Brand"]')
+            if (brandEl) {
+              brandEl.textContent =
+                lang === 'ja'
+                  ? 'Tetra · 侯潤田'
+                  : lang === 'en'
+                    ? 'Tetra · Runtian Hou'
+                    : 'Tetra · 侯润田'
             }
-          })
 
-          // Update TOC title
-          const tocTitleEl = document.querySelector('toc-heading h2')
-          if (tocTitleEl) {
-            tocTitleEl.textContent =
-              lang === 'ja' ? '目次' : lang === 'zh' ? '目录' : 'TABLE OF CONTENTS'
-          }
-
-          // Update TOC item anchors
-          if (TOC_MAP[lang]) {
-            document.querySelectorAll('toc-heading a.toc-item').forEach((a) => {
-              const href = a.getAttribute('href') || ''
-              const slug = href.startsWith('#') ? href.slice(1) : href
-              if (slug && TOC_MAP[lang][slug]) {
-                a.textContent = TOC_MAP[lang][slug]
+            // Update header nav links
+            const labels = NAV_LABELS[lang] || NAV_LABELS.zh
+            document.querySelectorAll('header-component a[aria-label="Nav menu item"]').forEach((a) => {
+              const href = a.getAttribute('href')
+              if (href && labels[href]) {
+                a.textContent = labels[href]
               }
             })
-          }
 
-          // Update active button state
-          document.querySelectorAll('#langSwitcher button[data-set-lang]').forEach((btn) => {
-            const isAct = btn.getAttribute('data-set-lang') === lang
-            btn.classList.toggle('lang-active', isAct)
-          })
+            // Update TOC title
+            const tocTitleEl = document.querySelector('toc-heading h2')
+            if (tocTitleEl) {
+              tocTitleEl.textContent =
+                lang === 'ja' ? '目次' : lang === 'zh' ? '目录' : 'TABLE OF CONTENTS'
+            }
+
+            // Update TOC item anchors
+            if (TOC_MAP[lang]) {
+              document.querySelectorAll('toc-heading a.toc-item').forEach((a) => {
+                const href = a.getAttribute('href') || ''
+                const slug = href.startsWith('#') ? href.slice(1) : href
+                if (slug && TOC_MAP[lang][slug]) {
+                  a.textContent = TOC_MAP[lang][slug]
+                }
+              })
+            }
+
+            // Update active button state
+            document.querySelectorAll('#langSwitcher button[data-set-lang]').forEach((btn) => {
+              const isAct = btn.getAttribute('data-set-lang') === lang
+              btn.classList.toggle('lang-active', isAct)
+            })
+          } catch (e) {
+            console.error('[i18n] applyLang failed:', e)
+          }
         }
 
         function mountLangSwitcher() {
@@ -187,6 +191,25 @@ const {
           mountLangSwitcher()
         }
         document.addEventListener('astro:page-load', mountLangSwitcher)
+
+        // BFCache (Back/Forward Cache) restoration: re-sync language when page restored from memory
+        window.addEventListener('pageshow', () => {
+          mountLangSwitcher()
+        })
+
+        // Speculation Rules prerender activation: re-sync language when prerendered page is activated
+        if (document.prerendering) {
+          document.addEventListener('prerenderingchange', () => {
+            mountLangSwitcher()
+          })
+        }
+
+        // Cross-tab synchronization
+        window.addEventListener('storage', (e) => {
+          if (e.key === 'site-lang' && e.newValue) {
+            applyLang(e.newValue)
+          }
+        })
       })()
     </script>
 
