@@ -67,6 +67,45 @@ const {
           en: { '/blog': 'Blog', '/projects': 'Projects', '/music': 'Music', '/about': 'About' }
         }
 
+        const TOC_MAP = {
+          zh: {
+            'now-playing': '实时收听',
+            'spotify-playlist': 'Spotify 歌单',
+            'netease-music': '网易云音乐',
+            'radio': '双极电台',
+            'cover': '翻唱演奏',
+            'live': '现场记录',
+            'about-me': '关于我',
+            'tools': '环境与工具',
+            'about-site': '关于本站',
+            'open-source': '开源项目'
+          },
+          ja: {
+            'now-playing': '再生中',
+            'spotify-playlist': 'Spotify 厳選',
+            'netease-music': 'NetEase 音楽',
+            'radio': '双極ラジオ',
+            'cover': 'カバー＆演奏',
+            'live': 'ライブ記録',
+            'about-me': '自己紹介',
+            'tools': '開発環境＆ツール',
+            'about-site': 'このサイトについて',
+            'open-source': 'オープンソース'
+          },
+          en: {
+            'now-playing': 'Now Playing',
+            'spotify-playlist': 'Spotify',
+            'netease-music': 'NetEase Music',
+            'radio': 'Radio',
+            'cover': 'Cover',
+            'live': 'Live',
+            'about-me': 'About Me',
+            'tools': 'Tools & Environment',
+            'about-site': 'About Site',
+            'open-source': 'Open Source'
+          }
+        }
+
         function applyLang(lang) {
           document.documentElement.setAttribute('data-lang', lang)
           document.documentElement.setAttribute(
@@ -94,6 +133,24 @@ const {
               a.textContent = labels[href]
             }
           })
+
+          // Update TOC title
+          const tocTitleEl = document.querySelector('toc-heading h2')
+          if (tocTitleEl) {
+            tocTitleEl.textContent =
+              lang === 'ja' ? '目次' : lang === 'zh' ? '目录' : 'TABLE OF CONTENTS'
+          }
+
+          // Update TOC item anchors
+          if (TOC_MAP[lang]) {
+            document.querySelectorAll('toc-heading a.toc-item').forEach((a) => {
+              const href = a.getAttribute('href') || ''
+              const slug = href.startsWith('#') ? href.slice(1) : href
+              if (slug && TOC_MAP[lang][slug]) {
+                a.textContent = TOC_MAP[lang][slug]
+              }
+            })
+          }
 
           // Update active button state
           document.querySelectorAll('#langSwitcher button[data-set-lang]').forEach((btn) => {
