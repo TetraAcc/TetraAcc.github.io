@@ -131,8 +131,8 @@ export default defineConfig({
     // https://docs.astro.build/en/reference/experimental-flags/svg-optimization/
     svgOptimizer: svgoOptimizer(),
     // Enables pre-rendering your prefetched pages on the client in supported browsers.
-    // https://docs.astro.build/en/reference/experimental-flags/client-prerender/
-    clientPrerender: true,
+    // Disabled to prevent stale prerender state when client state (like language switcher) changes.
+    clientPrerender: false,
     // https://docs.astro.build/en/reference/experimental-flags/queued-rendering/
     queuedRendering: {
       enabled: true
