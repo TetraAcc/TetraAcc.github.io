@@ -14,9 +14,9 @@ const languages = ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
 const toolsAndFrameworks = ['Git', 'Linux', 'Astro', 'Node.js', 'Docker']
 const environment = ['Windows 11', 'SteamOS / Arch', 'Cloudflare Tunnel']
 
-const MAX_POSTS = 10
+const MAX_POSTS = 3
 const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+const allPostsByDate = sortMDByDate(allPosts.filter((p) => !p.data.pin)).slice(0, MAX_POSTS)
 
 const imagePath = config.logo.src
 const images = import.meta.glob<{ default: ImageMetadata }>(
