@@ -1,54 +1,141 @@
 ---
+import { cn } from 'astro-pure/utils'
 import { SPOTIFY_NOW_PLAYING_API, SPOTIFY_FEATURED_PLAYLIST } from '@/data/music'
 
 interface Props {
   /** Cloudflare Worker endpoint returning Spotify Now Playing JSON */
   apiEndpoint?: string
   class?: string
+  variant?: 'default' | 'home'
 }
 
 const {
   apiEndpoint = SPOTIFY_NOW_PLAYING_API,
-  class: className = ''
+  class: className = '',
+  variant = 'default'
 } = Astro.props
 
 const defaultPlaylist = SPOTIFY_FEATURED_PLAYLIST || 'https://open.spotify.com'
+const isHome = variant === 'home'
 ---
 
-<div class={`not-prose inline-block spotify-np-container ${className}`}>
+<div
+  class={cn(
+    'not-prose inline-block spotify-np-container',
+    isHome && 'w-full flex justify-center sm:inline-block sm:w-auto',
+    className
+  )}
+>
   <a
     href={defaultPlaylist}
     target='_blank'
     rel='noopener noreferrer'
     data-endpoint={apiEndpoint}
     data-default-href={defaultPlaylist}
-    class='spotify-np-link group flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-all hover:border-foreground/30 hover:bg-muted'
+    class={cn(
+      'spotify-np-link group flex flex-row items-center rounded-full border bg-background text-sm shadow-sm transition-all hover:border-foreground/30 hover:bg-muted',
+      isHome
+        ? 'w-full max-w-[348px] px-3.5 py-2 sm:w-auto sm:max-w-none sm:px-4 sm:py-2 gap-x-3'
+        : 'px-4 py-2 gap-x-3'
+    )}
   >
-    <span class='relative flex items-center justify-center'>
-      <span
-        class='spotify-np-ping hidden absolute size-2 animate-ping rounded-full border border-green-500 bg-green-500 opacity-75'
-      ></span>
-      <span class='spotify-np-dot size-2 rounded-full bg-muted-foreground/40 transition-colors'></span>
-    </span>
+    {isHome ? (
+      <>
+        {/* Mobile Homepage View (< sm): 2-line layout */}
+        <div class='flex sm:hidden items-center justify-between gap-x-2.5 w-full'>
+          {/* Left: Cover or Idle Dot */}
+          <div class='shrink-0 flex items-center justify-center'>
+            <img
+              src=''
+              alt='Album Cover'
+              class='spotify-np-cover-mobile size-9 rounded-full object-cover border border-border/50'
+              style='display: none;'
+            />
+            <span class='spotify-np-idle-dot-mobile relative flex items-center justify-center size-9 rounded-full bg-muted/40 border border-border/40'>
+              <span class='size-2 rounded-full bg-muted-foreground/40'></span>
+            </span>
+          </div>
 
-    <img
-      src=''
-      alt='Album Cover'
-      class='spotify-np-cover hidden size-6 rounded-full object-cover border'
-    />
+          {/* Middle: Line 1 Track Title, Line 2 Artist Name */}
+          <div class='flex-1 min-w-0 flex flex-col justify-center text-left'>
+            <span class='spotify-np-idle-mobile font-medium text-foreground text-sm truncate'>
+              <span data-i18n='zh'>未在播放</span>
+              <span data-i18n='ja'>再生停止中</span>
+              <span data-i18n='en'>Not Playing</span>
+            </span>
+            <span class='spotify-np-track-mobile font-medium text-foreground text-sm truncate leading-tight hidden'></span>
+            <span class='spotify-np-artist-mobile text-xs text-muted-foreground truncate leading-tight mt-0.5 hidden'></span>
+          </div>
 
-    <div class='flex items-center gap-x-1.5 truncate max-w-[260px] sm:max-w-[420px]'>
-      <span class='spotify-np-status font-mono text-xs text-muted-foreground'>
-        SPOTIFY ·
-      </span>
-      <span class='spotify-np-idle font-medium text-foreground truncate'>
-        <span data-i18n='zh'>未在播放</span>
-        <span data-i18n='ja'>再生停止中</span>
-        <span data-i18n='en'>Not Playing</span>
-      </span>
-      <span class='spotify-np-track font-medium text-foreground truncate hidden'></span>
-      <span class='spotify-np-artist text-muted-foreground truncate hidden'></span>
-    </div>
+          {/* Right: Small Badge (Recently played / Now playing) */}
+          <div class='spotify-np-badge-mobile shrink-0 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-muted/60 border border-border/40 text-[10px] text-muted-foreground font-medium'>
+            <span class='spotify-np-live-dot-mobile relative items-center justify-center' style='display: none;'>
+              <span class='absolute size-1.5 animate-ping rounded-full bg-green-500 opacity-75'></span>
+              <span class='size-1.5 rounded-full bg-green-500'></span>
+            </span>
+            <span class='spotify-np-status-mobile'>Recently played</span>
+          </div>
+        </div>
+
+        {/* Desktop Homepage View (>= sm): Original 1-line layout */}
+        <div class='hidden sm:flex items-center gap-x-3'>
+          <span class='relative flex items-center justify-center'>
+            <span
+              class='spotify-np-ping hidden absolute size-2 animate-ping rounded-full border border-green-500 bg-green-500 opacity-75'
+            ></span>
+            <span class='spotify-np-dot size-2 rounded-full bg-muted-foreground/40 transition-colors'></span>
+          </span>
+
+          <img
+            src=''
+            alt='Album Cover'
+            class='spotify-np-cover hidden size-6 rounded-full object-cover border'
+          />
+
+          <div class='flex items-center gap-x-1.5 truncate sm:max-w-[420px]'>
+            <span class='spotify-np-status font-mono text-xs text-muted-foreground'>
+              SPOTIFY ·
+            </span>
+            <span class='spotify-np-idle font-medium text-foreground truncate'>
+              <span data-i18n='zh'>未在播放</span>
+              <span data-i18n='ja'>再生停止中</span>
+              <span data-i18n='en'>Not Playing</span>
+            </span>
+            <span class='spotify-np-track font-medium text-foreground truncate hidden'></span>
+            <span class='spotify-np-artist text-muted-foreground truncate hidden'></span>
+          </div>
+        </div>
+      </>
+    ) : (
+      <>
+        {/* Default / Music Page View: Original 1-line layout */}
+        <span class='relative flex items-center justify-center'>
+          <span
+            class='spotify-np-ping hidden absolute size-2 animate-ping rounded-full border border-green-500 bg-green-500 opacity-75'
+          ></span>
+          <span class='spotify-np-dot size-2 rounded-full bg-muted-foreground/40 transition-colors'></span>
+        </span>
+
+        <img
+          src=''
+          alt='Album Cover'
+          class='spotify-np-cover hidden size-6 rounded-full object-cover border'
+        />
+
+        <div class='flex items-center gap-x-1.5 truncate max-w-[260px] sm:max-w-[420px]'>
+          <span class='spotify-np-status font-mono text-xs text-muted-foreground'>
+            SPOTIFY ·
+          </span>
+          <span class='spotify-np-idle font-medium text-foreground truncate'>
+            <span data-i18n='zh'>未在播放</span>
+            <span data-i18n='ja'>再生停止中</span>
+            <span data-i18n='en'>Not Playing</span>
+          </span>
+          <span class='spotify-np-track font-medium text-foreground truncate hidden'></span>
+          <span class='spotify-np-artist text-muted-foreground truncate hidden'></span>
+        </div>
+      </>
+    )}
   </a>
 </div>
 
@@ -73,6 +160,15 @@ const defaultPlaylist = SPOTIFY_FEATURED_PLAYLIST || 'https://open.spotify.com'
         const pingEl = container.querySelector('.spotify-np-ping')
         const dotEl = container.querySelector('.spotify-np-dot')
 
+        // Mobile Homepage Elements
+        const statusMobile = container.querySelector('.spotify-np-status-mobile')
+        const idleMobile = container.querySelector('.spotify-np-idle-mobile')
+        const trackMobile = container.querySelector('.spotify-np-track-mobile')
+        const artistMobile = container.querySelector('.spotify-np-artist-mobile')
+        const coverMobile = container.querySelector('.spotify-np-cover-mobile')
+        const liveDotMobile = container.querySelector('.spotify-np-live-dot-mobile')
+        const idleDotMobile = container.querySelector('.spotify-np-idle-dot-mobile')
+
         function setIdleState() {
           if (statusEl) statusEl.textContent = 'SPOTIFY ·'
           if (idleEl) idleEl.classList.remove('hidden')
@@ -91,6 +187,24 @@ const defaultPlaylist = SPOTIFY_FEATURED_PLAYLIST || 'https://open.spotify.com'
           }
           if (pingEl) pingEl.classList.add('hidden')
           if (linkEl && defaultHref) linkEl.href = defaultHref
+
+          // Mobile
+          if (statusMobile) statusMobile.textContent = 'Spotify'
+          if (idleMobile) idleMobile.classList.remove('hidden')
+          if (trackMobile) {
+            trackMobile.textContent = ''
+            trackMobile.classList.add('hidden')
+          }
+          if (artistMobile) {
+            artistMobile.textContent = ''
+            artistMobile.classList.add('hidden')
+          }
+          if (coverMobile) {
+            coverMobile.src = ''
+            coverMobile.style.display = 'none'
+          }
+          if (idleDotMobile) idleDotMobile.style.display = 'flex'
+          if (liveDotMobile) liveDotMobile.style.display = 'none'
         }
 
         async function refreshNowPlaying() {
@@ -121,6 +235,24 @@ const defaultPlaylist = SPOTIFY_FEATURED_PLAYLIST || 'https://open.spotify.com'
                 dotEl.classList.add('bg-green-500')
               }
               if (pingEl) pingEl.classList.remove('hidden')
+
+              // Mobile
+              if (statusMobile) statusMobile.textContent = 'Now playing'
+              if (idleMobile) idleMobile.classList.add('hidden')
+              if (trackMobile) {
+                trackMobile.textContent = data.title
+                trackMobile.classList.remove('hidden')
+              }
+              if (artistMobile) {
+                artistMobile.textContent = data.artist || ''
+                artistMobile.classList.remove('hidden')
+              }
+              if (data.albumImageUrl && coverMobile) {
+                coverMobile.src = data.albumImageUrl
+                coverMobile.style.display = 'block'
+                if (idleDotMobile) idleDotMobile.style.display = 'none'
+              }
+              if (liveDotMobile) liveDotMobile.style.display = 'inline-flex'
               return
             }
 
@@ -146,6 +278,24 @@ const defaultPlaylist = SPOTIFY_FEATURED_PLAYLIST || 'https://open.spotify.com'
                 dotEl.classList.add('bg-muted-foreground/40')
               }
               if (pingEl) pingEl.classList.add('hidden')
+
+              // Mobile
+              if (statusMobile) statusMobile.textContent = 'Recently played'
+              if (idleMobile) idleMobile.classList.add('hidden')
+              if (trackMobile) {
+                trackMobile.textContent = data.title
+                trackMobile.classList.remove('hidden')
+              }
+              if (artistMobile) {
+                artistMobile.textContent = data.artist || ''
+                artistMobile.classList.remove('hidden')
+              }
+              if (data.albumImageUrl && coverMobile) {
+                coverMobile.src = data.albumImageUrl
+                coverMobile.style.display = 'block'
+                if (idleDotMobile) idleDotMobile.style.display = 'none'
+              }
+              if (liveDotMobile) liveDotMobile.style.display = 'none'
               return
             }
 
