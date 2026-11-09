@@ -16,7 +16,9 @@ const environment = ['Windows 11', 'SteamOS / Arch', 'Cloudflare Tunnel']
 
 const MAX_POSTS = 3
 const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts.filter((p) => !p.data.pin)).slice(0, MAX_POSTS)
+const pinnedPosts = sortMDByDate(allPosts.filter((p) => p.data.pin))
+const recentPosts = sortMDByDate(allPosts.filter((p) => !p.data.pin)).slice(0, MAX_POSTS)
+const allPostsByDate = [...pinnedPosts, ...recentPosts]
 
 const imagePath = config.logo.src
 const images = import.meta.glob<{ default: ImageMetadata }>(
