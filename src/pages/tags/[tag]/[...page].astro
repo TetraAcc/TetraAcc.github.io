@@ -13,10 +13,17 @@ export const prerender = true
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   const allPosts = await getBlogCollection()
   const allPostsByDate = sortMDByDate(allPosts)
-  const uniqueTags = getUniqueTags(allPostsByDate)
+  const uniqueTags = Array.from(
+    new Set([...getUniqueTags(allPostsByDate), '手稿企划', '长篇文集', '日记'])
+  )
 
   return uniqueTags.flatMap((tag) => {
-    const filterPosts = allPostsByDate.filter((post) => post.data.tags.includes(tag))
+    const filterPosts = allPostsByDate.filter((post) => {
+      if (post.data.tags.includes(tag)) return true
+      if (tag === '手稿企划' && post.data.tags.includes('手稿')) return true
+      if (tag === '长篇文集' && post.data.tags.includes('文集')) return true
+      return false
+    })
     return paginate(filterPosts, {
       pageSize: config.content.blogPageSize,
       params: { tag }
@@ -63,9 +70,21 @@ const paginationProps = {
     </div>
 
     <section id='content' class='animate' aria-label='Blog post list'>
-      <ul class='flex flex-col gap-y-3 text-start'>
-        {page.data.map((post) => <PostPreview {post} detailed />)}
-      </ul>
+      {
+        page.data.length === 0 ? (
+          <p class='text-muted-foreground my-8'>
+            <span data-i18n='zh'>暂无该分类公开文章，敬请期待。</span>
+            <span data-i18n='ja'>このタグの公開記事はまだありません。</span>
+            <span data-i18n='en'>No public posts with this tag yet.</span>
+          </p>
+        ) : (
+          <ul class='flex flex-col gap-y-3 text-start'>
+            {page.data.map((post) => (
+              <PostPreview {post} detailed />
+            ))}
+          </ul>
+        )
+      }
       <Paginator {...paginationProps} />
     </section>
   </main>
