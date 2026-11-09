@@ -112,11 +112,16 @@ collections:
         file: 'src/content/now.json'
         format: 'json'
         fields:
-          - { label: '状态(Status)', name: 'status', widget: 'string', default: '日本山形 · 工学生活与日常' }
-          - { label: '更新日期 (Updated Date)', name: 'updated', widget: 'string', default: '2026-11' }
-          - { label: '正在阅读 (Reading)', name: 'reading', widget: 'string', required: false }
-          - { label: '正在收听 (Listening)', name: 'listening', widget: 'string', required: false }
-          - { label: '正在进行 (Working On)', name: 'working', widget: 'string', required: false }
+          - { label: '状态 (Status)', name: 'status', widget: 'string', default: '山形 · 日常' }
+          - { label: '更新日期 (Updated Date)', name: 'updated', widget: 'string', default: '2026-11-10' }
+          - label: '近况条目列表 (可自由增删/拖拽排序)'
+            name: 'items'
+            widget: 'list'
+            summary: '{{fields.icon}} {{fields.label}}: {{fields.content}}'
+            fields:
+              - { label: '图标 (Emoji)', name: 'icon', widget: 'string', default: '📌' }
+              - { label: '栏目名称 (Label)', name: 'label', widget: 'string', default: '正在进行' }
+              - { label: '内容 (Content)', name: 'content', widget: 'string' }
           - { label: '碎碎念 (Note)', name: 'note', widget: 'text', required: false }
       - name: 'links'
         label: '🔗 友链与灵感站列表 (Links)'

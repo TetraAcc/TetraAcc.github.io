@@ -11,6 +11,15 @@ import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 import config from '@/site-config'
 import nowData from '@/content/now.json'
 
+type NowItem = { icon?: string; label: string; content: string }
+const nowItems: NowItem[] = ((nowData as any).items as NowItem[])?.length
+  ? ((nowData as any).items as NowItem[])
+  : [
+      (nowData as any).reading && { icon: '📖', label: '正在阅读', content: (nowData as any).reading },
+      (nowData as any).listening && { icon: '🎧', label: '正在收听', content: (nowData as any).listening },
+      (nowData as any).working && { icon: '💻', label: '正在进行', content: (nowData as any).working }
+    ].filter(Boolean) as NowItem[]
+
 const languages = ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
 const toolsAndFrameworks = ['Git', 'Linux', 'Astro', 'Node.js', 'Docker']
 const environment = ['Windows 11', 'SteamOS / Arch', 'Cloudflare Tunnel']
@@ -146,7 +155,7 @@ if (!images[imagePath])
 
       {/* Now */}
       <Section title='Now'>
-        <div class='flex flex-col gap-y-3 rounded-xl border p-4 sm:p-5 text-sm sm:text-base'>
+        <div class='flex flex-col gap-y-3.5 rounded-xl border p-4 sm:p-5 text-sm sm:text-base'>
           <div class='flex flex-wrap items-center justify-between gap-2 border-b pb-3 text-xs text-muted-foreground'>
             <div class='flex items-center gap-x-2'>
               <span class='relative flex size-2'>
@@ -166,50 +175,27 @@ if (!images[imagePath])
             }
           </div>
 
-          <div class='grid grid-cols-1 gap-y-2.5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-3'>
+          <div class='flex flex-col gap-y-3 pt-0.5'>
             {
-              nowData.reading && (
-                <div class='flex items-start gap-x-2'>
-                  <span class='text-muted-foreground shrink-0'>
-                    <span data-i18n='zh'>📖 正在阅读：</span>
-                    <span data-i18n='ja'>📖 読書中：</span>
-                    <span data-i18n='en'>📖 Reading: </span>
+              nowItems.map((item) => (
+                <div class='flex items-start gap-x-2.5 text-sm sm:text-base leading-relaxed'>
+                  <span class='inline-flex items-center shrink-0 font-medium text-muted-foreground'>
+                    {item.icon && <span class='me-1.5'>{item.icon}</span>}
+                    <span>{item.label}：</span>
                   </span>
-                  <span class='text-foreground'>{nowData.reading}</span>
-                </div>
-              )
-            }
-            {
-              nowData.listening && (
-                <div class='flex items-start gap-x-2'>
-                  <span class='text-muted-foreground shrink-0'>
-                    <span data-i18n='zh'>🎧 正在收听：</span>
-                    <span data-i18n='ja'>🎧 再生中：</span>
-                    <span data-i18n='en'>🎧 Listening: </span>
+                  <span class='text-foreground/90 break-words'>
+                    {item.content}
                   </span>
-                  <span class='text-foreground'>{nowData.listening}</span>
                 </div>
-              )
-            }
-            {
-              nowData.working && (
-                <div class='flex items-start gap-x-2 sm:col-span-2'>
-                  <span class='text-muted-foreground shrink-0'>
-                    <span data-i18n='zh'>💻 正在进行：</span>
-                    <span data-i18n='ja'>💻 取り組み：</span>
-                    <span data-i18n='en'>💻 Working on: </span>
-                  </span>
-                  <span class='text-foreground'>{nowData.working}</span>
-                </div>
-              )
+              ))
             }
           </div>
 
           {
             nowData.note && (
-              <p class='mt-1 text-sm text-muted-foreground leading-relaxed italic'>
+              <div class='mt-1 rounded-lg bg-muted/40 border-l-2 border-primary/50 px-3.5 py-2.5 text-sm text-muted-foreground italic leading-relaxed'>
                 “{nowData.note}”
-              </p>
+              </div>
             )
           }
         </div>
