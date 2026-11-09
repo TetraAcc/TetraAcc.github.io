@@ -1,7 +1,7 @@
 ---
 import { cn } from 'astro-pure/utils'
 
-export interface GearItem {
+interface GearItem {
   name: string
   spec?: string
   desc: string
@@ -15,7 +15,7 @@ interface Props {
   items: GearItem[]
 }
 
-const { class: className, title, items, ...props } = Astro.props
+const { class: className, title, items = [], ...props } = Astro.props
 ---
 
 <div

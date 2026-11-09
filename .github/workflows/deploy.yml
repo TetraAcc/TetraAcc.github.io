@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: 'pages'
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
         run: npm ci
 
       - name: Build with Astro
-        run: npm run build
+        run: npm run build -- --verbose
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
