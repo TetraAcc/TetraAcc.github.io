@@ -1,0 +1,218 @@
+---
+// Component: ContinueReading.astro
+// Resume reading entrance for long-form manuscripts/articles
+---
+
+<div id='continue-reading-wrapper' class='hidden not-prose mb-6 animate'>
+  <a
+    id='continue-reading-btn'
+    href='#'
+    class='group inline-flex items-center gap-2 rounded-xl border border-border/70 bg-muted/40 px-3.5 py-1.5 text-sm text-muted-foreground hover:border-primary/40 hover:bg-muted hover:text-primary transition-all duration-200 no-underline cursor-pointer'
+    title='点击继续上次阅读进度'
+  >
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='15'
+      height='15'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='currentColor'
+      stroke-width='2.5'
+      stroke-linecap='round'
+      stroke-linejoin='round'
+      class='stroke-primary transition-transform duration-200 group-hover:translate-x-0.5'
+    >
+      <polygon points='6 3 20 12 6 21 6 3'></polygon>
+    </svg>
+    <span class='font-medium text-foreground group-hover:text-primary transition-colors'>
+      <span data-i18n='zh'>继续阅读 · </span>
+      <span data-i18n='ja'>続きを読む · </span>
+      <span data-i18n='en'>Continue reading · </span>
+      <span id='continue-reading-section-title'></span>
+    </span>
+    <span class='text-xs text-muted-foreground/70 group-hover:text-primary transition-colors'>→</span>
+  </a>
+</div>
+
+<script>
+  let crAbortController: AbortController | null = null
+
+  function setupContinueReading() {
+    if (crAbortController) {
+      crAbortController.abort()
+      crAbortController = null
+    }
+
+    const wrapper = document.getElementById('continue-reading-wrapper')
+    const link = document.getElementById('continue-reading-btn') as HTMLAnchorElement | null
+    const titleSpan = document.getElementById('continue-reading-section-title')
+    if (!wrapper || !link || !titleSpan) return
+
+    // 1. Check localStorage availability
+    let storageAvailable = false
+    try {
+      const testKey = '__cr_test__'
+      localStorage.setItem(testKey, testKey)
+      localStorage.removeItem(testKey)
+      storageAvailable = true
+    } catch {
+      storageAvailable = false
+    }
+
+    if (!storageAvailable) {
+      wrapper.classList.add('hidden')
+      return
+    }
+
+    // Key partitioned by canonical article pathname (ignoring trailing slash)
+    const storageKey = 'reading-progress:' + window.location.pathname.replace(/\/$/, '')
+
+    // Get all H2 section headings inside #content
+    const sectionHeadings = Array.from(
+      document.querySelectorAll('#content h2[id]')
+    ) as HTMLElement[]
+
+    if (sectionHeadings.length === 0) {
+      wrapper.classList.add('hidden')
+      return
+    }
+
+    // First section ID (e.g. '开篇')
+    const firstSectionId = sectionHeadings[0].id
+
+    const getCleanTitle = (el: HTMLElement) => {
+      return (el.textContent || '').replace(/#\s*$/, '').trim()
+    }
+
+    const findHeadingById = (targetId: string) => {
+      return sectionHeadings.find((h) => h.id === targetId) || null
+    }
+
+    // Check if opened from a shared link with a #hash anchor
+    const initialHash = window.location.hash
+      ? decodeURIComponent(window.location.hash.substring(1))
+      : ''
+
+    // If opened without hash: check if we should display the resume entrance
+    if (!initialHash) {
+      try {
+        const raw = localStorage.getItem(storageKey)
+        if (raw) {
+          const record = JSON.parse(raw)
+          const savedId = record?.id
+          const targetHeading = savedId ? findHeadingById(savedId) : null
+
+          // Entrance is only displayed if:
+          // 1. Target section exists in DOM
+          // 2. Target section is beyond the first section (not '开篇')
+          if (targetHeading && savedId !== firstSectionId) {
+            const sectionTitle = record.title || getCleanTitle(targetHeading)
+            titleSpan.textContent = sectionTitle
+            link.href = `#${encodeURIComponent(savedId)}`
+            wrapper.classList.remove('hidden')
+
+            link.onclick = (e) => {
+              e.preventDefault()
+              targetHeading.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              history.replaceState(null, '', `#${savedId}`)
+              userScrolled = true
+            }
+          } else {
+            wrapper.classList.add('hidden')
+          }
+        } else {
+          wrapper.classList.add('hidden')
+        }
+      } catch {
+        wrapper.classList.add('hidden')
+      }
+    } else {
+      // Shared link with #anchor: hide entrance and let browser prioritize target section
+      wrapper.classList.add('hidden')
+    }
+
+    // 2. Track reader's active scrolling progress:
+    // Only update progress when user actively scrolls (wheel, touchmove, keyboard),
+    // never from initial page load, automated anchor jumping, or opened anchor position.
+    let userScrolled = false
+    const abortController = new AbortController()
+    crAbortController = abortController
+    const { signal } = abortController
+
+    const markUserActive = () => {
+      userScrolled = true
+    }
+
+    window.addEventListener('wheel', markUserActive, { passive: true, signal })
+    window.addEventListener('touchmove', markUserActive, { passive: true, signal })
+    window.addEventListener('pointerdown', markUserActive, { passive: true, signal })
+    window.addEventListener(
+      'keydown',
+      (e) => {
+        if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Space', 'Home', 'End'].includes(e.code)) {
+          userScrolled = true
+        }
+      },
+      { passive: true, signal }
+    )
+
+    let ticking = false
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateProgress()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    const updateProgress = () => {
+      if (!userScrolled) return
+
+      // Buffer threshold: section is active if its top is within the upper 150px of viewport
+      const buffer = 150
+      let currentHeading: HTMLElement | null = null
+      let currentIndex = -1
+
+      for (let i = 0; i < sectionHeadings.length; i++) {
+        const rect = sectionHeadings[i].getBoundingClientRect()
+        if (rect.top <= buffer) {
+          currentHeading = sectionHeadings[i]
+          currentIndex = i
+        } else {
+          break
+        }
+      }
+
+      if (!currentHeading) return
+
+      // If opened with an anchor, avoid recording the initial opened anchor position as new progress
+      if (initialHash && currentHeading.id === initialHash) {
+        return
+      }
+
+      try {
+        if (currentIndex > 0) {
+          // Beyond first section: save progress
+          localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+              id: currentHeading.id,
+              title: getCleanTitle(currentHeading),
+              timestamp: Date.now()
+            })
+          )
+        } else if (currentIndex === 0) {
+          // At or before first section: clear progress so "只读到第一节时，隐藏入口"
+          localStorage.removeItem(storageKey)
+        }
+      } catch {}
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true, signal })
+  }
+
+  setupContinueReading()
+  document.addEventListener('astro:page-load', setupContinueReading)
+</script>
