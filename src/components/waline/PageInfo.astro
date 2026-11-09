@@ -13,6 +13,7 @@ const { comment, class: className, ...props } = Astro.props
 const path = Astro.url.pathname
 ---
 
+{config.integ.waline.enable && !!config.integ.waline.server && (
 <div
   class={cn('text-base text-sm text-muted-foreground', className)}
   id='walinePageInfo'
@@ -32,6 +33,7 @@ const path = Astro.url.pathname
     )
   }
 </div>
+)}
 
 <script>
   import type { WalineAbort } from '@waline/client'
