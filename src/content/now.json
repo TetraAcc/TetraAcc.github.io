@@ -3,14 +3,14 @@
   "updated": "2026-11-10",
   "items": [
     {
-      "icon": "📖",
-      "label": "正在阅读",
-      "content": "《圣殿春秋》/ 肯·福莱特"
-    },
-    {
       "icon": "🎧",
       "label": "正在收听",
       "content": "最近又把宝爷翻出来听，绝了。有机会想cover <Under Pressure>和<Life on Mars>"
+    },
+    {
+      "icon": "🎮",
+      "label": "最近在玩",
+      "content": "偷摸玩会影之刃。比只狼更爽的打铁！deadlock瘾都下去了"
     },
     {
       "icon": "💻",
