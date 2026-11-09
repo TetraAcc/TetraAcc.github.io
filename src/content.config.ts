@@ -9,6 +9,24 @@ function removeDupsAndLowerCase(array: string[]) {
   return Array.from(distinctItems)
 }
 
+// Safe string preprocessor for titles (automatically handles unquoted YAML dates like 2022-12-23 or numbers)
+const safeTitle = z.preprocess((val) => {
+  if (val instanceof Date) {
+    const y = val.getUTCFullYear()
+    const m = String(val.getUTCMonth() + 1).padStart(2, '0')
+    const d = String(val.getUTCDate()).padStart(2, '0')
+    return `${y}-${m}-${d}`
+  }
+  if (typeof val === 'number') return String(val)
+  return String(val ?? '')
+}, z.string().max(100))
+
+// Safe string preprocessor for descriptions (allows empty, null, or omitted descriptions without error)
+const safeDescription = z.preprocess((val) => {
+  if (val === null || val === undefined) return ''
+  return String(val)
+}, z.string().max(300).default(''))
+
 // Define blog collection
 const blog = defineCollection({
   // Load Markdown and MDX files in the `src/content/blog/` directory.
@@ -17,8 +35,8 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       // Required
-      title: z.string().max(60),
-      description: z.string().max(160),
+      title: safeTitle,
+      description: safeDescription,
       publishDate: z.coerce.date(),
       // Optional
       updatedDate: z.coerce.date().optional(),
@@ -46,8 +64,8 @@ const docs = defineCollection({
   loader: glob({ base: './src/content/docs', pattern: '**/*.{md,mdx}' }),
   schema: () =>
     z.object({
-      title: z.string().max(60),
-      description: z.string().max(160),
+      title: safeTitle,
+      description: safeDescription,
       publishDate: z.coerce.date().optional(),
       updatedDate: z.coerce.date().optional(),
       tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
