@@ -1,5 +1,5 @@
 ---
-import { SPOTIFY_NOW_PLAYING_API } from '@/data/music'
+import { SPOTIFY_NOW_PLAYING_API, SPOTIFY_FEATURED_PLAYLIST } from '@/data/music'
 
 interface Props {
   /** Cloudflare Worker endpoint returning Spotify Now Playing JSON */
@@ -11,21 +11,24 @@ const {
   apiEndpoint = SPOTIFY_NOW_PLAYING_API,
   class: className = ''
 } = Astro.props
+
+const defaultPlaylist = SPOTIFY_FEATURED_PLAYLIST || 'https://open.spotify.com'
 ---
 
 <div class={`not-prose inline-block spotify-np-container ${className}`}>
   <a
-    href='https://open.spotify.com'
+    href={defaultPlaylist}
     target='_blank'
     rel='noopener noreferrer'
     data-endpoint={apiEndpoint}
+    data-default-href={defaultPlaylist}
     class='spotify-np-link group flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-all hover:border-foreground/30 hover:bg-muted'
   >
     <span class='relative flex items-center justify-center'>
       <span
-        class='spotify-np-ping absolute size-2 animate-ping rounded-full border border-green-500 bg-green-500 opacity-75'
+        class='spotify-np-ping hidden absolute size-2 animate-ping rounded-full border border-green-500 bg-green-500 opacity-75'
       ></span>
-      <span class='spotify-np-dot size-2 rounded-full bg-green-500'></span>
+      <span class='spotify-np-dot size-2 rounded-full bg-muted-foreground/40 transition-colors'></span>
     </span>
 
     <img
@@ -38,63 +41,133 @@ const {
       <span class='spotify-np-status font-mono text-xs text-muted-foreground'>
         SPOTIFY ·
       </span>
-      <span class='spotify-np-track font-medium text-foreground truncate'>
-        Long Season (Live)
+      <span class='spotify-np-idle font-medium text-foreground truncate'>
+        <span data-i18n='zh'>未在播放</span>
+        <span data-i18n='ja'>再生停止中</span>
+        <span data-i18n='en'>Not Playing</span>
       </span>
-      <span class='spotify-np-artist text-muted-foreground truncate'>
-        — Fishmans
-      </span>
+      <span class='spotify-np-track font-medium text-foreground truncate hidden'></span>
+      <span class='spotify-np-artist text-muted-foreground truncate hidden'></span>
     </div>
   </a>
 </div>
 
 <script is:inline>
   ;(function () {
-    const containers = document.querySelectorAll('.spotify-np-container')
-    if (!containers.length) return
+    function initSpotifyNowPlaying() {
+      const containers = document.querySelectorAll('.spotify-np-container')
+      if (!containers.length) return
 
-    containers.forEach((container) => {
-      const linkEl = container.querySelector('.spotify-np-link')
-      if (!linkEl) return
-      const endpoint = linkEl.getAttribute('data-endpoint')
-      if (!endpoint) return
+      containers.forEach((container) => {
+        const linkEl = container.querySelector('.spotify-np-link')
+        if (!linkEl) return
+        const endpoint = linkEl.getAttribute('data-endpoint')
+        const defaultHref = linkEl.getAttribute('data-default-href') || 'https://open.spotify.com'
+        if (!endpoint) return
 
-      const statusEl = container.querySelector('.spotify-np-status')
-      const trackEl = container.querySelector('.spotify-np-track')
-      const artistEl = container.querySelector('.spotify-np-artist')
-      const coverEl = container.querySelector('.spotify-np-cover')
-      const pingEl = container.querySelector('.spotify-np-ping')
+        const statusEl = container.querySelector('.spotify-np-status')
+        const idleEl = container.querySelector('.spotify-np-idle')
+        const trackEl = container.querySelector('.spotify-np-track')
+        const artistEl = container.querySelector('.spotify-np-artist')
+        const coverEl = container.querySelector('.spotify-np-cover')
+        const pingEl = container.querySelector('.spotify-np-ping')
+        const dotEl = container.querySelector('.spotify-np-dot')
 
-      async function refreshNowPlaying() {
-        try {
-          const res = await fetch(endpoint, { mode: 'cors' })
-          if (!res.ok) return
-          const data = await res.json()
-          if (!data || !data.title) return
-
-          if (trackEl) trackEl.textContent = data.title
-          if (artistEl) artistEl.textContent = data.artist ? `— ${data.artist}` : ''
-          if (data.songUrl) linkEl.href = data.songUrl
-
-          if (data.albumImageUrl && coverEl) {
-            coverEl.src = data.albumImageUrl
-            coverEl.classList.remove('hidden')
+        function setIdleState() {
+          if (statusEl) statusEl.textContent = 'SPOTIFY ·'
+          if (idleEl) idleEl.classList.remove('hidden')
+          if (trackEl) {
+            trackEl.textContent = ''
+            trackEl.classList.add('hidden')
           }
-
-          if (data.isPlaying) {
-            if (statusEl) statusEl.textContent = 'NOW PLAYING ·'
-            if (pingEl) pingEl.classList.remove('hidden')
-          } else {
-            if (statusEl) statusEl.textContent = 'RECENTLY PLAYED ·'
-            if (pingEl) pingEl.classList.add('hidden')
+          if (artistEl) {
+            artistEl.textContent = ''
+            artistEl.classList.add('hidden')
           }
-        } catch {
-          // Keep clean fallback track when worker is not yet deployed
+          if (coverEl) coverEl.classList.add('hidden')
+          if (dotEl) {
+            dotEl.classList.remove('bg-green-500')
+            dotEl.classList.add('bg-muted-foreground/40')
+          }
+          if (pingEl) pingEl.classList.add('hidden')
+          if (linkEl && defaultHref) linkEl.href = defaultHref
         }
-      }
 
-      refreshNowPlaying()
-      setInterval(refreshNowPlaying, 30000)
-    })
+        async function refreshNowPlaying() {
+          try {
+            const res = await fetch(endpoint, { mode: 'cors' })
+            if (!res.ok) throw new Error('API offline')
+            const data = await res.json()
+
+            // 1. 正在播放实时曲目
+            if (data && data.isPlaying && data.title) {
+              if (statusEl) statusEl.textContent = 'NOW PLAYING ·'
+              if (idleEl) idleEl.classList.add('hidden')
+              if (trackEl) {
+                trackEl.textContent = data.title
+                trackEl.classList.remove('hidden')
+              }
+              if (artistEl) {
+                artistEl.textContent = data.artist ? `— ${data.artist}` : ''
+                artistEl.classList.remove('hidden')
+              }
+              if (data.songUrl) linkEl.href = data.songUrl
+              if (data.albumImageUrl && coverEl) {
+                coverEl.src = data.albumImageUrl
+                coverEl.classList.remove('hidden')
+              }
+              if (dotEl) {
+                dotEl.classList.remove('bg-muted-foreground/40')
+                dotEl.classList.add('bg-green-500')
+              }
+              if (pingEl) pingEl.classList.remove('hidden')
+              return
+            }
+
+            // 2. 当前没在播放，但有最近播放历史
+            if (data && data.title) {
+              if (statusEl) statusEl.textContent = 'RECENTLY PLAYED ·'
+              if (idleEl) idleEl.classList.add('hidden')
+              if (trackEl) {
+                trackEl.textContent = data.title
+                trackEl.classList.remove('hidden')
+              }
+              if (artistEl) {
+                artistEl.textContent = data.artist ? `— ${data.artist}` : ''
+                artistEl.classList.remove('hidden')
+              }
+              if (data.songUrl) linkEl.href = data.songUrl
+              if (data.albumImageUrl && coverEl) {
+                coverEl.src = data.albumImageUrl
+                coverEl.classList.remove('hidden')
+              }
+              if (dotEl) {
+                dotEl.classList.remove('bg-green-500')
+                dotEl.classList.add('bg-muted-foreground/40')
+              }
+              if (pingEl) pingEl.classList.add('hidden')
+              return
+            }
+
+            // 3. 当前未播放，且无近期记录
+            setIdleState()
+          } catch {
+            setIdleState()
+          }
+        }
+
+        refreshNowPlaying()
+      })
+    }
+
+    // 立即执行并注册定时器
+    initSpotifyNowPlaying()
+    if (window.__spotifyNowPlayingTimer) {
+      clearInterval(window.__spotifyNowPlayingTimer)
+    }
+    window.__spotifyNowPlayingTimer = setInterval(initSpotifyNowPlaying, 30000)
+
+    // 监听 Astro 客户端视图切换
+    document.addEventListener('astro:page-load', initSpotifyNowPlaying)
   })()
 </script>
