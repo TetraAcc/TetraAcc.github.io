@@ -12,7 +12,7 @@
 ## 🧭 站点栏目
 
 - **[写作 · Blog](https://tetraacc.me/blog)**：个人散文、日常随笔、编年日记，以及长篇手稿企划 [《迷宫地图》](https://tetraacc.me/blog/manuscripts/labyrinth-map)。
-- **[音乐 · Music](https://tetraacc.me/music)**：精选私人歌单、网易云双极电台、吉他与人声翻唱，以及 2023 Summer Sonic 现场记录。
+- **[音乐 · Music](https://tetraacc.me/music)**：精选私人歌单、双极电台、吉他与人声翻唱，以及 2023 Summer Sonic 等现场记录。
 - **[项目 · Projects](https://tetraacc.me/projects)**：个人开源工具与 AstrBot 生态插件（如 API 额度监控看板、DeadBot 等）。
 - **[关于 · About](https://tetraacc.me/about)**：个人履历、软硬件开发环境与建站日志。
 
@@ -39,7 +39,7 @@
 
 ### 4. 双轨内容与后台管理 (Admin)
 - **GitOps 与本地写作**：日常主要在本地 VS Code 中使用 Markdown / MDX 编写文章，通过 Git 提交即自动触发 CI/CD 静态打包与部署；
-- **Web 端后台管理**：基于 Decap CMS 并在 Cloudflare Workers 配置了轻量级 OAuth 认证服务，在手机或任意浏览器访问 `/admin` 即可随时随地管理手稿与随笔草稿；
+- **Web 端后台管理**：基于 Decap CMS 并在 Cloudflare Workers 配置了轻量级 OAuth 认证服务，在手机或任意浏览器随时随地管理手稿与随笔草稿；
 - **轻量互动**：集成 Waline 评论系统，基于 Supabase 数据库与 Vercel Serverless 构建，纯净无广告，提供点赞与回复提醒通知。
 
 ---
