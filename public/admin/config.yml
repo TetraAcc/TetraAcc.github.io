@@ -26,6 +26,14 @@ collections:
     folder: 'src/content/blog/manuscripts'
     create: true
     slug: '{{slug}}'
+    sortable_fields:
+      - field: publishDate
+        label: '发布日期 (Publish Date)'
+        default_sort: desc
+      - field: title
+        label: '标题 (Title)'
+      - field: commit_date
+        label: '修改时间 (Last Modified)'
     fields:
       - { label: '标题 (Title)', name: 'title', widget: 'string' }
       - { label: '简介描述 (Description)', name: 'description', widget: 'string', required: false }
@@ -46,6 +54,14 @@ collections:
     folder: 'src/content/blog/essays'
     create: true
     slug: '{{slug}}'
+    sortable_fields:
+      - field: publishDate
+        label: '发布日期 (Publish Date)'
+        default_sort: desc
+      - field: title
+        label: '标题 (Title)'
+      - field: commit_date
+        label: '修改时间 (Last Modified)'
     fields:
       - { label: '标题 (Title)', name: 'title', widget: 'string' }
       - { label: '简介描述 (Description)', name: 'description', widget: 'string', required: false }
@@ -66,6 +82,14 @@ collections:
     folder: 'src/content/blog/journals'
     create: true
     slug: '{{slug}}'
+    sortable_fields:
+      - field: publishDate
+        label: '年份/日期 (Date)'
+        default_sort: desc
+      - field: title
+        label: '标题 (Title)'
+      - field: commit_date
+        label: '修改时间 (Last Modified)'
     fields:
       - { label: '标题 (Title)', name: 'title', widget: 'string' }
       - { label: '简介描述 (Description)', name: 'description', widget: 'string', required: false }
