@@ -7,12 +7,36 @@ import BilibiliCard from '@/components/music/BilibiliCard.astro'
 import { bilibiliArchive } from '@/data/bilibili'
 
 const headings = [
-  { depth: 2, slug: 'now-playing', text: 'Now Playing' },
-  { depth: 2, slug: 'spotify-playlist', text: 'Spotify' },
-  { depth: 2, slug: 'netease-music', text: 'NetEase Music' },
-  { depth: 2, slug: 'radio', text: 'Radio' },
-  { depth: 2, slug: 'cover', text: 'Cover' },
-  { depth: 2, slug: 'live', text: 'Live' }
+  {
+    depth: 2,
+    slug: 'now-playing',
+    text: '<span data-i18n="zh">实时收听</span><span data-i18n="ja">再生中</span><span data-i18n="en">Now Playing</span>'
+  },
+  {
+    depth: 2,
+    slug: 'spotify-playlist',
+    text: '<span data-i18n="zh">Spotify 歌单</span><span data-i18n="ja">Spotify 厳選</span><span data-i18n="en">Spotify</span>'
+  },
+  {
+    depth: 2,
+    slug: 'netease-music',
+    text: '<span data-i18n="zh">网易云音乐</span><span data-i18n="ja">NetEase 音楽</span><span data-i18n="en">NetEase Music</span>'
+  },
+  {
+    depth: 2,
+    slug: 'radio',
+    text: '<span data-i18n="zh">双极电台</span><span data-i18n="ja">双極ラジオ</span><span data-i18n="en">Radio</span>'
+  },
+  {
+    depth: 2,
+    slug: 'cover',
+    text: '<span data-i18n="zh">翻唱演奏</span><span data-i18n="ja">カバー＆演奏</span><span data-i18n="en">Cover</span>'
+  },
+  {
+    depth: 2,
+    slug: 'live',
+    text: '<span data-i18n="zh">现场记录</span><span data-i18n="ja">ライブ記録</span><span data-i18n="en">Live</span>'
+  }
 ]
 ---
 
@@ -27,15 +51,27 @@ const headings = [
     My personal music &amp; audio corner. A collection of playlists, podcast episodes, cover sessions, and live concert footprints.
   </p>
 
-  <h2 id='now-playing'>Now Playing · 实时收听</h2>
+  <h2 id='now-playing'>
+    <span data-i18n='zh'>Now Playing · 实时收听</span>
+    <span data-i18n='ja'>Now Playing · リアルタイム再生</span>
+    <span data-i18n='en'>Now Playing · Live Stream</span>
+  </h2>
   <div class='my-3'>
     <SpotifyNowPlaying />
   </div>
 
-  <h2 id='spotify-playlist'>Spotify · 专属歌单</h2>
+  <h2 id='spotify-playlist'>
+    <span data-i18n='zh'>Spotify · 专属歌单</span>
+    <span data-i18n='ja'>Spotify · 厳選プレイリスト</span>
+    <span data-i18n='en'>Spotify · Featured Playlist</span>
+  </h2>
   <SpotifyCrate />
 
-  <h2 id='netease-music'>NetEase Music · 网易云音乐</h2>
+  <h2 id='netease-music'>
+    <span data-i18n='zh'>NetEase Music · 网易云音乐</span>
+    <span data-i18n='ja'>NetEase Music · クラウド音楽</span>
+    <span data-i18n='en'>NetEase Cloud Music</span>
+  </h2>
   <NetEasePlaylist />
 
   {

@@ -21,7 +21,11 @@ const meta = {
 
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-6 text-3xl font-medium'>Archives</h1>
+      <h1 class='mb-6 text-3xl font-medium'>
+        <span data-i18n='zh'>时间轴 · 年表</span>
+        <span data-i18n='ja'>アーカイブ · 年表</span>
+        <span data-i18n='en'>Archives</span>
+      </h1>
     </div>
 
     {allPosts.length === 0 && <p>No posts yet.</p>}
@@ -37,7 +41,9 @@ const meta = {
               <samp>{year}</samp>
             </h2>
             <p class='px-5 text-muted-foreground'>
-              {posts.length} post{posts.length > 1 && 's'}
+              <span data-i18n='zh'>{posts.length} 篇文章</span>
+              <span data-i18n='ja'>{posts.length} 件の記録</span>
+              <span data-i18n='en'>{posts.length} post{posts.length > 1 && 's'}</span>
             </p>
             <ul class='flex flex-col text-start'>
               {posts.map((p) => (

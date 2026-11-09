@@ -66,37 +66,41 @@ const paginationProps = {
           href='/blog'
           class='rounded-full border border-foreground/30 bg-muted px-3 py-1 font-medium text-foreground no-underline transition-colors'
         >
-          全部 All
+          <span data-i18n='zh'>全部</span>
+          <span data-i18n='ja'>すべて</span>
+          <span data-i18n='en'>All</span>
         </a>
         <a
           href='/tags/手稿企划'
           class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
         >
-          📚 手稿企划
+          📚 <span data-i18n='zh'>手稿企划</span><span data-i18n='ja'>手稿</span><span data-i18n='en'>Manuscripts</span>
         </a>
         <a
           href='/tags/长篇文集'
           class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
         >
-          📖 长篇文集
+          📖 <span data-i18n='zh'>长篇文集</span><span data-i18n='ja'>長編文集</span><span data-i18n='en'>Anthology</span>
         </a>
         <a
           href='/tags/随笔'
           class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
         >
-          📝 散文随笔
+          📝 <span data-i18n='zh'>散文随笔</span><span data-i18n='ja'>エッセイ随筆</span><span data-i18n='en'>Essays</span>
         </a>
         <a
           href='/tags/日记'
           class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors'
         >
-          📅 编年日记
+          📅 <span data-i18n='zh'>编年日记</span><span data-i18n='ja'>編年日記</span><span data-i18n='en'>Chronicles</span>
         </a>
         <a
           href='/archives'
           class='rounded-full border border-border/70 px-3 py-1 text-muted-foreground hover:border-foreground/30 hover:text-foreground no-underline transition-colors sm:ms-auto'
         >
-          时间轴 Archives →
+          <span data-i18n='zh'>时间轴 Archives →</span>
+          <span data-i18n='ja'>年表アーカイブ →</span>
+          <span data-i18n='en'>Timeline →</span>
         </a>
       </div>
     </div>
@@ -109,10 +113,14 @@ const paginationProps = {
             {/* header */}
             <div class='mb-3 flex flex-col justify-between text-sm sm:mb-5 sm:flex-row'>
               <span class='text-muted-foreground'>
-                Page {page.currentPage} - Showing {page.data.length} of {collectionsCount} posts
+                <span data-i18n='zh'>第 {page.currentPage} 页 · 共 {collectionsCount} 篇</span>
+                <span data-i18n='ja'>ページ {page.currentPage} · 全 {collectionsCount} 件</span>
+                <span data-i18n='en'>Page {page.currentPage} · Showing {page.data.length} of {collectionsCount} posts</span>
               </span>
               <a aria-label='View all blog by years' href='/archives' data-astro-prefetch>
-                View all posts by years →
+                <span data-i18n='zh'>按年份查看全部 →</span>
+                <span data-i18n='ja'>年代順にすべて見る →</span>
+                <span data-i18n='en'>View all posts by years →</span>
               </a>
             </div>
             {/* posts */}
@@ -129,7 +137,9 @@ const paginationProps = {
             <aside class='animate' id='sidebar'>
               <h2 class='mb-4 flex items-center text-lg font-medium'>
                 <Icon name='tag-2' class='me-2' />
-                Tags
+                <span data-i18n='zh'>标签</span>
+                <span data-i18n='ja'>タグ</span>
+                <span data-i18n='en'>Tags</span>
               </h2>
               <ul class='text-bgColor flex flex-wrap gap-2'>
                 {
@@ -143,7 +153,9 @@ const paginationProps = {
               </ul>
               <span class='mt-4 block sm:text-end'>
                 <a aria-label='View all blog categories' href='/tags' data-astro-prefetch>
-                  View all →
+                  <span data-i18n='zh'>查看全部 →</span>
+                  <span data-i18n='ja'>すべて見る →</span>
+                  <span data-i18n='en'>View all →</span>
                 </a>
               </span>
             </aside>
