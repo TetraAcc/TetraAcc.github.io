@@ -4,7 +4,7 @@ description: 走出迷宫的地图就在这里，谁带我出去并不重要。
 publishDate: 2022-04-15
 tags:
   - 手稿
-  - 长篇文集
+  - 文集
 pin: true
 draft: false
 heroImage:
