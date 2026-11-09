@@ -5,7 +5,7 @@ backend:
   base_url: https://cms-auth.tetrahrt.workers.dev
 
 # Visual & Branding
-app_title: 'Tetra Studio · 内容管理'
+app_title: 'Tetra Studio'
 logo:
   src: '/images/avatar.jpg'
 
@@ -112,12 +112,12 @@ collections:
         file: 'src/content/now.json'
         format: 'json'
         fields:
-          - { label: '状态/常驻地 (Status)', name: 'status', widget: 'string', default: '日本山形 · 工学生活与日常' }
+          - { label: '状态(Status)', name: 'status', widget: 'string', default: '日本山形 · 工学生活与日常' }
           - { label: '更新日期 (Updated Date)', name: 'updated', widget: 'string', default: '2026-11' }
           - { label: '正在阅读 (Reading)', name: 'reading', widget: 'string', required: false }
           - { label: '正在收听 (Listening)', name: 'listening', widget: 'string', required: false }
-          - { label: '正在进行/手稿 (Working On)', name: 'working', widget: 'string', required: false }
-          - { label: '近况寄语/碎碎念 (Note)', name: 'note', widget: 'text', required: false }
+          - { label: '正在进行 (Working On)', name: 'working', widget: 'string', required: false }
+          - { label: '碎碎念 (Note)', name: 'note', widget: 'text', required: false }
       - name: 'links'
         label: '🔗 友链与灵感站列表 (Links)'
         file: 'public/links.json'
