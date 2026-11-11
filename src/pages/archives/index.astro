@@ -26,23 +26,25 @@ const postsWithRender = await Promise.all(
       .trim()
       .slice(0, 160)
 
-    const dateObj = new Date(post.data.publishDate)
+    const dateObj = new Date(post.data.publishDate || Date.now())
     const year = dateObj.getFullYear()
     const month = dateObj.getMonth() + 1
     const day = dateObj.getDate()
     const monthStr = String(month).padStart(2, '0')
     const dayStr = String(day).padStart(2, '0')
-    const dayOfWeek = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][dateObj.getDay()]
+    const dayOfWeekZh = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][dateObj.getDay()]
+    const dayOfWeekJa = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'][dateObj.getDay()]
+    const dayOfWeekEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dateObj.getDay()]
 
     // 季节识别
     const season =
       month >= 3 && month <= 5
-        ? { icon: '🌸', name: '春' }
+        ? { icon: '🌸', zh: '春季', ja: '春', en: 'Spring' }
         : month >= 6 && month <= 8
-          ? { icon: '☀️', name: '夏' }
+          ? { icon: '☀️', zh: '夏季', ja: '夏', en: 'Summer' }
           : month >= 9 && month <= 11
-            ? { icon: '🍂', name: '秋' }
-            : { icon: '❄️', name: '冬' }
+            ? { icon: '🍂', zh: '秋季', ja: '秋', en: 'Autumn' }
+            : { icon: '❄️', zh: '冬季', ja: '冬', en: 'Winter' }
 
     // 字数统计与预估阅读时长
     const charCount = rawBody.replace(/\s+/g, '').length
@@ -55,7 +57,9 @@ const postsWithRender = await Promise.all(
       monthStr,
       dayStr,
       fullDateStr: `${year}-${monthStr}-${dayStr}`,
-      dayOfWeek,
+      dayOfWeekZh,
+      dayOfWeekJa,
+      dayOfWeekEn,
       season,
       charCount,
       readMin,
@@ -82,7 +86,33 @@ const totalPosts = postsWithRender.length
 const totalChars = postsWithRender.reduce((acc, cur) => acc + cur.charCount, 0)
 const minYear = sortedYears.length > 0 ? Math.min(...sortedYears) : new Date().getFullYear()
 const maxYear = sortedYears.length > 0 ? Math.max(...sortedYears) : new Date().getFullYear()
-const spanYears = Math.max(1, maxYear - minYear + 1)
+
+// 4. 连续黑胶母带轨道数据（按时间先后顺序：minYear -> maxYear）
+const chronologicalYears = [...sortedYears].sort((a, b) => a - b)
+const cassetteYearSegments = chronologicalYears.map((yr) => {
+  const posts = [...(yearMap.get(yr) || [])].sort((a, b) => {
+    const timeA = a.post.data.publishDate ? new Date(a.post.data.publishDate).getTime() : 0
+    const timeB = b.post.data.publishDate ? new Date(b.post.data.publishDate).getTime() : 0
+    return timeA - timeB
+  })
+  return {
+    year: yr,
+    posts
+  }
+})
+
+// 5. 标签多语言字典
+const tagI18nMap: Record<string, { zh: string; ja: string; en: string }> = {
+  随笔: { zh: '随笔', ja: '随筆', en: 'Essay' },
+  短文: { zh: '短文', ja: '短文', en: 'Short' },
+  长文: { zh: '长文', ja: '長文', en: 'Long Read' },
+  手稿: { zh: '手稿', ja: '原稿', en: 'Manuscript' },
+  文集: { zh: '文集', ja: '文集', en: 'Collection' },
+  日记: { zh: '日记', ja: '日記', en: 'Journal' },
+  编年记事: { zh: '编年记事', ja: '年代記', en: 'Chronicle' },
+  手稿企划: { zh: '手稿企划', ja: '原稿企画', en: 'Manuscript' },
+  长篇文集: { zh: '长篇文集', ja: '長編文集', en: 'Collection' }
+}
 
 const meta = {
   description: `侯润田的岁月编年长卷：按时间轴沉浸式翻阅 ${minYear} 至 ${maxYear} 的个人心境、随笔与思考记事。`,
@@ -109,32 +139,125 @@ const meta = {
 
       <blockquote class='text-xs sm:text-sm text-muted-foreground/90 italic border-l-2 border-primary/40 pl-3 my-4 leading-relaxed'>
         “人类要是不在这种时刻思考哲学，那我会很怀疑哲学究竟是怎么发展起来的。”
-        <span class='block mt-1 text-[11px] font-mono not-italic text-muted-foreground/60'>
-          —— 聚合呈现自 {minYear} 年至 {maxYear} 年的思考随笔、长篇手稿与心境变迁（动态随文章拓展）。
-        </span>
       </blockquote>
 
-      {/* 时光里程碑指标面板 */}
-      <div class='my-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono not-prose'>
-        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
-          <span class='text-[10px] text-muted-foreground uppercase block'>Time Span · 跨越年轮</span>
-          <span class='text-base font-semibold text-foreground mt-0.5 block'>{minYear} — {maxYear}</span>
-          <span class='text-[10px] text-muted-foreground'>跨越 {spanYears} 个年头</span>
+      {/* 连续黑胶母带轨道（替代原先 4 个独立小方块，连贯流淌） */}
+      <div class='my-6 p-4 sm:p-5 rounded-2xl border border-border/70 bg-card/40 backdrop-blur-sm shadow-sm space-y-3.5 not-prose'>
+        <div class='flex items-center justify-between text-xs font-mono text-muted-foreground'>
+          <div class='flex items-center gap-2'>
+            <span class='size-1.5 rounded-full bg-primary/80'></span>
+            <span class='text-foreground font-semibold'>{minYear} — {maxYear}</span>
+            <span class='text-border'>·</span>
+            <span>{totalPosts} <span data-i18n='zh'>篇记事</span><span data-i18n='ja'>件</span><span data-i18n='en'>posts</span></span>
+            <span class='text-border'>·</span>
+            <span data-i18n='zh'>约 {(totalChars / 10000).toFixed(1)} 万字</span>
+            <span data-i18n='ja'>約 {(totalChars / 10000).toFixed(1)} 万文字</span>
+            <span data-i18n='en'>~{totalChars.toLocaleString()} chars</span>
+          </div>
+          <div id='cassetteEcho' class='text-xs font-mono text-muted-foreground opacity-0 transition-opacity truncate max-w-sm hidden sm:block'></div>
         </div>
-        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
-          <span class='text-[10px] text-muted-foreground uppercase block'>Chronicles · 记录篇目</span>
-          <span class='text-base font-semibold text-foreground mt-0.5 block'>{totalPosts} 篇记事</span>
-          <span class='text-[10px] text-muted-foreground'>随笔与手稿全集</span>
+
+        {/* 浑然一体、同列同宽绝对对齐的母带轨道卡槽（支持水平弹性滑动，从容包容未来无限年份跨度） */}
+        <div
+          id='cassetteTrackWrapper'
+          class='relative w-full bg-muted/20 dark:bg-zinc-950/70 rounded-xl border border-border/80 shadow-inner overflow-x-auto no-scrollbar scroll-smooth'
+        >
+          <div class='flex w-full items-stretch min-w-[620px] sm:min-w-full'>
+            {
+              cassetteYearSegments.map(({ year: yr, posts }) => (
+                <div
+                  data-track-year={yr}
+                  class='flex flex-col border-r border-border/60 last:border-r-0 group'
+                  style={`flex: ${posts.length};`}
+                >
+                  {/* 上部：该年份内的文章光条推轨 */}
+                  <div class='h-14 flex items-center justify-around px-1 sm:px-2 group-hover:bg-muted/10 transition-colors'>
+                    {posts.map((item) => {
+                      const isManuscript =
+                        item.post.id.includes('manuscripts') ||
+                        (item.post.data.tags && item.post.data.tags.includes('手稿'))
+                      const isLongEssay =
+                        (item.post.data.tags && item.post.data.tags.includes('长文')) || item.charCount >= 800
+
+                      let barClass = 'w-[2.5px] sm:w-[3px] h-5 bg-muted-foreground/50 hover:bg-foreground'
+                      let typeLabelZh = '随笔'
+
+                      if (isManuscript) {
+                        barClass =
+                          'w-[3.5px] sm:w-[4px] h-10 bg-amber-400 shadow-[0_0_10px_#fbbf24] hover:brightness-125'
+                        typeLabelZh = '手稿企划'
+                      } else if (isLongEssay) {
+                        barClass =
+                          'w-[3px] sm:w-[3.5px] h-7 bg-blue-400 shadow-[0_0_7px_#38bdf8] hover:brightness-125'
+                        typeLabelZh = '深度长文'
+                      }
+
+                      return (
+                        <button
+                          type='button'
+                          class={`cassette-bar rounded-full transition-all duration-150 hover:scale-125 cursor-pointer focus:outline-none ${barClass}`}
+                          data-post-id={item.post.id}
+                          data-title={item.post.data.title}
+                          data-date={item.fullDateStr}
+                          data-words={item.charCount}
+                          data-read={item.readMin}
+                          data-type-label={typeLabelZh}
+                          aria-label={`${item.fullDateStr}: ${item.post.data.title}`}
+                          title={`${item.fullDateStr} · ${item.post.data.title}`}
+                        />
+                      )
+                    })}
+                  </div>
+
+                  {/* 下部：绝对与上方同列同宽的年份标签与跳转 */}
+                  <a
+                    href={`#year-${yr}`}
+                    class='border-t border-border/70 group-hover:bg-muted/20 py-1.5 text-center transition-colors no-underline block'
+                    title={`跳转至 ${yr} 年`}
+                  >
+                    <span class='text-foreground/80 group-hover:text-foreground font-semibold block text-[11px] sm:text-xs'>
+                      {yr}
+                    </span>
+                    <span class='text-[10px] text-muted-foreground/70 block'>
+                      <span data-i18n='zh'>{posts.length} 篇</span>
+                      <span data-i18n='ja'>{posts.length} 件</span>
+                      <span data-i18n='en'>{posts.length} {posts.length > 1 ? 'posts' : 'post'}</span>
+                    </span>
+                  </a>
+                </div>
+              ))
+            }
+          </div>
         </div>
-        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
-          <span class='text-[10px] text-muted-foreground uppercase block'>Total Words · 文字沉淀</span>
-          <span class='text-base font-semibold text-foreground mt-0.5 block'>约 {(totalChars / 10000).toFixed(1)} 万字</span>
-          <span class='text-[10px] text-muted-foreground'>{totalChars.toLocaleString()} 字符</span>
-        </div>
-        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
-          <span class='text-[10px] text-muted-foreground uppercase block'>Read Flow · 心流模式</span>
-          <span class='text-base font-semibold text-primary mt-0.5 block'>原地展开阅读</span>
-          <span class='text-[10px] text-muted-foreground'>免跳页连贯体验</span>
+
+        {/* 底部图例与无声提示 */}
+        <div class='flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-muted-foreground pt-2.5 border-t border-border/40'>
+          <div class='flex items-center gap-4'>
+            <div class='flex items-center gap-1.5'>
+              <span class='w-[3px] h-3.5 bg-muted-foreground/60 rounded-full inline-block'></span>
+              <span data-i18n='zh'>日常随笔</span>
+              <span data-i18n='ja'>日常の随筆</span>
+              <span data-i18n='en'>Essays</span>
+            </div>
+            <div class='flex items-center gap-1.5 text-blue-400'>
+              <span class='w-[3px] h-5 bg-blue-400 rounded-full shadow-[0_0_6px_#38bdf8] inline-block'></span>
+              <span data-i18n='zh'>深度长文</span>
+              <span data-i18n='ja'>長編随想</span>
+              <span data-i18n='en'>Deep Articles</span>
+            </div>
+            <div class='flex items-center gap-1.5 text-amber-400'>
+              <span class='w-[3.5px] h-6 bg-amber-400 rounded-full shadow-[0_0_8px_#fbbf24] inline-block'></span>
+              <span data-i18n='zh'>手稿企划</span>
+              <span data-i18n='ja'>原稿企画</span>
+              <span data-i18n='en'>Manuscripts</span>
+            </div>
+          </div>
+
+          <div class='text-[10px] text-muted-foreground/60 hidden sm:block'>
+            <span data-i18n='zh'>✦ 点击光条平滑直达文章</span>
+            <span data-i18n='ja'>✦ 光条をクリックして記事へジャンプ</span>
+            <span data-i18n='en'>✦ Click bar to scroll into view</span>
+          </div>
         </div>
       </div>
     </div>
@@ -147,7 +270,11 @@ const meta = {
     >
       {/* 左侧：年份跃迁胶囊按钮 */}
       <div class='flex items-center gap-1.5 overflow-x-auto py-0.5 no-scrollbar' id='yearPillsContainer'>
-        <span class='text-muted-foreground/70 text-[11px] me-1 shrink-0'>年份直达:</span>
+        <span class='text-muted-foreground/70 text-[11px] me-1 shrink-0'>
+          <span data-i18n='zh'>年份直达:</span>
+          <span data-i18n='ja'>年別ジャンプ:</span>
+          <span data-i18n='en'>Jump to:</span>
+        </span>
         {
           sortedYears.map((yr) => (
             <a
@@ -170,6 +297,9 @@ const meta = {
             type='text'
             id='chronicleSearch'
             placeholder='搜索文字/日期/记忆...'
+            data-placeholder-zh='搜索文字/日期/记忆...'
+            data-placeholder-ja='キーワード/日付で検索...'
+            data-placeholder-en='Search text/date...'
             class='w-full sm:w-36 md:w-44 px-2.5 py-1.5 rounded-lg border border-border/70 bg-background text-foreground text-[11px] focus:outline-none focus:ring-1 focus:ring-primary focus:w-48 transition-all'
           />
         </div>
@@ -182,7 +312,18 @@ const meta = {
           title='展开或折叠全部文章正文'
         >
           <span>📖</span>
-          <span id='expandAllText'>全卷畅读</span>
+          <span id='expandAllText'>
+            <span class='label-all-expand'>
+              <span data-i18n='zh'>全卷畅读</span>
+              <span data-i18n='ja'>全文展開</span>
+              <span data-i18n='en'>Read All</span>
+            </span>
+            <span class='label-all-collapse hidden'>
+              <span data-i18n='zh'>紧凑速览</span>
+              <span data-i18n='ja'>要約表示</span>
+              <span data-i18n='en'>Compact View</span>
+            </span>
+          </span>
         </button>
 
         {/* 顺流/逆流翻转按钮 */}
@@ -198,14 +339,27 @@ const meta = {
             <path d='m21 8-4-4-4 4' />
             <path d='M17 4v16' />
           </svg>
-          <span id='directionText'>倒序 (最新)</span>
+          <span id='directionText'>
+            <span class='label-dir-desc'>
+              <span data-i18n='zh'>倒序 (最新)</span>
+              <span data-i18n='ja'>降順 (最新)</span>
+              <span data-i18n='en'>Newest</span>
+            </span>
+            <span class='label-dir-asc hidden'>
+              <span data-i18n='zh'>正序 (最早)</span>
+              <span data-i18n='ja'>昇順 (古い順)</span>
+              <span data-i18n='en'>Oldest</span>
+            </span>
+          </span>
         </button>
       </div>
     </nav>
 
     {/* 搜索无结果提示 */}
     <div id='searchEmptyTip' class='hidden py-12 text-center text-sm text-muted-foreground font-mono'>
-      🔍 未找到与关键词匹配的编年记事。
+      <span data-i18n='zh'>🔍 未找到与关键词匹配的编年记事。</span>
+      <span data-i18n='ja'>🔍 キーワードに一致する記録が見つかりませんでした。</span>
+      <span data-i18n='en'>🔍 No chronicles matched your query.</span>
     </div>
 
     {/* 编年时间轴主体容器 */}
@@ -219,26 +373,22 @@ const meta = {
               data-year={year}
               class='year-section relative scroll-mt-28 pt-8'
             >
-              {/* 经典艺术感镂空巨型年份背景水印 (Giant Hollow Outline Year Number) */}
-              <h2
-                class='absolute -start-4 sm:-start-6 -top-10 sm:-top-14 z-0 text-8xl sm:text-9xl font-bold font-mono text-transparent opacity-12 dark:opacity-20 select-none pointer-events-none'
-                style='-webkit-text-stroke-width: 2px; -webkit-text-stroke-color: currentColor;'
-              >
-                <samp>{year}</samp>
-              </h2>
-
-              {/* 年份提示横条 */}
-              <div class='relative z-10 flex items-center justify-between px-1 mb-6 border-b border-border/60 pb-2.5 text-xs font-mono text-muted-foreground'>
-                <div class='flex items-center gap-2'>
-                  <span class='text-base font-bold text-foreground'>{year} 年</span>
-                  <span>·</span>
-                  <span>{yearPosts.length} 篇记事</span>
-                </div>
+              {/* 经典艺术感镂空巨型年份章节题头（去掉重复的年份与记事篇数，纯粹极致） */}
+              <div class='flex items-baseline justify-between mb-4 sm:mb-6 px-1'>
+                <h2
+                  class='text-8xl sm:text-9xl font-bold font-mono tracking-tighter opacity-25 dark:opacity-30 select-none leading-none -ms-2'
+                  style='-webkit-text-stroke: 2px hsl(var(--foreground)); color: transparent;'
+                >
+                  <samp>{year}</samp>
+                </h2>
                 <a
                   href='#chronicle-header'
-                  class='text-[11px] text-muted-foreground/60 hover:text-foreground no-underline transition-colors'
+                  class='text-[11px] font-mono text-muted-foreground/50 hover:text-foreground no-underline transition-colors'
+                  title='返回长卷顶部'
                 >
-                  ↑ 顶端
+                  <span data-i18n='zh'>↑ 顶端</span>
+                  <span data-i18n='ja'>↑ トップ</span>
+                  <span data-i18n='en'>↑ Top</span>
                 </a>
               </div>
 
@@ -267,28 +417,38 @@ const meta = {
                             {item.post.data.title}
                           </span>
                           <span class='px-1.5 py-0.5 rounded bg-muted/60 text-[10px] border border-border/40'>
-                            {item.dayOfWeek}
+                            <span data-i18n='zh'>{item.dayOfWeekZh}</span>
+                            <span data-i18n='ja'>{item.dayOfWeekJa}</span>
+                            <span data-i18n='en'>{item.dayOfWeekEn}</span>
                           </span>
                           <span class='px-1.5 py-0.5 rounded bg-primary/10 text-primary text-[10px] border border-primary/20'>
-                            {item.season.icon} {item.season.name}季
+                            {item.season.icon} <span data-i18n='zh'>{item.season.zh}</span><span data-i18n='ja'>{item.season.ja}</span><span data-i18n='en'>{item.season.en}</span>
                           </span>
                         </div>
 
                         <div class='flex items-center gap-2 text-[11px] text-muted-foreground/80'>
-                          <span>{item.charCount} 字</span>
+                          <span>{item.charCount} <span data-i18n='zh'>字</span><span data-i18n='ja'>文字</span><span data-i18n='en'>words</span></span>
                           <span>·</span>
-                          <span>约 {item.readMin} 分钟</span>
+                          <span><span data-i18n='zh'>约 {item.readMin} 分钟</span><span data-i18n='ja'>約 {item.readMin} 分</span><span data-i18n='en'>~{item.readMin} min</span></span>
                         </div>
                       </div>
 
-                      {/* 标签 */}
+                      {/* 标签（全量支持中/日/英多语言切换与无障碍链接） */}
                       {item.post.data.tags && item.post.data.tags.length > 0 && (
                         <div class='flex flex-wrap items-center gap-1.5 mb-3'>
-                          {item.post.data.tags.map((tag: string) => (
-                            <span class='text-[10px] font-mono text-muted-foreground/70 px-2 py-0.5 rounded-md bg-muted/30 border border-border/40'>
-                              #{tag}
-                            </span>
-                          ))}
+                          {item.post.data.tags.map((tag: string) => {
+                            const i18n = tagI18nMap[tag] || { zh: tag, ja: tag, en: tag }
+                            return (
+                              <a
+                                href={`/tags/${encodeURIComponent(tag)}`}
+                                class='text-[10px] font-mono text-muted-foreground/75 hover:text-foreground px-2 py-0.5 rounded-md bg-muted/40 hover:bg-muted/70 border border-border/40 transition-colors no-underline inline-block'
+                              >
+                                #<span data-i18n='zh'>{i18n.zh}</span>
+                                <span data-i18n='ja'>{i18n.ja}</span>
+                                <span data-i18n='en'>{i18n.en}</span>
+                              </a>
+                            )
+                          })}
                         </div>
                       )}
 
@@ -312,8 +472,18 @@ const meta = {
                           type='button'
                           class='toggle-entry-btn inline-flex items-center gap-1.5 text-primary hover:underline font-medium cursor-pointer transition-colors'
                         >
-                          <span class='btn-label'>展开全文</span>
-                          <span class='btn-icon transition-transform'>▾</span>
+                          <span class='btn-label-expand inline-flex items-center gap-1'>
+                            <span data-i18n='zh'>展开全文</span>
+                            <span data-i18n='ja'>全文を展開</span>
+                            <span data-i18n='en'>Read full text</span>
+                            <span class='text-[10px]'>▾</span>
+                          </span>
+                          <span class='btn-label-collapse hidden inline-flex items-center gap-1'>
+                            <span data-i18n='zh'>收起正文</span>
+                            <span data-i18n='ja'>本文を閉じる</span>
+                            <span data-i18n='en'>Collapse</span>
+                            <span class='text-[10px]'>▴</span>
+                          </span>
                         </button>
 
                         <a
@@ -322,7 +492,9 @@ const meta = {
                           class='text-[11px] text-muted-foreground hover:text-foreground inline-flex items-center gap-1 no-underline transition-colors opacity-75 hover:opacity-100'
                           title='在新窗口打开独立文章详情页（可查看评论）'
                         >
-                          <span>独立页面 · 评论</span>
+                          <span data-i18n='zh'>独立页面 · 评论</span>
+                          <span data-i18n='ja'>個別ページ · コメント</span>
+                          <span data-i18n='en'>Full Post · Comments</span>
                           <span>↗</span>
                         </a>
                       </div>
@@ -352,6 +524,9 @@ const meta = {
       color: hsl(var(--background)) !important;
       border-color: hsl(var(--foreground)) !important;
     }
+    .hidden {
+      display: none !important;
+    }
   </style>
 
   {/* 客户端交互脚本：即时搜索、原地单篇展开、全卷畅读、顺流逆流翻转、滚动吸附指示 */}
@@ -366,22 +541,22 @@ const meta = {
         const toggleBtn = card.querySelector('.toggle-entry-btn')
         const preview = card.querySelector('.entry-preview')
         const full = card.querySelector('.entry-full')
-        const btnLabel = toggleBtn?.querySelector('.btn-label')
-        const btnIcon = toggleBtn?.querySelector('.btn-icon')
 
         if (toggleBtn && preview && full) {
           toggleBtn.addEventListener('click', () => {
             const isCurrentlyExpanded = !full.classList.contains('hidden')
+            const expandLabel = toggleBtn.querySelector('.btn-label-expand')
+            const collapseLabel = toggleBtn.querySelector('.btn-label-collapse')
             if (isCurrentlyExpanded) {
               full.classList.add('hidden')
               preview.classList.remove('hidden')
-              if (btnLabel) btnLabel.textContent = '展开全文'
-              if (btnIcon) btnIcon.textContent = '▾'
+              expandLabel?.classList.remove('hidden')
+              collapseLabel?.classList.add('hidden')
             } else {
               full.classList.remove('hidden')
               preview.classList.add('hidden')
-              if (btnLabel) btnLabel.textContent = '收起正文'
-              if (btnIcon) btnIcon.textContent = '▴'
+              expandLabel?.classList.add('hidden')
+              collapseLabel?.classList.remove('hidden')
             }
           })
         }
@@ -397,23 +572,26 @@ const meta = {
             const preview = card.querySelector('.entry-preview')
             const full = card.querySelector('.entry-full')
             const toggleBtn = card.querySelector('.toggle-entry-btn')
-            const btnLabel = toggleBtn?.querySelector('.btn-label')
-            const btnIcon = toggleBtn?.querySelector('.btn-icon')
+            const expandLabel = toggleBtn?.querySelector('.btn-label-expand')
+            const collapseLabel = toggleBtn?.querySelector('.btn-label-collapse')
 
             if (isAllExpanded) {
               full?.classList.remove('hidden')
               preview?.classList.add('hidden')
-              if (btnLabel) btnLabel.textContent = '收起正文'
-              if (btnIcon) btnIcon.textContent = '▴'
+              expandLabel?.classList.add('hidden')
+              collapseLabel?.classList.remove('hidden')
             } else {
               full?.classList.add('hidden')
               preview?.classList.remove('hidden')
-              if (btnLabel) btnLabel.textContent = '展开全文'
-              if (btnIcon) btnIcon.textContent = '▾'
+              expandLabel?.classList.remove('hidden')
+              collapseLabel?.classList.add('hidden')
             }
           })
-          if (expandAllText) {
-            expandAllText.textContent = isAllExpanded ? '紧凑速览' : '全卷畅读'
+          const allExpand = expandAllText?.querySelector('.label-all-expand')
+          const allCollapse = expandAllText?.querySelector('.label-all-collapse')
+          if (allExpand && allCollapse) {
+            allExpand.classList.toggle('hidden', isAllExpanded)
+            allCollapse.classList.toggle('hidden', !isAllExpanded)
           }
         })
       }
@@ -447,8 +625,11 @@ const meta = {
             pills.forEach((p) => pillsContainer.appendChild(p))
           }
 
-          if (directionText) {
-            directionText.textContent = isAscending ? '正序 (最早)' : '倒序 (最新)'
+          const dirDesc = directionText?.querySelector('.label-dir-desc')
+          const dirAsc = directionText?.querySelector('.label-dir-asc')
+          if (dirDesc && dirAsc) {
+            dirDesc.classList.toggle('hidden', isAscending)
+            dirAsc.classList.toggle('hidden', !isAscending)
           }
         })
       }
@@ -457,9 +638,24 @@ const meta = {
       const searchInput = document.getElementById('chronicleSearch')
       const emptyTip = document.getElementById('searchEmptyTip')
 
-      if (searchInput) {
+      if (searchInput && 'value' in searchInput) {
+        const updateSearchPlaceholder = () => {
+          const lang = document.documentElement.getAttribute('data-lang') || 'zh'
+          const ph =
+            searchInput.getAttribute(`data-placeholder-${lang}`) ||
+            searchInput.getAttribute('data-placeholder-zh')
+          if (ph) searchInput.setAttribute('placeholder', ph)
+        }
+        updateSearchPlaceholder()
+        const langObserver = new MutationObserver(() => updateSearchPlaceholder())
+        langObserver.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['data-lang']
+        })
+
         searchInput.addEventListener('input', (e) => {
-          const query = (e.target.value || '').trim().toLowerCase()
+          const target = e.target
+          const query = (target && 'value' in target ? String(target.value) : '').trim().toLowerCase()
           let visibleCount = 0
 
           cards.forEach((card) => {
@@ -507,6 +703,67 @@ const meta = {
         )
 
         yearSections.forEach((sec) => observer.observe(sec))
+      }
+
+      // 6. 连续黑胶母带轨道：光条悬停回显与点击平滑聚焦
+      const cassetteBars = document.querySelectorAll('.cassette-bar')
+      const cassetteEcho = document.getElementById('cassetteEcho')
+
+      cassetteBars.forEach((bar) => {
+        bar.addEventListener('mouseenter', () => {
+          const title = bar.getAttribute('data-title') || ''
+          const date = bar.getAttribute('data-date') || ''
+          const words = bar.getAttribute('data-words') || ''
+          const type = bar.getAttribute('data-type-label') || ''
+          if (cassetteEcho) {
+            cassetteEcho.innerHTML = `<span class="text-foreground font-medium">${date}</span> · <span class="text-primary font-medium">${type}</span> · <span class="text-foreground/90">${title}</span> <span class="text-[10px] text-muted-foreground/80">(${words}字)</span>`
+            cassetteEcho.classList.remove('opacity-0')
+          }
+        })
+
+        bar.addEventListener('mouseleave', () => {
+          if (cassetteEcho) {
+            cassetteEcho.classList.add('opacity-0')
+          }
+        })
+
+        bar.addEventListener('click', () => {
+          const postId = bar.getAttribute('data-post-id')
+          if (!postId) return
+          const targetCard = document.querySelector(`article[data-post-id="${postId}"]`)
+          if (targetCard) {
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            targetCard.classList.add('ring-2', 'ring-primary', 'shadow-[0_0_24px_hsl(var(--primary)/0.45)]')
+            setTimeout(() => {
+              targetCard.classList.remove('ring-2', 'ring-primary', 'shadow-[0_0_24px_hsl(var(--primary)/0.45)]')
+            }, 2000)
+          }
+        })
+      })
+
+      // 7. 轨道横向交互：手机端默认滑至最新年份 + 桌面端鼠标滚轮横移支持
+      const trackWrapper = document.getElementById('cassetteTrackWrapper')
+      if (trackWrapper) {
+        // 手机端加载时平滑滚动至最右侧（最新年份 2026）
+        if (window.innerWidth < 640) {
+          setTimeout(() => {
+            trackWrapper.scrollLeft = trackWrapper.scrollWidth
+          }, 150)
+        }
+
+        // 桌面端鼠标滚轮在轨道上方时，将纵向滚轮转为平滑横向滚动
+        trackWrapper.addEventListener(
+          'wheel',
+          (e) => {
+            if (trackWrapper.scrollWidth > trackWrapper.clientWidth) {
+              if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                e.preventDefault()
+                trackWrapper.scrollLeft += e.deltaY
+              }
+            }
+          },
+          { passive: false }
+        )
       }
     })()
   </script>
