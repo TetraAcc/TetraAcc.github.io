@@ -1,6 +1,5 @@
 ---
-import { Header, ThemeProvider } from 'astro-pure/components/basic'
-import Footer from '@/components/Footer.astro'
+import { Footer, Header, ThemeProvider } from 'astro-pure/components/basic'
 import type { SiteMeta } from 'astro-pure/types'
 import BaseHead from '@/components/BaseHead.astro'
 import config from '@/site-config'
@@ -186,22 +185,52 @@ const {
           applyLang(localStorage.getItem('site-lang') || 'zh')
         }
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', mountLangSwitcher)
-        } else {
-          mountLangSwitcher()
+        function mountFooterAdminIcon() {
+          const footerSocial = document.querySelector('footer .flex.items-center.gap-x-4')
+          if (footerSocial && !document.getElementById('footerAdminBtn')) {
+            const adminLink = document.createElement('a')
+            adminLink.id = 'footerAdminBtn'
+            adminLink.href = '/admin/'
+            adminLink.target = '_blank'
+            adminLink.rel = 'noopener noreferrer'
+            adminLink.className =
+              'sl-flex text-muted-foreground hover:text-foreground transition-all hover:scale-110'
+            adminLink.title = '管理后台 · Admin CMS'
+            adminLink.setAttribute('aria-label', 'Admin CMS')
+            adminLink.innerHTML = `
+              <span class="sr-only">Admin</span>
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="7" height="9" x="3" y="3" rx="1"/>
+                <rect width="7" height="5" x="14" y="3" rx="1"/>
+                <rect width="7" height="9" x="14" y="12" rx="1"/>
+                <rect width="7" height="5" x="3" y="16" rx="1"/>
+              </svg>
+            `
+            footerSocial.appendChild(adminLink)
+          }
         }
-        document.addEventListener('astro:page-load', mountLangSwitcher)
 
-        // BFCache (Back/Forward Cache) restoration: re-sync language when page restored from memory
-        window.addEventListener('pageshow', () => {
+        function initPageDecorations() {
           mountLangSwitcher()
+          mountFooterAdminIcon()
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initPageDecorations)
+        } else {
+          initPageDecorations()
+        }
+        document.addEventListener('astro:page-load', initPageDecorations)
+
+        // BFCache (Back/Forward Cache) restoration: re-sync when page restored from memory
+        window.addEventListener('pageshow', () => {
+          initPageDecorations()
         })
 
-        // Speculation Rules prerender activation: re-sync language when prerendered page is activated
+        // Speculation Rules prerender activation: re-sync when prerendered page is activated
         if (document.prerendering) {
           document.addEventListener('prerenderingchange', () => {
-            mountLangSwitcher()
+            initPageDecorations()
           })
         }
 
