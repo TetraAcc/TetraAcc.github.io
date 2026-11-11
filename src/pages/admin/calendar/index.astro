@@ -28,7 +28,7 @@ const headings = [
 
     <div class='mt-6 flex flex-col gap-3 text-xs'>
       <a
-        href='/admin/'
+        href='/admin'
         class='w-full py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 no-underline shadow-sm'
       >
         <span>🐙 前往 CMS 登录 GitHub 账号（无缝单点授权）</span>
@@ -68,14 +68,20 @@ const headings = [
         <span class='text-sm'>🛡️</span>
         <span class='font-medium' id='authStatusText'>管理员身份已核验通过 · 实时连接 Steam Deck 服务端</span>
       </div>
-      <button
-        type='button'
-        id='lockSessionBtn'
-        class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity cursor-pointer'
-        title='清除当前临时授权并重新上锁'
-      >
-        重新上锁
-      </button>
+      <div class='flex items-center gap-3'>
+        <a href='/admin' class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity no-underline'>
+          📝 内容后台 (CMS)
+        </a>
+        <span class='opacity-40'>|</span>
+        <button
+          type='button'
+          id='lockSessionBtn'
+          class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity cursor-pointer'
+          title='清除当前临时授权并重新上锁'
+        >
+          重新上锁
+        </button>
+      </div>
     </div>
 
     <p data-i18n='zh'>

@@ -26,6 +26,7 @@ collections:
     folder: 'src/content/blog/manuscripts'
     create: true
     slug: '{{slug}}'
+    summary: '{{fields.title}} ({{fields.publishDate}})'
     sortable_fields:
       - field: publishDate
         label: '发布日期 (Publish Date)'
@@ -39,6 +40,14 @@ collections:
       - { label: '简介描述 (Description)', name: 'description', widget: 'string', required: false }
       - { label: '发布日期 (Publish Date)', name: 'publishDate', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
       - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['手稿企划', '长篇文集'] }
+      - label: '封面题图 (Hero Image)'
+        name: 'heroImage'
+        widget: 'object'
+        required: false
+        fields:
+          - { label: '图片地址 (Image)', name: 'src', widget: 'image', required: false }
+          - { label: '主色调 (Color)', name: 'color', widget: 'string', default: '#282828', required: false }
+          - { label: '替代文本 (Alt)', name: 'alt', widget: 'string', required: false }
       - { label: '置顶 (Pin)', name: 'pin', widget: 'boolean', default: false, required: false }
       - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
       - label: '正文内容 (Markdown)'
@@ -54,6 +63,7 @@ collections:
     folder: 'src/content/blog/essays'
     create: true
     slug: '{{slug}}'
+    summary: '{{fields.title}} ({{fields.publishDate}})'
     sortable_fields:
       - field: publishDate
         label: '发布日期 (Publish Date)'
@@ -62,11 +72,31 @@ collections:
         label: '标题 (Title)'
       - field: commit_date
         label: '修改时间 (Last Modified)'
+    view_filters:
+      - label: '草稿 (Drafts)'
+        field: draft
+        pattern: true
+      - label: '已发布 (Published)'
+        field: draft
+        pattern: false
+      - label: '影评 (Reviews)'
+        field: tags
+        pattern: '影评'
+      - label: '书信 (Letters)'
+        field: tags
+        pattern: '书信'
+      - label: '诗歌 (Poems)'
+        field: tags
+        pattern: '诗歌'
+    view_groups:
+      - label: '按年份 (Year)'
+        field: publishDate
+        pattern: '\d{4}'
     fields:
       - { label: '标题 (Title)', name: 'title', widget: 'string' }
       - { label: '简介描述 (Description)', name: 'description', widget: 'string', required: false }
       - { label: '发布日期 (Publish Date)', name: 'publishDate', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
-      - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['随笔'] }
+      - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['随笔', '短文'], hint: '常用标签：随笔、短文、长文、影评、书信、诗歌（自动联动长卷三语国际化）' }
       - { label: '置顶 (Pin)', name: 'pin', widget: 'boolean', default: false, required: false }
       - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
       - label: '正文内容 (Markdown)'
@@ -82,6 +112,7 @@ collections:
     folder: 'src/content/blog/journals'
     create: true
     slug: '{{slug}}'
+    summary: '{{fields.title}} ({{fields.publishDate}})'
     sortable_fields:
       - field: publishDate
         label: '年份/日期 (Date)'
