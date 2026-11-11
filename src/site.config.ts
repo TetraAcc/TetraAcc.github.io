@@ -52,7 +52,14 @@ export const theme: ThemeUserConfig = {
   footer: {
     // Year format
     year: `© ${new Date().getFullYear()}`,
-    links: [],
+    links: [
+      {
+        pos: 1,
+        title: '管理后台 (Admin)',
+        link: '/admin/',
+        style: 'hover:text-foreground transition-colors text-xs font-mono'
+      }
+    ],
     /** Enable displaying a “Astro & Pure theme powered” link in your site’s footer. */
     credits: true,
     /** Optional details about the social media accounts for this site. */

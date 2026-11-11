@@ -185,22 +185,51 @@ const {
           applyLang(localStorage.getItem('site-lang') || 'zh')
         }
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', mountLangSwitcher)
-        } else {
+        function mountAdminBtn() {
+          const btnGroup = document.querySelector('header-component .z-30.flex')
+          if (btnGroup && !document.getElementById('headerAdminBtn')) {
+            const adminLink = document.createElement('a')
+            adminLink.id = 'headerAdminBtn'
+            adminLink.href = '/admin/'
+            adminLink.title = '管理后台 · Admin CMS'
+            adminLink.setAttribute('aria-label', 'Admin CMS')
+            adminLink.className =
+              'group/admin box-content size-5 rounded-md border p-1.5 transition-colors hover:bg-border flex items-center justify-center text-muted-foreground hover:text-foreground no-underline sm:group-[.not-top]:rounded-xl'
+            adminLink.innerHTML = `
+              <svg class="size-4 transition-transform group-hover/admin:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
+              </svg>
+            `
+            const darkBtn = document.getElementById('toggleDarkMode')
+            if (darkBtn) {
+              btnGroup.insertBefore(adminLink, darkBtn)
+            } else {
+              btnGroup.appendChild(adminLink)
+            }
+          }
+        }
+
+        function mountHeaderEnhancements() {
+          mountAdminBtn()
           mountLangSwitcher()
         }
-        document.addEventListener('astro:page-load', mountLangSwitcher)
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', mountHeaderEnhancements)
+        } else {
+          mountHeaderEnhancements()
+        }
+        document.addEventListener('astro:page-load', mountHeaderEnhancements)
 
         // BFCache (Back/Forward Cache) restoration: re-sync language when page restored from memory
         window.addEventListener('pageshow', () => {
-          mountLangSwitcher()
+          mountHeaderEnhancements()
         })
 
         // Speculation Rules prerender activation: re-sync language when prerendered page is activated
         if (document.prerendering) {
           document.addEventListener('prerenderingchange', () => {
-            mountLangSwitcher()
+            mountHeaderEnhancements()
           })
         }
 
