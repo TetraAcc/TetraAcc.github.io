@@ -42,7 +42,12 @@ const blog = defineCollection({
       updatedDate: z.coerce.date().optional(),
       heroImage: z
         .object({
-          src: image(),
+          src: z.custom<any>().transform((val, ctx) => {
+            if (typeof val === 'string' && (val.startsWith('/') || val.includes('://'))) {
+              return val
+            }
+            return image().parse(val)
+          }),
           alt: z.string().optional(),
           inferSize: z.boolean().optional(),
           width: z.number().optional(),
