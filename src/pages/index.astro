@@ -130,29 +130,6 @@ if (!images[imagePath])
         </div>
       </Section>
 
-      {
-        allPostsByDate.length > 0 && (
-          <Section title='Writing'>
-            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
-              {allPostsByDate.map((p) => (
-                <li class='flex flex-col gap-x-2 sm:flex-row'>
-                  <PostPreview post={p} />
-                </li>
-              ))}
-            </ul>
-            <div data-i18n='zh' class='flex justify-end'>
-              <Button title='所有文章' class='w-fit' href='/blog' variant='ahead' />
-            </div>
-            <div data-i18n='ja' class='flex justify-end'>
-              <Button title='すべての記事' class='w-fit' href='/blog' variant='ahead' />
-            </div>
-            <div data-i18n='en' class='flex justify-end'>
-              <Button title='All posts' class='w-fit' href='/blog' variant='ahead' />
-            </div>
-          </Section>
-        )
-      }
-
       {/* Now */}
       <Section title='Now'>
         <div class='flex flex-col gap-y-3.5 rounded-xl border p-4 sm:p-5 text-sm sm:text-base'>
@@ -200,6 +177,29 @@ if (!images[imagePath])
           }
         </div>
       </Section>
+
+      {
+        allPostsByDate.length > 0 && (
+          <Section title='Writing'>
+            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
+              {allPostsByDate.map((p) => (
+                <li class='flex flex-col gap-x-2 sm:flex-row'>
+                  <PostPreview post={p} />
+                </li>
+              ))}
+            </ul>
+            <div data-i18n='zh' class='flex justify-end'>
+              <Button title='所有文章' class='w-fit' href='/blog' variant='ahead' />
+            </div>
+            <div data-i18n='ja' class='flex justify-end'>
+              <Button title='すべての記事' class='w-fit' href='/blog' variant='ahead' />
+            </div>
+            <div data-i18n='en' class='flex justify-end'>
+              <Button title='All posts' class='w-fit' href='/blog' variant='ahead' />
+            </div>
+          </Section>
+        )
+      }
 
       <Section title='Open Source'>
         <div class='flex flex-col gap-y-3' data-i18n='zh'>

@@ -161,75 +161,89 @@ const meta = {
         </div>
 
         {/* 浑然一体、同列同宽绝对对齐的母带轨道卡槽（支持水平弹性滑动，从容包容未来无限年份跨度） */}
-        <div
-          id='cassetteTrackWrapper'
-          class='relative w-full bg-muted/20 dark:bg-zinc-950/70 rounded-xl border border-border/80 shadow-inner overflow-x-auto no-scrollbar scroll-smooth'
-        >
-          <div class='flex w-full items-stretch min-w-[620px] sm:min-w-full'>
-            {
-              cassetteYearSegments.map(({ year: yr, posts }) => (
-                <div
-                  data-track-year={yr}
-                  class='flex flex-col border-r border-border/60 last:border-r-0 group'
-                  style={`flex: ${posts.length};`}
-                >
-                  {/* 上部：该年份内的文章光条推轨 */}
-                  <div class='h-14 flex items-center justify-around px-1 sm:px-2 group-hover:bg-muted/10 transition-colors'>
-                    {posts.map((item) => {
-                      const isManuscript =
-                        item.post.id.includes('manuscripts') ||
-                        (item.post.data.tags && item.post.data.tags.includes('手稿'))
-                      const isLongEssay =
-                        (item.post.data.tags && item.post.data.tags.includes('长文')) || item.charCount >= 800
+        <div class='relative group/track'>
+          {/* 移动端左侧渐变遮罩 (有向左滚动空间时显示) */}
+          <div
+            id='trackFadeLeft'
+            class='pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-background/90 dark:from-zinc-950/90 to-transparent rounded-l-xl opacity-0 transition-opacity duration-300 z-10 sm:hidden'
+          ></div>
 
-                      let barClass = 'w-[2.5px] sm:w-[3px] h-5 bg-muted-foreground/50 hover:bg-foreground'
-                      let typeLabelZh = '随笔'
+          {/* 移动端右侧渐变遮罩 (有向右滚动空间时显示) */}
+          <div
+            id='trackFadeRight'
+            class='pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background/90 dark:from-zinc-950/90 to-transparent rounded-r-xl opacity-0 transition-opacity duration-300 z-10 sm:hidden'
+          ></div>
 
-                      if (isManuscript) {
-                        barClass =
-                          'w-[3.5px] sm:w-[4px] h-10 bg-amber-400 shadow-[0_0_10px_#fbbf24] hover:brightness-125'
-                        typeLabelZh = '手稿企划'
-                      } else if (isLongEssay) {
-                        barClass =
-                          'w-[3px] sm:w-[3.5px] h-7 bg-blue-400 shadow-[0_0_7px_#38bdf8] hover:brightness-125'
-                        typeLabelZh = '深度长文'
-                      }
-
-                      return (
-                        <button
-                          type='button'
-                          class={`cassette-bar rounded-full transition-all duration-150 hover:scale-125 cursor-pointer focus:outline-none ${barClass}`}
-                          data-post-id={item.post.id}
-                          data-title={item.post.data.title}
-                          data-date={item.fullDateStr}
-                          data-words={item.charCount}
-                          data-read={item.readMin}
-                          data-type-label={typeLabelZh}
-                          aria-label={`${item.fullDateStr}: ${item.post.data.title}`}
-                          title={`${item.fullDateStr} · ${item.post.data.title}`}
-                        />
-                      )
-                    })}
-                  </div>
-
-                  {/* 下部：绝对与上方同列同宽的年份标签与跳转 */}
-                  <a
-                    href={`#year-${yr}`}
-                    class='border-t border-border/70 group-hover:bg-muted/20 py-1.5 text-center transition-colors no-underline block'
-                    title={`跳转至 ${yr} 年`}
+          <div
+            id='cassetteTrackWrapper'
+            class='relative w-full bg-muted/20 dark:bg-zinc-950/70 rounded-xl border border-border/80 shadow-inner overflow-x-auto no-scrollbar scroll-smooth'
+          >
+            <div class='flex w-full items-stretch min-w-[620px] sm:min-w-full'>
+              {
+                cassetteYearSegments.map(({ year: yr, posts }) => (
+                  <div
+                    data-track-year={yr}
+                    class='flex flex-col border-r border-border/60 last:border-r-0 group'
+                    style={`flex: ${posts.length};`}
                   >
-                    <span class='text-foreground/80 group-hover:text-foreground font-semibold block text-[11px] sm:text-xs'>
-                      {yr}
-                    </span>
-                    <span class='text-[10px] text-muted-foreground/70 block'>
-                      <span data-i18n='zh'>{posts.length} 篇</span>
-                      <span data-i18n='ja'>{posts.length} 件</span>
-                      <span data-i18n='en'>{posts.length} {posts.length > 1 ? 'posts' : 'post'}</span>
-                    </span>
-                  </a>
-                </div>
-              ))
-            }
+                    {/* 上部：该年份内的文章光条推轨 */}
+                    <div class='h-14 flex items-center justify-around px-1 sm:px-2 group-hover:bg-muted/10 transition-colors'>
+                      {posts.map((item) => {
+                        const isManuscript =
+                          item.post.id.includes('manuscripts') ||
+                          (item.post.data.tags && item.post.data.tags.includes('手稿'))
+                        const isLongEssay =
+                          (item.post.data.tags && item.post.data.tags.includes('长文')) || item.charCount >= 800
+
+                        let barClass = 'w-[2.5px] sm:w-[3px] h-5 bg-muted-foreground/50 hover:bg-foreground'
+                        let typeLabelZh = '随笔'
+
+                        if (isManuscript) {
+                          barClass =
+                            'w-[3.5px] sm:w-[4px] h-10 bg-amber-400 shadow-[0_0_10px_#fbbf24] hover:brightness-125'
+                          typeLabelZh = '手稿企划'
+                        } else if (isLongEssay) {
+                          barClass =
+                            'w-[3px] sm:w-[3.5px] h-7 bg-blue-400 shadow-[0_0_7px_#38bdf8] hover:brightness-125'
+                          typeLabelZh = '深度长文'
+                        }
+
+                        return (
+                          <button
+                            type='button'
+                            class={`cassette-bar rounded-full transition-all duration-150 hover:scale-125 cursor-pointer focus:outline-none ${barClass}`}
+                            data-post-id={item.post.id}
+                            data-title={item.post.data.title}
+                            data-date={item.fullDateStr}
+                            data-words={item.charCount}
+                            data-read={item.readMin}
+                            data-type-label={typeLabelZh}
+                            aria-label={`${item.fullDateStr}: ${item.post.data.title}`}
+                            title={`${item.fullDateStr} · ${item.post.data.title}`}
+                          />
+                        )
+                      })}
+                    </div>
+
+                    {/* 下部：绝对与上方同列同宽的年份标签与跳转 */}
+                    <a
+                      href={`#year-${yr}`}
+                      class='border-t border-border/70 group-hover:bg-muted/20 py-1.5 text-center transition-colors no-underline block'
+                      title={`跳转至 ${yr} 年`}
+                    >
+                      <span class='text-foreground/80 group-hover:text-foreground font-semibold block text-[11px] sm:text-xs'>
+                        {yr}
+                      </span>
+                      <span class='text-[10px] text-muted-foreground/70 block'>
+                        <span data-i18n='zh'>{posts.length} 篇</span>
+                        <span data-i18n='ja'>{posts.length} 件</span>
+                        <span data-i18n='en'>{posts.length} {posts.length > 1 ? 'posts' : 'post'}</span>
+                      </span>
+                    </a>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
 
@@ -260,6 +274,12 @@ const meta = {
             <span data-i18n='zh'>✦ 点击光条平滑直达文章</span>
             <span data-i18n='ja'>✦ 光条をクリックして記事へジャンプ</span>
             <span data-i18n='en'>✦ Click bar to scroll into view</span>
+          </div>
+          <div class='text-[10px] text-muted-foreground/60 sm:hidden flex items-center gap-1'>
+            <span>⟷</span>
+            <span data-i18n='zh'>左右滑动探索更多年份</span>
+            <span data-i18n='ja'>左右にスワイプして探索</span>
+            <span data-i18n='en'>Swipe horizontally to explore</span>
           </div>
         </div>
       </div>
@@ -744,14 +764,44 @@ const meta = {
         })
       })
 
-      // 7. 轨道横向交互：手机端默认滑至最新年份 + 桌面端鼠标滚轮横移支持
+      // 7. 轨道横向交互：手机端默认滑至最新年份 + 动态边缘遮罩 + 桌面端鼠标滚轮横移支持
       const trackWrapper = document.getElementById('cassetteTrackWrapper')
+      const fadeLeft = document.getElementById('trackFadeLeft')
+      const fadeRight = document.getElementById('trackFadeRight')
+
+      function updateTrackFades() {
+        if (!trackWrapper || !fadeLeft || !fadeRight) return
+        const maxScroll = trackWrapper.scrollWidth - trackWrapper.clientWidth
+        if (maxScroll <= 2) {
+          fadeLeft.classList.add('opacity-0')
+          fadeRight.classList.add('opacity-0')
+          return
+        }
+        // 有向左滚动空间 (当前不在最左端)
+        if (trackWrapper.scrollLeft > 10) {
+          fadeLeft.classList.remove('opacity-0')
+        } else {
+          fadeLeft.classList.add('opacity-0')
+        }
+        // 有向右滚动空间 (当前不在最右端)
+        if (trackWrapper.scrollLeft < maxScroll - 10) {
+          fadeRight.classList.remove('opacity-0')
+        } else {
+          fadeRight.classList.add('opacity-0')
+        }
+      }
+
       if (trackWrapper) {
-        // 手机端加载时平滑滚动至最右侧（最新年份 2026）
+        trackWrapper.addEventListener('scroll', updateTrackFades, { passive: true })
+
+        // 手机端加载时平滑滚动至最右侧（最新年份 2026）并初始化遮罩
         if (window.innerWidth < 640) {
           setTimeout(() => {
             trackWrapper.scrollLeft = trackWrapper.scrollWidth
+            updateTrackFades()
           }, 150)
+        } else {
+          updateTrackFades()
         }
 
         // 桌面端鼠标滚轮在轨道上方时，将纵向滚轮转为平滑横向滚动
