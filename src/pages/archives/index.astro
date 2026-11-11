@@ -1,19 +1,91 @@
 ---
-import { PostPreview } from 'astro-pure/components/pages'
-import { getBlogCollection, groupCollectionsByYear, sortMDByDate } from 'astro-pure/server'
+import { render } from 'astro:content'
+import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import { Button } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
 
 export const prerender = true
 
-const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts)
-const allPostsByYear = groupCollectionsByYear(allPostsByDate)
-const years = allPostsByYear.map(([year]) => year)
+// 1. 获取全量随笔与手稿
+const rawPosts = await getBlogCollection()
+const allPostsByDate = sortMDByDate(rawPosts)
+
+// 2. 在构建期（SSG）预编译每篇文章的正文组件与元数据
+const postsWithRender = await Promise.all(
+  allPostsByDate.map(async (post) => {
+    const { Content } = await render(post)
+    const rawBody = post.body || ''
+
+    // 提取纯净开篇文摘（去除 Markdown 标题、图片与多余符号）
+    const cleanExcerpt = rawBody
+      .replace(/^#+\s+.*$/gm, '')
+      .replace(/!\[.*?\]\(.*?\)/g, '')
+      .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+      .replace(/[`*_\-#>]/g, '')
+      .replace(/\r?\n\s*\r?\n/g, '\n')
+      .trim()
+      .slice(0, 160)
+
+    const dateObj = new Date(post.data.publishDate)
+    const year = dateObj.getFullYear()
+    const month = dateObj.getMonth() + 1
+    const day = dateObj.getDate()
+    const monthStr = String(month).padStart(2, '0')
+    const dayStr = String(day).padStart(2, '0')
+    const dayOfWeek = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][dateObj.getDay()]
+
+    // 季节识别
+    const season =
+      month >= 3 && month <= 5
+        ? { icon: '🌸', name: '春' }
+        : month >= 6 && month <= 8
+          ? { icon: '☀️', name: '夏' }
+          : month >= 9 && month <= 11
+            ? { icon: '🍂', name: '秋' }
+            : { icon: '❄️', name: '冬' }
+
+    // 字数统计与预估阅读时长
+    const charCount = rawBody.replace(/\s+/g, '').length
+    const readMin = Math.max(1, Math.round(charCount / 350))
+
+    return {
+      post,
+      Content,
+      year,
+      monthStr,
+      dayStr,
+      fullDateStr: `${year}-${monthStr}-${dayStr}`,
+      dayOfWeek,
+      season,
+      charCount,
+      readMin,
+      cleanExcerpt,
+      url: `/blog/${post.id}`
+    }
+  })
+)
+
+// 3. 按年份聚类
+const yearMap = new Map<number, typeof postsWithRender>()
+for (const item of postsWithRender) {
+  if (!yearMap.has(item.year)) {
+    yearMap.set(item.year, [])
+  }
+  yearMap.get(item.year)!.push(item)
+}
+
+// 默认倒序年份数组
+const sortedYears = Array.from(yearMap.keys()).sort((a, b) => b - a)
+
+// 全局统计数据
+const totalPosts = postsWithRender.length
+const totalChars = postsWithRender.reduce((acc, cur) => acc + cur.charCount, 0)
+const minYear = Math.min(...sortedYears)
+const maxYear = Math.max(...sortedYears)
 
 const meta = {
-  description: 'A list of all the years of creating my posts',
-  title: 'Archives'
+  description: '侯润田的岁月编年长卷：按时间轴沉浸式翻阅 2022 至 2026 的个人心境、随笔与思考记事。',
+  title: '编年岁月 · 时光长卷'
 }
 ---
 
@@ -21,144 +93,416 @@ const meta = {
   <Button title='Back' href='/blog' variant='back' />
 
   <main class='mt-6 lg:mt-10'>
-    <div id='content-header' class='animate'>
-      <h1 class='mb-4 text-3xl font-medium'>
-        <span data-i18n='zh'>时间轴 · 年表</span>
-        <span data-i18n='ja'>アーカイブ · 年表</span>
-        <span data-i18n='en'>Archives</span>
+    {/* 顶部：编年时光全景题头 */}
+    <div id='chronicle-header' class='animate'>
+      <div class='flex items-center gap-2 text-xs font-mono text-muted-foreground uppercase tracking-widest mb-2'>
+        <span class='size-2 rounded-full bg-primary animate-pulse'></span>
+        <span>Chronicle Stream · 岁月编年长卷</span>
+      </div>
+
+      <h1 class='text-3xl sm:text-4xl font-medium tracking-tight text-foreground mb-3'>
+        <span data-i18n='zh'>编年记事 · 时光长卷</span>
+        <span data-i18n='ja'>年代記 · 時系列アーカイブ</span>
+        <span data-i18n='en'>Chronicles &amp; Timeline</span>
       </h1>
-      <p class='text-sm text-muted-foreground mb-6'>
-        <span data-i18n='zh'>按年份归档的所有随笔、手稿与生活记事（共 {allPosts.length} 篇）。</span>
-        <span data-i18n='ja'>年次別にアーカイブされたすべての随筆・手稿・日記（全 {allPosts.length} 件）。</span>
-        <span data-i18n='en'>All essays, manuscripts, and chronicles by year ({allPosts.length} posts).</span>
-      </p>
 
-      {/* 快捷工具栏：年份直达标签 + 正序/倒序翻转按钮 */}
-      {
-        years.length > 0 && (
-          <div class='mb-8 flex flex-wrap items-center justify-between gap-3 text-xs'>
-            {/* 年份直达标签 */}
-            <div class='flex flex-wrap items-center gap-1.5 sm:gap-2'>
-              <span class='text-muted-foreground me-1'>
-                <span data-i18n='zh'>直达年份：</span>
-                <span data-i18n='ja'>年次ジャンプ：</span>
-                <span data-i18n='en'>Jump:</span>
-              </span>
-              {years.map((year) => (
-                <a
-                  href={`#year-${year}`}
-                  class='rounded-full border border-border/70 bg-muted/30 px-2.5 py-1 text-muted-foreground hover:border-foreground/40 hover:bg-muted hover:text-foreground no-underline transition-colors font-mono'
-                >
-                  {year}
-                </a>
-              ))}
-            </div>
+      <blockquote class='text-xs sm:text-sm text-muted-foreground/90 italic border-l-2 border-primary/40 pl-3 my-4 leading-relaxed'>
+        “人类要是不在这种时刻思考哲学，那我会很怀疑哲学究竟是怎么发展起来的。”
+        <span class='block mt-1 text-[11px] font-mono not-italic text-muted-foreground/60'>
+          —— 聚合呈现自 {minYear} 年至 {maxYear} 年的思考随笔、长篇手稿与心境变迁。
+        </span>
+      </blockquote>
 
-            {/* 正序 / 倒序一键翻转按钮 */}
-            <button
-              id='toggleSortBtn'
-              type='button'
-              class='inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-muted/60 px-3 py-1 font-medium text-foreground hover:bg-muted transition-colors cursor-pointer'
-              title='切换时间正序/倒序排列'
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='14'
-                height='14'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                stroke-width='2'
-                stroke-linecap='round'
-                stroke-linejoin='round'
-                class='text-muted-foreground'
-              >
-                <path d='m3 16 4 4 4-4' />
-                <path d='M7 20V4' />
-                <path d='m21 8-4-4-4 4' />
-                <path d='M17 4v16' />
-              </svg>
-              <span id='sortBtnText' data-i18n='zh'>
-                倒序 (最新在前)
-              </span>
-              <span id='sortBtnTextJa' data-i18n='ja'>
-                降順 (新しい順)
-              </span>
-              <span id='sortBtnTextEn' data-i18n='en'>
-                Newest First
-              </span>
-            </button>
-          </div>
-        )
-      }
+      {/* 时光里程碑指标面板 */}
+      <div class='my-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono not-prose'>
+        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
+          <span class='text-[10px] text-muted-foreground uppercase block'>Time Span · 跨越年轮</span>
+          <span class='text-base font-semibold text-foreground mt-0.5 block'>{minYear} — {maxYear}</span>
+          <span class='text-[10px] text-muted-foreground'>跨越 5 个年头</span>
+        </div>
+        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
+          <span class='text-[10px] text-muted-foreground uppercase block'>Chronicles · 记录篇目</span>
+          <span class='text-base font-semibold text-foreground mt-0.5 block'>{totalPosts} 篇记事</span>
+          <span class='text-[10px] text-muted-foreground'>随笔与手稿全集</span>
+        </div>
+        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
+          <span class='text-[10px] text-muted-foreground uppercase block'>Total Words · 文字沉淀</span>
+          <span class='text-base font-semibold text-foreground mt-0.5 block'>约 {(totalChars / 10000).toFixed(1)} 万字</span>
+          <span class='text-[10px] text-muted-foreground'>{totalChars.toLocaleString()} 字符</span>
+        </div>
+        <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
+          <span class='text-[10px] text-muted-foreground uppercase block'>Read Flow · 心流模式</span>
+          <span class='text-base font-semibold text-primary mt-0.5 block'>原地展开阅读</span>
+          <span class='text-[10px] text-muted-foreground'>免跳页连贯体验</span>
+        </div>
+      </div>
     </div>
 
-    {allPosts.length === 0 && <p>No posts yet.</p>}
-
-    <section id='content' class='animate flex flex-col' aria-label='Blog post list'>
-      {
-        allPostsByYear.map(([year, posts]) => (
-          <div id={`year-${year}`} class='year-group relative mt-16 scroll-mt-24'>
-            <h2
-              class='absolute -start-6 -top-16 z-0 text-9xl font-bold text-transparent opacity-12 dark:opacity-25 select-none pointer-events-none'
-              style='-webkit-text-stroke-width:2px;-webkit-text-stroke-color:hsl(var(--foreground)/var(--un-text-opacity))'
+    {/* 吸顶控制中枢：年份直达轨 + 搜索过滤 + 全览展开 + 正倒序翻转 */}
+    <nav
+      id='timeline-controller'
+      class='sticky top-16 z-30 my-6 -mx-3 sm:mx-0 p-2.5 sm:p-3 rounded-2xl border border-border/80 bg-background/85 backdrop-blur-md shadow-sm text-xs font-mono flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3'
+      aria-label='Timeline Navigation'
+    >
+      {/* 左侧：年份跃迁胶囊按钮 */}
+      <div class='flex items-center gap-1.5 overflow-x-auto py-0.5 no-scrollbar' id='yearPillsContainer'>
+        <span class='text-muted-foreground/70 text-[11px] me-1 shrink-0'>年份跃迁:</span>
+        {
+          sortedYears.map((yr) => (
+            <a
+              href={`#year-${yr}`}
+              data-year-target={yr}
+              class='year-pill px-2.5 py-1 rounded-lg border border-border/60 bg-muted/40 hover:bg-muted hover:border-foreground/30 text-muted-foreground hover:text-foreground no-underline transition-all shrink-0 font-medium'
             >
-              <samp>{year}</samp>
-            </h2>
-            <p class='px-5 text-muted-foreground flex items-center justify-between'>
-              <span>
-                <span data-i18n='zh'>{posts.length} 篇文章</span>
-                <span data-i18n='ja'>{posts.length} 件の記録</span>
-                <span data-i18n='en'>
-                  {posts.length} post{posts.length > 1 && 's'}
-                </span>
-              </span>
-              <a href='#content-header' class='text-xs text-muted-foreground/60 hover:text-foreground no-underline transition-colors'>
-                ↑ Top
-              </a>
-            </p>
-            <ul class='flex flex-col text-start'>
-              {posts.map((p) => (
-                <PostPreview post={p} class='border-0 bg-transparent py-2' />
-              ))}
-            </ul>
-          </div>
-        ))
+              {yr}
+              <span class='text-[9px] opacity-60 ms-0.5'>({yearMap.get(yr)!.length})</span>
+            </a>
+          ))
+        }
+      </div>
+
+      {/* 右侧交互控件：搜索框 + 全卷畅读开关 + 正序/倒序 */}
+      <div class='flex flex-wrap items-center gap-2 shrink-0'>
+        {/* 即时搜索框 */}
+        <div class='relative flex-1 sm:flex-initial'>
+          <input
+            type='text'
+            id='chronicleSearch'
+            placeholder='搜索文字/日期/记忆...'
+            class='w-full sm:w-36 md:w-44 px-2.5 py-1.5 rounded-lg border border-border/70 bg-background text-foreground text-[11px] focus:outline-none focus:ring-1 focus:ring-primary focus:w-48 transition-all'
+          />
+        </div>
+
+        {/* 全局折叠/展开切换 */}
+        <button
+          type='button'
+          id='toggleExpandAllBtn'
+          class='px-2.5 py-1.5 rounded-lg border border-border/70 bg-muted/40 hover:bg-muted text-foreground transition-colors cursor-pointer flex items-center gap-1 shrink-0'
+          title='展开或折叠全部文章正文'
+        >
+          <span>📖</span>
+          <span id='expandAllText'>全卷畅读</span>
+        </button>
+
+        {/* 顺流/逆流翻转按钮 */}
+        <button
+          type='button'
+          id='toggleDirectionBtn'
+          class='px-2.5 py-1.5 rounded-lg border border-border/70 bg-muted/40 hover:bg-muted text-foreground transition-colors cursor-pointer flex items-center gap-1 shrink-0'
+          title='切换时间正序（最早在前）或倒序（最新在前）'
+        >
+          <svg class='size-3.5 text-muted-foreground' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>
+            <path d='m3 16 4 4 4-4' />
+            <path d='M7 20V4' />
+            <path d='m21 8-4-4-4 4' />
+            <path d='M17 4v16' />
+          </svg>
+          <span id='directionText'>倒序 (最新)</span>
+        </button>
+      </div>
+    </nav>
+
+    {/* 搜索无结果提示 */}
+    <div id='searchEmptyTip' class='hidden py-12 text-center text-sm text-muted-foreground font-mono'>
+      🔍 未找到与关键词匹配的编年记事。
+    </div>
+
+    {/* 编年时间轴主体容器 */}
+    <div id='chronicleContainer' class='animate flex flex-col space-y-12 sm:space-y-16'>
+      {
+        sortedYears.map((year) => {
+          const yearPosts = yearMap.get(year)!
+          return (
+            <section
+              id={`year-${year}`}
+              data-year={year}
+              class='year-section relative scroll-mt-36'
+            >
+              {/* 年份大背景与标题 */}
+              <div class='flex items-baseline justify-between border-b border-border/70 pb-3 mb-6 sm:mb-8'>
+                <div class='flex items-center gap-3'>
+                  <h2 class='text-2xl sm:text-3xl font-mono font-bold text-foreground tracking-tight'>
+                    {year}
+                  </h2>
+                  <span class='text-xs font-mono text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full border border-border/50'>
+                    {yearPosts.length} 篇记事
+                  </span>
+                </div>
+                <a
+                  href='#chronicle-header'
+                  class='text-[11px] font-mono text-muted-foreground/60 hover:text-foreground no-underline transition-colors'
+                >
+                  ↑ 顶端
+                </a>
+              </div>
+
+              {/* 该年份下的时间轴列表 */}
+              <div class='relative pl-6 sm:pl-8 before:absolute before:left-2 sm:before:left-3 before:top-3 before:bottom-3 before:w-[2px] before:bg-gradient-to-b before:from-primary/60 before:via-border/80 before:to-transparent flex flex-col space-y-6 sm:space-y-8 post-stream'>
+                {yearPosts.map((item) => {
+                  const ContentComponent = item.Content
+                  return (
+                    <article
+                      data-post-id={item.post.id}
+                      data-post-title={item.post.data.title}
+                      data-post-year={item.year}
+                      data-search-text={`${item.post.data.title} ${item.cleanExcerpt} ${item.fullDateStr} ${item.post.data.tags?.join(' ') || ''}`.toLowerCase()}
+                      class='chronicle-card group relative p-4 sm:p-5 rounded-2xl border border-border/70 bg-card/40 hover:bg-card/70 hover:border-foreground/30 transition-all shadow-sm'
+                    >
+                      {/* 时间轴上的发光微节点 */}
+                      <span
+                        class='absolute -left-[1.35rem] sm:-left-[1.6rem] top-5 size-3 rounded-full border-2 border-primary bg-background shadow-[0_0_8px_hsl(var(--primary)/0.6)] group-hover:scale-125 transition-transform duration-200'
+                        aria-hidden='true'
+                      />
+
+                      {/* 卡片头部：日期、星期、季节、标签与篇幅 */}
+                      <div class='flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-muted-foreground mb-2.5 pb-2 border-b border-border/40'>
+                        <div class='flex items-center gap-2 flex-wrap'>
+                          <span class='text-sm sm:text-base font-semibold text-foreground tracking-tight'>
+                            {item.post.data.title}
+                          </span>
+                          <span class='px-1.5 py-0.5 rounded bg-muted/60 text-[10px] border border-border/40'>
+                            {item.dayOfWeek}
+                          </span>
+                          <span class='px-1.5 py-0.5 rounded bg-primary/10 text-primary text-[10px] border border-primary/20'>
+                            {item.season.icon} {item.season.name}季
+                          </span>
+                        </div>
+
+                        <div class='flex items-center gap-2 text-[11px] text-muted-foreground/80'>
+                          <span>{item.charCount} 字</span>
+                          <span>·</span>
+                          <span>约 {item.readMin} 分钟</span>
+                        </div>
+                      </div>
+
+                      {/* 标签 */}
+                      {item.post.data.tags && item.post.data.tags.length > 0 && (
+                        <div class='flex flex-wrap items-center gap-1.5 mb-3'>
+                          {item.post.data.tags.map((tag: string) => (
+                            <span class='text-[10px] font-mono text-muted-foreground/70 px-2 py-0.5 rounded-md bg-muted/30 border border-border/40'>
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* 默认折叠文摘预览区 */}
+                      <div class='entry-preview relative text-sm sm:text-[14.5px] text-muted-foreground leading-relaxed'>
+                        <p class='line-clamp-3 sm:line-clamp-4 font-normal'>
+                          {item.cleanExcerpt}
+                        </p>
+                      </div>
+
+                      {/* 原地展开全文内容区（默认隐藏） */}
+                      <div class='entry-full hidden pt-3 border-t border-border/50 text-foreground'>
+                        <div class='prose prose-pure max-w-none text-sm sm:text-base leading-relaxed'>
+                          <ContentComponent />
+                        </div>
+                      </div>
+
+                      {/* 底部交互条：展开/收起全文 + 独立页面跳转 */}
+                      <div class='mt-4 pt-2.5 flex items-center justify-between gap-3 text-xs font-mono border-t border-border/40'>
+                        <button
+                          type='button'
+                          class='toggle-entry-btn inline-flex items-center gap-1.5 text-primary hover:underline font-medium cursor-pointer transition-colors'
+                        >
+                          <span class='btn-label'>展开全文</span>
+                          <span class='btn-icon transition-transform'>▾</span>
+                        </button>
+
+                        <a
+                          href={item.url}
+                          target='_blank'
+                          class='text-[11px] text-muted-foreground hover:text-foreground inline-flex items-center gap-1 no-underline transition-colors opacity-75 hover:opacity-100'
+                          title='在新窗口打开独立文章详情页（可查看评论）'
+                        >
+                          <span>独立页面 · 评论</span>
+                          <span>↗</span>
+                        </a>
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
+            </section>
+          )
+        })
       }
-    </section>
+    </div>
   </main>
 
+  <style is:global>
+    /* 编年时间轴精炼排版定制 */
+    .prose-pure p {
+      margin-bottom: 1.15em;
+      line-height: 1.8;
+    }
+    .prose-pure blockquote {
+      border-left-color: hsl(var(--primary));
+      font-style: italic;
+      color: hsl(var(--muted-foreground));
+    }
+    .year-pill.active-year {
+      background-color: hsl(var(--foreground)) !important;
+      color: hsl(var(--background)) !important;
+      border-color: hsl(var(--foreground)) !important;
+    }
+  </style>
+
+  {/* 客户端交互脚本：即时搜索、原地单篇展开、全卷畅读、顺流逆流翻转、滚动吸附指示 */}
   <script is:inline>
     ;(function () {
-      const btn = document.getElementById('toggleSortBtn')
-      const container = document.getElementById('content')
-      if (!btn || !container) return
+      let isAllExpanded = false
+      let isAscending = false // 默认倒序 (最新在前)
 
-      let isAsc = false
+      // 1. 原地展开 / 折叠单篇文章
+      const cards = document.querySelectorAll('.chronicle-card')
+      cards.forEach((card) => {
+        const toggleBtn = card.querySelector('.toggle-entry-btn')
+        const preview = card.querySelector('.entry-preview')
+        const full = card.querySelector('.entry-full')
+        const btnLabel = toggleBtn?.querySelector('.btn-label')
+        const btnIcon = toggleBtn?.querySelector('.btn-icon')
 
-      btn.addEventListener('click', () => {
-        isAsc = !isAsc
+        if (toggleBtn && preview && full) {
+          toggleBtn.addEventListener('click', () => {
+            const isCurrentlyExpanded = !full.classList.contains('hidden')
+            if (isCurrentlyExpanded) {
+              full.classList.add('hidden')
+              preview.classList.remove('hidden')
+              if (btnLabel) btnLabel.textContent = '展开全文'
+              if (btnIcon) btnIcon.textContent = '▾'
+            } else {
+              full.classList.remove('hidden')
+              preview.classList.add('hidden')
+              if (btnLabel) btnLabel.textContent = '收起正文'
+              if (btnIcon) btnIcon.textContent = '▴'
+            }
+          })
+        }
+      })
 
-        // Reverse year cards
-        const groups = Array.from(container.querySelectorAll('.year-group'))
-        groups.reverse().forEach((g) => {
-          container.appendChild(g)
-          // Also reverse posts within the year
-          const postList = g.querySelector('ul')
-          if (postList) {
-            const items = Array.from(postList.children).reverse()
-            items.forEach((item) => postList.appendChild(item))
+      // 2. 全卷畅读 / 紧凑速览 切换
+      const expandAllBtn = document.getElementById('toggleExpandAllBtn')
+      const expandAllText = document.getElementById('expandAllText')
+      if (expandAllBtn) {
+        expandAllBtn.addEventListener('click', () => {
+          isAllExpanded = !isAllExpanded
+          cards.forEach((card) => {
+            const preview = card.querySelector('.entry-preview')
+            const full = card.querySelector('.entry-full')
+            const toggleBtn = card.querySelector('.toggle-entry-btn')
+            const btnLabel = toggleBtn?.querySelector('.btn-label')
+            const btnIcon = toggleBtn?.querySelector('.btn-icon')
+
+            if (isAllExpanded) {
+              full?.classList.remove('hidden')
+              preview?.classList.add('hidden')
+              if (btnLabel) btnLabel.textContent = '收起正文'
+              if (btnIcon) btnIcon.textContent = '▴'
+            } else {
+              full?.classList.add('hidden')
+              preview?.classList.remove('hidden')
+              if (btnLabel) btnLabel.textContent = '展开全文'
+              if (btnIcon) btnIcon.textContent = '▾'
+            }
+          })
+          if (expandAllText) {
+            expandAllText.textContent = isAllExpanded ? '紧凑速览' : '全卷畅读'
           }
         })
+      }
 
-        // Update label
-        const zh = document.getElementById('sortBtnText')
-        const ja = document.getElementById('sortBtnTextJa')
-        const en = document.getElementById('sortBtnTextEn')
-        if (zh) zh.textContent = isAsc ? '正序 (最早在前)' : '倒序 (最新在前)'
-        if (ja) ja.textContent = isAsc ? '昇順 (古い順)' : '降順 (新しい順)'
-        if (en) en.textContent = isAsc ? 'Oldest First' : 'Newest First'
-      })
+      // 3. 顺流（最早在前）与 逆流（最新在前）翻转
+      const directionBtn = document.getElementById('toggleDirectionBtn')
+      const directionText = document.getElementById('directionText')
+      const chronicleContainer = document.getElementById('chronicleContainer')
+
+      if (directionBtn && chronicleContainer) {
+        directionBtn.addEventListener('click', () => {
+          isAscending = !isAscending
+
+          // 翻转年份区块
+          const yearSections = Array.from(chronicleContainer.querySelectorAll('.year-section'))
+          yearSections.reverse().forEach((sec) => {
+            chronicleContainer.appendChild(sec)
+
+            // 同时翻转该年份内的文章流
+            const stream = sec.querySelector('.post-stream')
+            if (stream) {
+              const streamCards = Array.from(stream.querySelectorAll('.chronicle-card')).reverse()
+              streamCards.forEach((c) => stream.appendChild(c))
+            }
+          })
+
+          // 更新年份导航条胶囊的顺序
+          const pillsContainer = document.getElementById('yearPillsContainer')
+          if (pillsContainer) {
+            const pills = Array.from(pillsContainer.querySelectorAll('.year-pill')).reverse()
+            pills.forEach((p) => pillsContainer.appendChild(p))
+          }
+
+          if (directionText) {
+            directionText.textContent = isAscending ? '正序 (最早)' : '倒序 (最新)'
+          }
+        })
+      }
+
+      // 4. 即时搜索与过滤
+      const searchInput = document.getElementById('chronicleSearch')
+      const emptyTip = document.getElementById('searchEmptyTip')
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = (e.target.value || '').trim().toLowerCase()
+          let visibleCount = 0
+
+          cards.forEach((card) => {
+            const searchHaystack = card.getAttribute('data-search-text') || ''
+            if (!query || searchHaystack.includes(query)) {
+              card.style.display = ''
+              visibleCount++
+            } else {
+              card.style.display = 'none'
+            }
+          })
+
+          // 处理年份区块是否为空
+          const yearSections = document.querySelectorAll('.year-section')
+          yearSections.forEach((sec) => {
+            const cardsInYear = sec.querySelectorAll('.chronicle-card')
+            const hasVisible = Array.from(cardsInYear).some((c) => c.style.display !== 'none')
+            sec.style.display = hasVisible ? '' : 'none'
+          })
+
+          if (emptyTip) {
+            emptyTip.classList.toggle('hidden', visibleCount > 0)
+          }
+        })
+      }
+
+      // 5. 滚动监听时光轨：自动激活当前年份高亮
+      const yearSections = document.querySelectorAll('.year-section')
+      const yearPills = document.querySelectorAll('.year-pill')
+
+      if ('IntersectionObserver' in window && yearSections.length > 0) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const year = entry.target.getAttribute('data-year')
+                yearPills.forEach((pill) => {
+                  const targetYear = pill.getAttribute('data-year-target')
+                  pill.classList.toggle('active-year', targetYear === year)
+                })
+              }
+            })
+          },
+          { rootMargin: '-20% 0px -70% 0px' }
+        )
+
+        yearSections.forEach((sec) => observer.observe(sec))
+      }
     })()
   </script>
 </PageLayout>
