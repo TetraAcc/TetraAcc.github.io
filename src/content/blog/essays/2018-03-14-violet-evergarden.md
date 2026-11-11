@@ -1,11 +1,12 @@
 ---
-title: '紫罗兰永恒花园 观感'
-description: '写下来吧。 把想说的话写下来吧。 写成信也好写成书也好写成日记也好。 总之，请写下来。 没能传达的心意 没能倾诉的孤单 没能宣泄的愤怒 都写下来。 至少还有纸笔'
-publishDate: '2018-03-14'
+title: 紫罗兰永恒花园 观感
+description: 把想说的话写下来吧。
+publishDate: 2018-03-14
 tags:
   - 随笔
   - 短文
   - 影评
+pin: false
 draft: false
 ---
 
