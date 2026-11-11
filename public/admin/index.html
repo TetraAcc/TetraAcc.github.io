@@ -18,6 +18,39 @@
           CMS.registerPreviewStyle('/admin/preview.css');
         }
       });
+
+      // 仅在 CMS 用户已登录 GitHub 状态下动态注入私密日程入口
+      function syncQuickHubAuth() {
+        try {
+          const raw = localStorage.getItem('sveltia-cms.user');
+          const isAuthed = raw && (JSON.parse(raw).token || JSON.parse(raw).backendName === 'github');
+          const hub = document.getElementById('tetra-quick-hub');
+          let calLink = document.getElementById('tetra-quick-cal');
+          let sep = document.getElementById('tetra-quick-cal-sep');
+
+          if (isAuthed && hub) {
+            if (!calLink) {
+              sep = document.createElement('span');
+              sep.className = 'sep';
+              sep.id = 'tetra-quick-cal-sep';
+              sep.textContent = '/';
+              calLink = document.createElement('a');
+              calLink.id = 'tetra-quick-cal';
+              calLink.href = '/admin/calendar';
+              calLink.target = '_blank';
+              calLink.title = '打开私密日程台账（管理员专享）';
+              calLink.textContent = '📅 日程台账';
+              hub.appendChild(sep);
+              hub.appendChild(calLink);
+            }
+          } else {
+            if (calLink) calLink.remove();
+            if (sep) sep.remove();
+          }
+        } catch (e) {}
+      }
+      window.addEventListener('DOMContentLoaded', syncQuickHubAuth);
+      setInterval(syncQuickHubAuth, 1200);
     </script>
 
     <style>

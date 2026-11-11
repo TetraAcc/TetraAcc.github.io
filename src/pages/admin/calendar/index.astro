@@ -3,157 +3,212 @@ import PageLayout from '@/layouts/CommonPage.astro'
 import { CALENDAR_CONFIG } from '@/data/calendar'
 
 const headings = [
-  { depth: 2, slug: 'calendar-view', text: 'Calendar' },
+  { depth: 2, slug: 'calendar-view', text: 'Schedule' },
   { depth: 2, slug: 'subscribe', text: 'Subscribe' }
 ]
 ---
 
-<PageLayout title='Calendar & Schedule' {headings} pagefind={false} noindex={true}>
+<PageLayout title='日程台账 · 管理后台' {headings} pagefind={false} noindex={true}>
   <link
     rel='stylesheet'
     href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css'
   />
 
-  <p data-i18n='zh'>
-    山形大学学事日程、中日法定节假日与调休、个人就活与实习 DDL 实时日程台账。由常驻 Linux 主机每日自动聚合落盘并同步。
-  </p>
-  <p data-i18n='ja'>
-    山形大学の学事日程、日中国民の祝日・振替休日、就職活動・インターン選考の締切をリアルタイムで同期する統合カレンダー。
-  </p>
-  <p data-i18n='en'>
-    Unified calendar tracking Yamagata University academic events, China &amp; Japan national holidays, and career application deadlines.
-  </p>
-
-  {/* 顶部一键订阅与操作栏 */}
-  <h2 id='subscribe'>
-    <span data-i18n='zh'>Subscribe · 一键导入与订阅</span>
-    <span data-i18n='ja'>Subscribe · カレンダー購読</span>
-    <span data-i18n='en'>Subscribe</span>
-  </h2>
-  <div class='not-prose my-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs font-mono'>
-    <a
-      href={CALENDAR_CONFIG.webcalUrl}
-      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
-      title='点击直接唤起 iPhone、iPad、Mac 或系统日历应用订阅'
-    >
-      <div class='flex items-center gap-2'>
-        <span class='text-base'>🍏</span>
-        <div class='flex flex-col text-start'>
-          <span class='font-medium text-[13px]'>Apple / 系统日历</span>
-          <span class='text-[10px] text-muted-foreground'>webcal:// 一键订阅</span>
-        </div>
-      </div>
-      <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>↗</span>
-    </a>
-
-    <a
-      href={CALENDAR_CONFIG.googleCalUrl}
-      target='_blank'
-      rel='noopener noreferrer'
-      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
-      title='直接跳转在 Google Calendar 网页端添加此日历'
-    >
-      <div class='flex items-center gap-2'>
-        <span class='text-base'>📅</span>
-        <div class='flex flex-col text-start'>
-          <span class='font-medium text-[13px]'>Google Calendar</span>
-          <span class='text-[10px] text-muted-foreground'>添加到谷歌日历</span>
-        </div>
-      </div>
-      <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>↗</span>
-    </a>
-
-    <a
-      href={CALENDAR_CONFIG.icsUrl}
-      download='tetra_schedule.ics'
-      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
-      title='下载标准 iCalendar (.ics) 文件'
-    >
-      <div class='flex items-center gap-2'>
-        <span class='text-base'>⬇️</span>
-        <div class='flex flex-col text-start'>
-          <span class='font-medium text-[13px]'>下载 .ICS 文件</span>
-          <span class='text-[10px] text-muted-foreground'>手动导入到任意应用</span>
-        </div>
-      </div>
-      <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-y-0.5'>↓</span>
-    </a>
-
-    <button
-      type='button'
-      id='copyFeedBtn'
-      data-feed-url={CALENDAR_CONFIG.webcalUrl}
-      class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all text-start text-foreground cursor-pointer'
-      title='复制订阅链接，可手动粘贴至 Outlook 等'
-    >
-      <div class='flex items-center gap-2'>
-        <span class='text-base'>📋</span>
-        <div class='flex flex-col text-start'>
-          <span class='font-medium text-[13px]'>复制订阅源 URL</span>
-          <span id='copyFeedText' class='text-[10px] text-muted-foreground'>点击复制到剪贴板</span>
-        </div>
-      </div>
-      <span class='text-muted-foreground/60 group-hover:text-primary transition-colors'>⎘</span>
-    </button>
-  </div>
-
-  {/* 日历控制条：时区切换、图例、视图切换 */}
-  <h2 id='calendar-view'>
-    <span data-i18n='zh'>Schedule · 日历视图</span>
-    <span data-i18n='ja'>Schedule · カレンダー表示</span>
-    <span data-i18n='en'>Schedule</span>
-  </h2>
-
-  <div class='not-prose my-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-3 rounded-xl border border-border/70 bg-card/40 text-xs'>
-    {/* 分类颜色图例 */}
-    <div class='flex flex-wrap items-center gap-2 text-[11px] font-mono'>
-      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20'>
-        <span class='size-1.5 rounded-full bg-red-500'></span>
-        <span>🔴 紧急/就活 DDL</span>
-      </span>
-      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'>
-        <span class='size-1.5 rounded-full bg-blue-500'></span>
-        <span>🔵 活动/说明会/课程</span>
-      </span>
-      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20'>
-        <span class='size-1.5 rounded-full bg-green-500'></span>
-        <span>🟢 中日假期/学校休业</span>
-      </span>
-      <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'>
-        <span class='size-1.5 rounded-full bg-amber-500'></span>
-        <span>🟠 调休补班/学校调课</span>
-      </span>
+  {/* 身份验证拦截门（未登录前展示，保护敏感日程与 Steam Deck 源） */}
+  <div id='authGate' class='not-prose my-8 p-6 sm:p-8 rounded-2xl border border-border/80 bg-card/60 backdrop-blur-md shadow-lg max-w-xl mx-auto text-center'>
+    <div class='size-14 rounded-2xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner'>
+      🔒
     </div>
+    <h2 class='text-xl sm:text-2xl font-medium text-foreground tracking-tight'>
+      私密日程台账 · 管理员验证
+    </h2>
+    <p class='mt-2.5 text-xs sm:text-sm text-muted-foreground leading-relaxed'>
+      此页面聚合博主个人就活投递、企业面试/说明会、大学学事与私密 DDL，仅供管理员访问。
+    </p>
 
-    {/* 右侧：时区切换开关（JST / CST） */}
-    <div class='flex items-center gap-2 self-end md:self-auto font-mono'>
-      <span class='text-muted-foreground text-[11px]'>时区 Timezone:</span>
-      <div id='tzSwitcher' class='inline-flex rounded-lg border border-border/70 p-0.5 bg-muted/40'>
+    <div class='mt-6 flex flex-col gap-3 text-xs'>
+      <a
+        href='/admin/'
+        class='w-full py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 no-underline shadow-sm'
+      >
+        <span>🐙 前往 CMS 登录 GitHub 账号（无缝单点授权）</span>
+        <span>↗</span>
+      </a>
+
+      <div class='relative my-2 flex items-center justify-center'>
+        <div class='absolute inset-0 flex items-center'><span class='w-full border-t border-border/60'></span></div>
+        <span class='relative bg-card px-3 text-[11px] text-muted-foreground font-mono uppercase'>或通过口令临时解锁</span>
+      </div>
+
+      <div class='flex items-center gap-2'>
+        <input
+          type='password'
+          id='pinInput'
+          placeholder='输入管理访问口令...'
+          class='flex-1 px-3 py-2 rounded-xl border border-border/80 bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-mono'
+        />
         <button
           type='button'
-          data-tz='Asia/Tokyo'
-          class='tz-btn active-tz px-2 py-1 rounded text-[11px] font-medium transition-colors'
+          id='unlockBtn'
+          class='px-4 py-2 rounded-xl bg-foreground text-background font-medium hover:opacity-90 transition-all cursor-pointer text-xs shrink-0'
         >
-          🇯🇵 JST (东京 UTC+9)
-        </button>
-        <button
-          type='button'
-          data-tz='Asia/Shanghai'
-          class='tz-btn px-2 py-1 rounded text-[11px] font-medium transition-colors text-muted-foreground'
-        >
-          🇨🇳 CST (北京 UTC+8)
+          解锁访问
         </button>
       </div>
+      <p id='pinError' class='text-[11px] text-red-500 hidden text-start font-mono'>
+        ⚠️ 访问口令不正确，请重新输入或在 CMS 登录 GitHub。
+      </p>
     </div>
   </div>
 
-  {/* 日历主容器 */}
-  <div class='not-prose my-4 rounded-xl border border-border/70 bg-card/40 p-3 sm:p-5 shadow-sm overflow-hidden'>
-    <div id='calendarLoading' class='py-12 text-center text-sm text-muted-foreground flex items-center justify-center gap-2'>
-      <span class='size-2 rounded-full bg-primary animate-ping'></span>
-      <span>正在加载并解析日历数据...</span>
+  {/* 日历受保护主体（验证成功后展现） */}
+  <div id='calendarMainArea' class='hidden'>
+    <div class='not-prose mb-4 flex items-center justify-between gap-2 p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs'>
+      <div class='flex items-center gap-2'>
+        <span class='text-sm'>🛡️</span>
+        <span class='font-medium' id='authStatusText'>管理员身份已核验通过 · 实时连接 Steam Deck 服务端</span>
+      </div>
+      <button
+        type='button'
+        id='lockSessionBtn'
+        class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity cursor-pointer'
+        title='清除当前临时授权并重新上锁'
+      >
+        重新上锁
+      </button>
     </div>
-    <div id='calendar' class='min-h-[560px]'></div>
+
+    <p data-i18n='zh'>
+      山形大学学事日程、中日法定节假日与调休、个人就活与实习 DDL 实时日程台账。由常驻 Linux 主机每日自动聚合落盘并同步。
+    </p>
+
+    {/* 顶部一键订阅与操作栏 */}
+    <h2 id='subscribe'>
+      <span data-i18n='zh'>Subscribe · 私人订阅源</span>
+    </h2>
+    <div class='not-prose my-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs font-mono'>
+      <a
+        href={CALENDAR_CONFIG.webcalUrl}
+        class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
+        title='点击直接唤起 iPhone、iPad、Mac 或系统日历应用订阅'
+      >
+        <div class='flex items-center gap-2'>
+          <span class='text-base'>🍏</span>
+          <div class='flex flex-col text-start'>
+            <span class='font-medium text-[13px]'>Apple / 系统日历</span>
+            <span class='text-[10px] text-muted-foreground'>webcal:// 一键订阅</span>
+          </div>
+        </div>
+        <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>↗</span>
+      </a>
+
+      <a
+        href={CALENDAR_CONFIG.googleCalUrl}
+        target='_blank'
+        rel='noopener noreferrer'
+        class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
+        title='直接跳转在 Google Calendar 网页端添加此日历'
+      >
+        <div class='flex items-center gap-2'>
+          <span class='text-base'>📅</span>
+          <div class='flex flex-col text-start'>
+            <span class='font-medium text-[13px]'>Google Calendar</span>
+            <span class='text-[10px] text-muted-foreground'>添加到谷歌日历</span>
+          </div>
+        </div>
+        <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>↗</span>
+      </a>
+
+      <a
+        href={CALENDAR_CONFIG.icsUrl}
+        download='tetra_schedule.ics'
+        class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all no-underline text-foreground'
+        title='下载标准 iCalendar (.ics) 文件'
+      >
+        <div class='flex items-center gap-2'>
+          <span class='text-base'>⬇️</span>
+          <div class='flex flex-col text-start'>
+            <span class='font-medium text-[13px]'>下载 .ICS 文件</span>
+            <span class='text-[10px] text-muted-foreground'>手动导入到任意应用</span>
+          </div>
+        </div>
+        <span class='text-muted-foreground/60 group-hover:text-primary transition-transform group-hover:translate-y-0.5'>↓</span>
+      </a>
+
+      <button
+        type='button'
+        id='copyFeedBtn'
+        data-feed-url={CALENDAR_CONFIG.webcalUrl}
+        class='group flex items-center justify-between p-2.5 rounded-xl border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 transition-all text-start text-foreground cursor-pointer'
+        title='复制订阅链接，可手动粘贴至 Outlook 等'
+      >
+        <div class='flex items-center gap-2'>
+          <span class='text-base'>📋</span>
+          <div class='flex flex-col text-start'>
+            <span class='font-medium text-[13px]'>复制订阅源 URL</span>
+            <span id='copyFeedText' class='text-[10px] text-muted-foreground'>点击复制到剪贴板</span>
+          </div>
+        </div>
+        <span class='text-muted-foreground/60 group-hover:text-primary transition-colors'>⎘</span>
+      </button>
+    </div>
+
+    {/* 日历控制条：时区切换、图例、视图切换 */}
+    <h2 id='calendar-view'>
+      <span data-i18n='zh'>Schedule · 日历视图</span>
+    </h2>
+
+    <div class='not-prose my-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-3 rounded-xl border border-border/70 bg-card/40 text-xs'>
+      {/* 分类颜色图例 */}
+      <div class='flex flex-wrap items-center gap-2 text-[11px] font-mono'>
+        <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20'>
+          <span class='size-1.5 rounded-full bg-red-500'></span>
+          <span>🔴 紧急/就活 DDL</span>
+        </span>
+        <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20'>
+          <span class='size-1.5 rounded-full bg-blue-500'></span>
+          <span>🔵 活动/说明会/课程</span>
+        </span>
+        <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20'>
+          <span class='size-1.5 rounded-full bg-green-500'></span>
+          <span>🟢 中日假期/学校休业</span>
+        </span>
+        <span class='inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'>
+          <span class='size-1.5 rounded-full bg-amber-500'></span>
+          <span>🟠 调休补班/学校调课</span>
+        </span>
+      </div>
+
+      {/* 右侧：时区切换开关（JST / CST） */}
+      <div class='flex items-center gap-2 self-end md:self-auto font-mono'>
+        <span class='text-muted-foreground text-[11px]'>时区 Timezone:</span>
+        <div id='tzSwitcher' class='inline-flex rounded-lg border border-border/70 p-0.5 bg-muted/40'>
+          <button
+            type='button'
+            data-tz='Asia/Tokyo'
+            class='tz-btn active-tz px-2 py-1 rounded text-[11px] font-medium transition-colors'
+          >
+            🇯🇵 JST (东京 UTC+9)
+          </button>
+          <button
+            type='button'
+            data-tz='Asia/Shanghai'
+            class='tz-btn px-2 py-1 rounded text-[11px] font-medium transition-colors text-muted-foreground'
+          >
+            🇨🇳 CST (北京 UTC+8)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* 日历主容器 */}
+    <div class='not-prose my-4 rounded-xl border border-border/70 bg-card/40 p-3 sm:p-5 shadow-sm overflow-hidden'>
+      <div id='calendarLoading' class='py-12 text-center text-sm text-muted-foreground flex items-center justify-center gap-2'>
+        <span class='size-2 rounded-full bg-primary animate-ping'></span>
+        <span>正在拉取最新日程...</span>
+      </div>
+      <div id='calendar' class='min-h-[560px]'></div>
+    </div>
   </div>
 
   {/* 事件详情弹窗模态框 */}
@@ -168,7 +223,7 @@ const headings = [
       <button
         type='button'
         id='closeModalBtn'
-        class='absolute top-4 right-4 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
+        class='absolute top-4 right-4 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer'
         aria-label='Close'
       >
         <svg class='size-5' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>
@@ -210,7 +265,6 @@ const headings = [
   </div>
 
   <style is:global>
-    /* FullCalendar 自定义主题样式：与 Astro Theme Pure 保持 100% 极简一致 */
     :root {
       --fc-border-color: hsl(var(--border) / 0.7);
       --fc-page-bg-color: transparent;
@@ -288,7 +342,6 @@ const headings = [
       color: hsl(var(--primary));
     }
 
-    /* 事件胶囊定制 */
     .fc-event {
       border-radius: 4px;
       font-size: 0.75rem;
@@ -302,35 +355,30 @@ const headings = [
       transform: translateY(-1px);
     }
 
-    /* 🔴 DDL / 紧急 */
     .fc-event-ddl {
       background-color: rgba(239, 68, 68, 0.15) !important;
       border: 1px solid rgba(239, 68, 68, 0.4) !important;
       color: #ef4444 !important;
     }
 
-    /* 🔵 活动 / 会议 / 课程 */
     .fc-event-event {
       background-color: rgba(59, 130, 246, 0.15) !important;
       border: 1px solid rgba(59, 130, 246, 0.4) !important;
       color: #3b82f6 !important;
     }
 
-    /* 🟢 假期 / 休业 */
     .fc-event-holiday {
       background-color: rgba(34, 197, 94, 0.15) !important;
       border: 1px solid rgba(34, 197, 94, 0.4) !important;
       color: #22c55e !important;
     }
 
-    /* 🟠 调休 / 调课 */
     .fc-event-shift {
       background-color: rgba(245, 158, 11, 0.15) !important;
       border: 1px solid rgba(245, 158, 11, 0.4) !important;
       color: #f59e0b !important;
     }
 
-    /* 列表视图优化 */
     .fc-list-table {
       border-color: hsl(var(--border) / 0.6);
     }
@@ -353,7 +401,7 @@ const headings = [
     }
   </style>
 
-  {/* 客户端加载与解析 ical.js / FullCalendar */}
+  {/* 客户端依赖库 */}
   <script src='https://cdn.jsdelivr.net/npm/ical.js@1.5.0/build/ical.min.js' is:inline></script>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js' is:inline></script>
 
@@ -362,8 +410,96 @@ const headings = [
       let currentTz = localStorage.getItem('tetra-cal-tz') || 'Asia/Tokyo'
       let calendar = null
       let rawEvents = []
+      let isInitialized = false
 
-      // 1. 复制链接快捷操作
+      // 1. 验证逻辑：检查 Sveltia CMS 或 本地已授权状态
+      function checkAuth() {
+        // A. 检查 Sveltia CMS 登录凭据（GitHub OAuth）
+        try {
+          const cmsUserRaw = localStorage.getItem('sveltia-cms.user')
+          if (cmsUserRaw) {
+            const cmsUser = JSON.parse(cmsUserRaw)
+            if (cmsUser && (cmsUser.token || cmsUser.backendName === 'github')) {
+              return { authed: true, source: 'CMS (GitHub: ' + (cmsUser.user?.login || 'TetraAcc') + ')' }
+            }
+          }
+        } catch (e) {}
+
+        // B. 检查口令验证缓存
+        const pinSession = sessionStorage.getItem('tetra-admin-cal-auth') || localStorage.getItem('tetra-admin-cal-auth')
+        if (pinSession === 'VERIFIED') {
+          return { authed: true, source: '口令凭证' }
+        }
+
+        return { authed: false }
+      }
+
+      const authGate = document.getElementById('authGate')
+      const calendarMainArea = document.getElementById('calendarMainArea')
+      const pinInput = document.getElementById('pinInput')
+      const unlockBtn = document.getElementById('unlockBtn')
+      const pinError = document.getElementById('pinError')
+      const lockSessionBtn = document.getElementById('lockSessionBtn')
+      const authStatusText = document.getElementById('authStatusText')
+
+      function applyAuthState() {
+        const auth = checkAuth()
+        if (auth.authed) {
+          authGate.classList.add('hidden')
+          calendarMainArea.classList.remove('hidden')
+          if (authStatusText) {
+            authStatusText.textContent = `管理员身份（${auth.source}）已核验通过 · 实时连接 Steam Deck 服务端`
+          }
+          if (!isInitialized) {
+            isInitialized = true
+            initCalendar()
+          }
+        } else {
+          authGate.classList.remove('hidden')
+          calendarMainArea.classList.add('hidden')
+        }
+      }
+
+      // 简易安全口令核验（支持常用管理口令）
+      function verifyPin(input) {
+        const val = (input || '').trim()
+        if (!val) return false
+        // 允许设定的备用口令
+        if (val === 'tetra2026' || val === '2026pay' || val === 'tetraacc' || val === 'tetra') {
+          return true
+        }
+        return false
+      }
+
+      if (unlockBtn && pinInput) {
+        const handleUnlock = () => {
+          if (verifyPin(pinInput.value)) {
+            sessionStorage.setItem('tetra-admin-cal-auth', 'VERIFIED')
+            localStorage.setItem('tetra-admin-cal-auth', 'VERIFIED')
+            if (pinError) pinError.classList.add('hidden')
+            pinInput.value = ''
+            applyAuthState()
+          } else {
+            if (pinError) pinError.classList.remove('hidden')
+            pinInput.focus()
+          }
+        }
+        unlockBtn.addEventListener('click', handleUnlock)
+        pinInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') handleUnlock()
+        })
+      }
+
+      if (lockSessionBtn) {
+        lockSessionBtn.addEventListener('click', () => {
+          sessionStorage.removeItem('tetra-admin-cal-auth')
+          localStorage.removeItem('tetra-admin-cal-auth')
+          localStorage.removeItem('sveltia-cms.user')
+          location.reload()
+        })
+      }
+
+      // 2. 复制链接快捷操作
       const copyBtn = document.getElementById('copyFeedBtn')
       if (copyBtn) {
         copyBtn.addEventListener('click', () => {
@@ -381,7 +517,7 @@ const headings = [
         })
       }
 
-      // 2. 时区切换监听
+      // 3. 时区切换监听
       const tzBtns = document.querySelectorAll('.tz-btn')
       tzBtns.forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -402,7 +538,7 @@ const headings = [
         })
       })
 
-      // 3. 事件分类识别函数
+      // 4. 事件分类识别函数
       function categorizeEvent(summary, categories = '') {
         const text = (summary + ' ' + categories).toLowerCase()
 
@@ -417,7 +553,7 @@ const headings = [
           }
         }
         if (
-          /说明会|説明会|seminar|培训|研修|讲座|授業|lecture|meeting|workshop|典礼|式/.test(
+          /说明会|説明会|seminar|培训|研修|讲座|授業|lecture|meeting|workshop|典礼|式|摄影|撮影|活动/.test(
             text
           )
         ) {
@@ -457,8 +593,9 @@ const headings = [
         }
       }
 
-      // 4. 时区时间格式化函数
+      // 5. 时区时间格式化函数
       function formatTzTime(jsDate, tz, isAllDay = false) {
+        if (!jsDate) return ''
         if (isAllDay) {
           return (
             jsDate.toLocaleDateString('zh-CN', {
@@ -487,7 +624,7 @@ const headings = [
         return `${dateStr} ${timeStr} · ${tzName}`
       }
 
-      // 5. 模态框控制
+      // 6. 模态框控制
       const modal = document.getElementById('eventModal')
       const modalCard = document.getElementById('eventModalCard')
       const closeModalBtn = document.getElementById('closeModalBtn')
@@ -553,7 +690,7 @@ const headings = [
         if (e.key === 'Escape') closeModal()
       })
 
-      // 6. 将原始解析的事件渲染到 FullCalendar
+      // 7. 将原始解析的事件渲染到 FullCalendar
       function renderEvents(rawList) {
         const fcEvents = rawList.map((item) => {
           return {
@@ -567,9 +704,7 @@ const headings = [
               location: item.location,
               description: item.description,
               url: item.url,
-              metaCategory: item.metaCategory,
-              rawStart: item.start,
-              rawEnd: item.end
+              metaCategory: item.metaCategory
             }
           }
         })
@@ -578,27 +713,28 @@ const headings = [
         calendar.addEventSource(fcEvents)
       }
 
-      // 7. 拉取并解析 ICS 文件
+      // 8. 拉取并解析 ICS 文件
       async function initCalendar() {
         const loadingEl = document.getElementById('calendarLoading')
         const calEl = document.getElementById('calendar')
 
         try {
           let icsData
+          // 加上时间戳避免浏览器强缓存旧数据
+          const liveUrl = icsUrl + (icsUrl.includes('?') ? '&' : '?') + 't=' + Date.now()
           try {
-            const res = await fetch(icsUrl)
-            if (!res.ok) throw new Error('Failed to fetch ' + icsUrl + ' (' + res.status + ')')
+            const res = await fetch(liveUrl, { cache: 'no-store' })
+            if (!res.ok) throw new Error('Live fetch returned ' + res.status)
             icsData = await res.text()
           } catch (fetchErr) {
-            if (icsUrl !== '/calendar.ics') {
-              console.warn('Live fetch from ' + icsUrl + ' failed or blocked by CORS. Falling back to local /calendar.ics:', fetchErr)
-              const fallbackRes = await fetch('/calendar.ics')
-              if (!fallbackRes.ok) throw fetchErr
-              icsData = await fallbackRes.text()
-            } else {
-              throw fetchErr
-            }
+            console.warn('Live fetch from Steam Deck failed. Trying local fallback:', fetchErr)
+            const fallbackRes = await fetch('/calendar.ics?t=' + Date.now(), { cache: 'no-store' })
+            if (!fallbackRes.ok) throw fetchErr
+            icsData = await fallbackRes.text()
           }
+
+          // 核心容错：清除 UTF-8 BOM 避免 ical.js 语法报错
+          icsData = icsData.replace(/^\uFEFF/, '').trim()
 
           // 使用 ical.js 解析
           const jcal = ICAL.parse(icsData)
@@ -613,9 +749,10 @@ const headings = [
             const categories = vevent.getFirstPropertyValue('categories') || ''
             const url = vevent.getFirstPropertyValue('url') || ''
 
-            const startJs = ev.startDate.toJSDate()
-            const endJs = ev.endDate ? ev.endDate.toJSDate() : null
             const isAllDay = ev.startDate.isDate
+            // 对于全天事件，直接传递 YYYY-MM-DD 字符串，彻底避免时区平移问题
+            const startVal = isAllDay ? ev.startDate.toString() : ev.startDate.toJSDate()
+            const endVal = ev.endDate ? (ev.endDate.isDate ? ev.endDate.toString() : ev.endDate.toJSDate()) : null
 
             const metaCategory = categorizeEvent(summary, categories)
 
@@ -625,8 +762,8 @@ const headings = [
               description,
               location,
               url,
-              start: startJs,
-              end: endJs,
+              start: startVal,
+              end: endVal,
               allDay: isAllDay,
               metaCategory
             }
@@ -659,7 +796,7 @@ const headings = [
           calendar.render()
           renderEvents(rawEvents)
         } catch (err) {
-          console.error(err)
+          console.error('Calendar render error:', err)
           if (loadingEl) {
             loadingEl.innerHTML = `
               <div class="text-red-500 py-6">
@@ -671,11 +808,11 @@ const headings = [
         }
       }
 
-      // 执行初始化
-      if (typeof FullCalendar !== 'undefined' && typeof ICAL !== 'undefined') {
-        initCalendar()
+      // 执行认证检查
+      if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', applyAuthState)
       } else {
-        window.addEventListener('load', initCalendar)
+        applyAuthState()
       }
     })()
   </script>
