@@ -1,10 +1,12 @@
 ---
-title: '火车上'
-description: '那么。火车开动了。上车的路已经很艰难。但总归是坐下了。还有24小时。那我们开始吧。 现在是下午两点。昨晚两点钟睡觉（已经算是早睡了）特意定了九点十分的闹钟 指望'
-publishDate: '2019-01-08'
+title: 火车上
+description: ''
+publishDate: 2019-01-08
 tags:
   - 随笔
   - 长文
+pin: false
+comment: true
 draft: false
 ---
 
