@@ -65,7 +65,7 @@ const postsWithRender = await Promise.all(
   })
 )
 
-// 3. 按年份聚类
+// 3. 按年份聚类（纯动态计算，无论往前往后加多少年全部自动归类）
 const yearMap = new Map<number, typeof postsWithRender>()
 for (const item of postsWithRender) {
   if (!yearMap.has(item.year)) {
@@ -77,14 +77,15 @@ for (const item of postsWithRender) {
 // 默认倒序年份数组
 const sortedYears = Array.from(yearMap.keys()).sort((a, b) => b - a)
 
-// 全局统计数据
+// 全局统计数据：全部由数据动态计算，绝无任何硬编码
 const totalPosts = postsWithRender.length
 const totalChars = postsWithRender.reduce((acc, cur) => acc + cur.charCount, 0)
-const minYear = Math.min(...sortedYears)
-const maxYear = Math.max(...sortedYears)
+const minYear = sortedYears.length > 0 ? Math.min(...sortedYears) : new Date().getFullYear()
+const maxYear = sortedYears.length > 0 ? Math.max(...sortedYears) : new Date().getFullYear()
+const spanYears = Math.max(1, maxYear - minYear + 1)
 
 const meta = {
-  description: '侯润田的岁月编年长卷：按时间轴沉浸式翻阅 2022 至 2026 的个人心境、随笔与思考记事。',
+  description: `侯润田的岁月编年长卷：按时间轴沉浸式翻阅 ${minYear} 至 ${maxYear} 的个人心境、随笔与思考记事。`,
   title: '编年岁月 · 时光长卷'
 }
 ---
@@ -109,7 +110,7 @@ const meta = {
       <blockquote class='text-xs sm:text-sm text-muted-foreground/90 italic border-l-2 border-primary/40 pl-3 my-4 leading-relaxed'>
         “人类要是不在这种时刻思考哲学，那我会很怀疑哲学究竟是怎么发展起来的。”
         <span class='block mt-1 text-[11px] font-mono not-italic text-muted-foreground/60'>
-          —— 聚合呈现自 {minYear} 年至 {maxYear} 年的思考随笔、长篇手稿与心境变迁。
+          —— 聚合呈现自 {minYear} 年至 {maxYear} 年的思考随笔、长篇手稿与心境变迁（动态随文章拓展）。
         </span>
       </blockquote>
 
@@ -118,7 +119,7 @@ const meta = {
         <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
           <span class='text-[10px] text-muted-foreground uppercase block'>Time Span · 跨越年轮</span>
           <span class='text-base font-semibold text-foreground mt-0.5 block'>{minYear} — {maxYear}</span>
-          <span class='text-[10px] text-muted-foreground'>跨越 5 个年头</span>
+          <span class='text-[10px] text-muted-foreground'>跨越 {spanYears} 个年头</span>
         </div>
         <div class='p-3 rounded-xl border border-border/70 bg-card/40 backdrop-blur-sm'>
           <span class='text-[10px] text-muted-foreground uppercase block'>Chronicles · 记录篇目</span>
@@ -146,7 +147,7 @@ const meta = {
     >
       {/* 左侧：年份跃迁胶囊按钮 */}
       <div class='flex items-center gap-1.5 overflow-x-auto py-0.5 no-scrollbar' id='yearPillsContainer'>
-        <span class='text-muted-foreground/70 text-[11px] me-1 shrink-0'>年份跃迁:</span>
+        <span class='text-muted-foreground/70 text-[11px] me-1 shrink-0'>年份直达:</span>
         {
           sortedYears.map((yr) => (
             <a
@@ -208,7 +209,7 @@ const meta = {
     </div>
 
     {/* 编年时间轴主体容器 */}
-    <div id='chronicleContainer' class='animate flex flex-col space-y-12 sm:space-y-16'>
+    <div id='chronicleContainer' class='animate flex flex-col space-y-16 sm:space-y-20'>
       {
         sortedYears.map((year) => {
           const yearPosts = yearMap.get(year)!
@@ -216,21 +217,26 @@ const meta = {
             <section
               id={`year-${year}`}
               data-year={year}
-              class='year-section relative scroll-mt-36'
+              class='year-section relative scroll-mt-28 pt-8'
             >
-              {/* 年份大背景与标题 */}
-              <div class='flex items-baseline justify-between border-b border-border/70 pb-3 mb-6 sm:mb-8'>
-                <div class='flex items-center gap-3'>
-                  <h2 class='text-2xl sm:text-3xl font-mono font-bold text-foreground tracking-tight'>
-                    {year}
-                  </h2>
-                  <span class='text-xs font-mono text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full border border-border/50'>
-                    {yearPosts.length} 篇记事
-                  </span>
+              {/* 经典艺术感镂空巨型年份背景水印 (Giant Hollow Outline Year Number) */}
+              <h2
+                class='absolute -start-4 sm:-start-6 -top-10 sm:-top-14 z-0 text-8xl sm:text-9xl font-bold font-mono text-transparent opacity-12 dark:opacity-20 select-none pointer-events-none'
+                style='-webkit-text-stroke-width: 2px; -webkit-text-stroke-color: currentColor;'
+              >
+                <samp>{year}</samp>
+              </h2>
+
+              {/* 年份提示横条 */}
+              <div class='relative z-10 flex items-center justify-between px-1 mb-6 border-b border-border/60 pb-2.5 text-xs font-mono text-muted-foreground'>
+                <div class='flex items-center gap-2'>
+                  <span class='text-base font-bold text-foreground'>{year} 年</span>
+                  <span>·</span>
+                  <span>{yearPosts.length} 篇记事</span>
                 </div>
                 <a
                   href='#chronicle-header'
-                  class='text-[11px] font-mono text-muted-foreground/60 hover:text-foreground no-underline transition-colors'
+                  class='text-[11px] text-muted-foreground/60 hover:text-foreground no-underline transition-colors'
                 >
                   ↑ 顶端
                 </a>
@@ -332,7 +338,6 @@ const meta = {
   </main>
 
   <style is:global>
-    /* 编年时间轴精炼排版定制 */
     .prose-pure p {
       margin-bottom: 1.15em;
       line-height: 1.8;
