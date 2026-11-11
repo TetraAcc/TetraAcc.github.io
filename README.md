@@ -13,7 +13,7 @@
 
 ## 🧭 站点栏目
 
-- **[写作 · Blog](https://tetraacc.me/blog)**：个人散文、日常随笔、编年日记，以及长篇手稿企划 [《迷宫地图》](https://tetraacc.me/blog/manuscripts/labyrinth-map)。
+- **[写作 · Blog](https://tetraacc.me/blog)**：个人散文随笔与长篇手稿企划 [《迷宫地图》](https://tetraacc.me/blog/manuscripts/labyrinth-map)。
 - **[音乐 · Music](https://tetraacc.me/music)**：精选私人歌单、双极电台、吉他与人声翻唱，以及 2023 Summer Sonic 等现场记录。
 - **[项目 · Projects](https://tetraacc.me/projects)**：个人开源工具与 AstrBot 生态插件（如 API 额度监控看板、DeadBot 等）。
 - **[关于 · About](https://tetraacc.me/about)**：个人履历、软硬件开发环境与建站日志。
