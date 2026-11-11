@@ -19,10 +19,10 @@ export interface CalendarConfig {
 }
 
 export const CALENDAR_CONFIG: CalendarConfig = {
-  icsUrl: '/calendar.ics',
-  webcalUrl: 'webcal://tetraacc.me/calendar.ics',
+  icsUrl: 'https://cal.tetraacc.me/calendar.ics',
+  webcalUrl: 'webcal://cal.tetraacc.me/calendar.ics',
   googleCalUrl:
     'https://calendar.google.com/calendar/render?cid=' +
-    encodeURIComponent('https://tetraacc.me/calendar.ics'),
+    encodeURIComponent('https://cal.tetraacc.me/calendar.ics'),
   defaultTimezone: 'Asia/Tokyo'
 }

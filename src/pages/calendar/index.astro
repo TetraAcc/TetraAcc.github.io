@@ -584,9 +584,21 @@ const headings = [
         const calEl = document.getElementById('calendar')
 
         try {
-          const res = await fetch(icsUrl)
-          if (!res.ok) throw new Error('Failed to fetch ' + icsUrl)
-          const icsData = await res.text()
+          let icsData
+          try {
+            const res = await fetch(icsUrl)
+            if (!res.ok) throw new Error('Failed to fetch ' + icsUrl + ' (' + res.status + ')')
+            icsData = await res.text()
+          } catch (fetchErr) {
+            if (icsUrl !== '/calendar.ics') {
+              console.warn('Live fetch from ' + icsUrl + ' failed or blocked by CORS. Falling back to local /calendar.ics:', fetchErr)
+              const fallbackRes = await fetch('/calendar.ics')
+              if (!fallbackRes.ok) throw fetchErr
+              icsData = await fallbackRes.text()
+            } else {
+              throw fetchErr
+            }
+          }
 
           // 使用 ical.js 解析
           const jcal = ICAL.parse(icsData)
