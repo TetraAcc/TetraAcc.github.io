@@ -26,6 +26,7 @@ collections:
     folder: 'src/content/blog/manuscripts'
     create: true
     slug: '{{slug}}'
+    preview_path: 'blog/manuscripts/{{slug}}'
     summary: '{{fields.title}} ({{fields.publishDate}})'
     sortable_fields:
       - field: publishDate
@@ -49,6 +50,7 @@ collections:
           - { label: '主色调 (Color)', name: 'color', widget: 'string', default: '#282828', required: false }
           - { label: '替代文本 (Alt)', name: 'alt', widget: 'string', required: false }
       - { label: '置顶 (Pin)', name: 'pin', widget: 'boolean', default: false, required: false }
+      - { label: '开启评论 (Comment)', name: 'comment', widget: 'boolean', default: true }
       - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
       - label: '正文内容 (Markdown)'
         name: 'body'
@@ -63,6 +65,7 @@ collections:
     folder: 'src/content/blog/essays'
     create: true
     slug: '{{slug}}'
+    preview_path: 'blog/essays/{{slug}}'
     summary: '{{fields.title}} ({{fields.publishDate}})'
     sortable_fields:
       - field: publishDate
@@ -98,6 +101,7 @@ collections:
       - { label: '发布日期 (Publish Date)', name: 'publishDate', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }
       - { label: '标签 (Tags)', name: 'tags', widget: 'list', default: ['随笔', '短文'], hint: '常用标签：随笔、短文、长文、影评、书信、诗歌（自动联动长卷三语国际化）' }
       - { label: '置顶 (Pin)', name: 'pin', widget: 'boolean', default: false, required: false }
+      - { label: '开启评论 (Comment)', name: 'comment', widget: 'boolean', default: true }
       - { label: '草稿 (Draft)', name: 'draft', widget: 'boolean', default: false }
       - label: '正文内容 (Markdown)'
         name: 'body'
@@ -112,6 +116,7 @@ collections:
     folder: 'src/content/blog/journals'
     create: true
     slug: '{{slug}}'
+    preview_path: 'blog/journals/{{slug}}'
     summary: '{{fields.title}} ({{fields.publishDate}})'
     sortable_fields:
       - field: publishDate
