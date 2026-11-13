@@ -53,12 +53,29 @@ const headings = [
   {
     bilibiliArchive.map((section) => (
       <section class='mt-8'>
-        <h2 id={section.id}>
-          <span data-i18n='zh'>{section.title.zh}</span>
-          <span data-i18n='ja'>{section.title.ja}</span>
-          <span data-i18n='en'>{section.title.en}</span>
-        </h2>
-        <p class='text-sm text-muted-foreground -mt-2 mb-4'>
+        <div class='flex flex-wrap items-center justify-between gap-3'>
+          <h2 id={section.id} class='!my-0'>
+            <span data-i18n='zh'>{section.title.zh}</span>
+            <span data-i18n='ja'>{section.title.ja}</span>
+            <span data-i18n='en'>{section.title.en}</span>
+          </h2>
+          {section.seriesUrl && (
+            <a
+              href={section.seriesUrl}
+              target='_blank'
+              rel='noopener noreferrer'
+              class='group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border/70 bg-card/40 hover:bg-muted/40 hover:border-foreground/30 text-xs font-mono text-foreground/90 transition-all no-underline'
+              title='直接在哔哩哔哩打开对应合集'
+            >
+              <span>📺</span>
+              <span data-i18n='zh'>B 站合集</span>
+              <span data-i18n='ja'>Bilibili 合集</span>
+              <span data-i18n='en'>Bilibili Series</span>
+              <span class='text-muted-foreground group-hover:text-primary transition-colors'>↗</span>
+            </a>
+          )}
+        </div>
+        <p class='text-sm text-muted-foreground mt-2 mb-4'>
           <span data-i18n='zh'>{section.description.zh}</span>
           <span data-i18n='ja'>{section.description.ja}</span>
           <span data-i18n='en'>{section.description.en}</span>

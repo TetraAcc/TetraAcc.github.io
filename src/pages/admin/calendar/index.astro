@@ -23,7 +23,7 @@ const headings = [
       私密日程台账 · 管理员验证
     </h2>
     <p class='mt-2.5 text-xs sm:text-sm text-muted-foreground leading-relaxed'>
-      此页面聚合博主个人就活投递、企业面试/说明会、大学学事与私密 DDL，仅供管理员访问。
+      此页面聚合博主个人就活投递、企业面试/说明会、大学学事与私密 DDL，仅限管理员通过 GitHub 授权后访问。
     </p>
 
     <div class='mt-6 flex flex-col gap-3 text-xs'>
@@ -31,32 +31,11 @@ const headings = [
         href='/admin'
         class='w-full py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 no-underline shadow-sm'
       >
-        <span>🐙 前往 CMS 登录 GitHub 账号（无缝单点授权）</span>
+        <span>🐙 前往 CMS 登录 GitHub 账号（单点授权）</span>
         <span>↗</span>
       </a>
-
-      <div class='relative my-2 flex items-center justify-center'>
-        <div class='absolute inset-0 flex items-center'><span class='w-full border-t border-border/60'></span></div>
-        <span class='relative bg-card px-3 text-[11px] text-muted-foreground font-mono uppercase'>或通过口令临时解锁</span>
-      </div>
-
-      <div class='flex items-center gap-2'>
-        <input
-          type='password'
-          id='pinInput'
-          placeholder='输入管理访问口令...'
-          class='flex-1 px-3 py-2 rounded-xl border border-border/80 bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all font-mono'
-        />
-        <button
-          type='button'
-          id='unlockBtn'
-          class='px-4 py-2 rounded-xl bg-foreground text-background font-medium hover:opacity-90 transition-all cursor-pointer text-xs shrink-0'
-        >
-          解锁访问
-        </button>
-      </div>
-      <p id='pinError' class='text-[11px] text-red-500 hidden text-start font-mono'>
-        ⚠️ 访问口令不正确，请重新输入或在 CMS 登录 GitHub。
+      <p class='text-[11px] text-muted-foreground leading-relaxed mt-1'>
+        在后台登录 GitHub 后切回此页即可自动核验解锁；退出管理时可点击右上角「退出并上锁」。
       </p>
     </div>
   </div>
@@ -418,33 +397,24 @@ const headings = [
       let rawEvents = []
       let isInitialized = false
 
-      // 1. 验证逻辑：检查 Sveltia CMS 或 本地已授权状态
+      // 1. 验证逻辑：仅支持 Sveltia CMS 的 GitHub OAuth 登录凭据
       function checkAuth() {
-        // A. 检查 Sveltia CMS 登录凭据（GitHub OAuth）
         try {
           const cmsUserRaw = localStorage.getItem('sveltia-cms.user')
           if (cmsUserRaw) {
             const cmsUser = JSON.parse(cmsUserRaw)
             if (cmsUser && (cmsUser.token || cmsUser.backendName === 'github')) {
-              return { authed: true, source: 'CMS (GitHub: ' + (cmsUser.user?.login || 'TetraAcc') + ')' }
+              const login = cmsUser.user?.login || 'TetraAcc'
+              return { authed: true, source: `GitHub: @${login}` }
             }
           }
         } catch (e) {}
-
-        // B. 检查口令验证缓存
-        const pinSession = sessionStorage.getItem('tetra-admin-cal-auth') || localStorage.getItem('tetra-admin-cal-auth')
-        if (pinSession === 'VERIFIED') {
-          return { authed: true, source: '口令凭证' }
-        }
 
         return { authed: false }
       }
 
       const authGate = document.getElementById('authGate')
       const calendarMainArea = document.getElementById('calendarMainArea')
-      const pinInput = document.getElementById('pinInput')
-      const unlockBtn = document.getElementById('unlockBtn')
-      const pinError = document.getElementById('pinError')
       const lockSessionBtn = document.getElementById('lockSessionBtn')
       const authStatusText = document.getElementById('authStatusText')
 
@@ -466,38 +436,9 @@ const headings = [
         }
       }
 
-      // 简易安全口令核验（支持常用管理口令）
-      function verifyPin(input) {
-        const val = (input || '').trim()
-        if (!val) return false
-        // 允许设定的备用口令
-        if (val === 'tetra2026' || val === '2026pay' || val === 'tetraacc' || val === 'tetra') {
-          return true
-        }
-        return false
-      }
-
-      if (unlockBtn && pinInput) {
-        const handleUnlock = () => {
-          if (verifyPin(pinInput.value)) {
-            sessionStorage.setItem('tetra-admin-cal-auth', 'VERIFIED')
-            localStorage.setItem('tetra-admin-cal-auth', 'VERIFIED')
-            if (pinError) pinError.classList.add('hidden')
-            pinInput.value = ''
-            applyAuthState()
-          } else {
-            if (pinError) pinError.classList.remove('hidden')
-            pinInput.focus()
-          }
-        }
-        unlockBtn.addEventListener('click', handleUnlock)
-        pinInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') handleUnlock()
-        })
-      }
-
       if (lockSessionBtn) {
         lockSessionBtn.addEventListener('click', () => {
+          // 清理历史残留口令与 CMS 登录态
           sessionStorage.removeItem('tetra-admin-cal-auth')
           localStorage.removeItem('tetra-admin-cal-auth')
           localStorage.removeItem('sveltia-cms.user')
@@ -814,12 +755,14 @@ const headings = [
         }
       }
 
-      // 执行认证检查
+      // 执行认证检查并监听后台登录态同步
       if (document.readyState === 'loading') {
         window.addEventListener('DOMContentLoaded', applyAuthState)
       } else {
         applyAuthState()
       }
+      window.addEventListener('focus', applyAuthState)
+      window.addEventListener('storage', applyAuthState)
     })()
   </script>
 </PageLayout>

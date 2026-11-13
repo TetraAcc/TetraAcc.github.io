@@ -1,0 +1,32 @@
+{
+  "projects": [
+    {
+      "name": "🎯 astrbot_plugin_deadbot",
+      "description": {
+        "zh": "适用于 AstrBot 的 Deadlock 战报与个人复盘插件。免 API Key 聚合官方与 StatLocker 评分，支持群友战绩播报、个人多维打法分析、对局详情补全、多玩家同局高光与本地化成就系统。",
+        "ja": "APIキー不要で利用できる、AstrBot向けDeadlock戦績レポート＆対戦分析プラグイン。公式APIとStatLocker原画スコアを統合し、マッチ速報、多角的プレイスタイル分析、対戦詳細補完、ハイライト抽出、ローカライズ実績システムを提供。",
+        "en": "Keyless Deadlock match reporting & gameplay review plugin for AstrBot. Integrates official APIs and StatLocker ratings, featuring group broadcasts, multidimensional playstyle analysis, multiplayer highlights, and localized achievements."
+      },
+      "links": [
+        {
+          "type": "github",
+          "href": "https://github.com/TetraAcc/astrbot_plugin_deadbot"
+        }
+      ]
+    },
+    {
+      "name": "📊 astrbot_plugin_tavily_quota",
+      "description": {
+        "zh": "全能 API 额度与余额监控插件。一站式查询并监控 DeepSeek、硅基流动、Kimi、智谱 GLM、GitHub、Tavily、OpenRouter 与 Serper；具备高颜值暗色仪表盘看板、未配置服务自动隔离隐藏、低额度后台自动巡检预警与 LLM 自然语言工具调用。",
+        "ja": "包括的なAPIクォータ＆残高監視プラグイン。DeepSeek、SiliconFlow（珪基流動）、Moonshot（Kimi）、Zhipu（GLM）、GitHub、Tavily、OpenRouter、Serperを一元照会可能。洗練されたダークテーマダッシュボード画像生成、未設定サービスの自動非表示、残高低下時の自動巡回アラート、LLMツール呼び出しに対応。",
+        "en": "All-in-one API quota & balance monitor for AstrBot. Supports DeepSeek, SiliconFlow, Moonshot (Kimi), Zhipu (GLM), GitHub, Tavily, OpenRouter, and Serper. Features sleek dark-mode dashboard cards, auto-isolation of unconfigured providers, background low-balance alerts, and LLM function calling."
+      },
+      "links": [
+        {
+          "type": "github",
+          "href": "https://github.com/TetraAcc/astrbot_plugin_tavily_quota"
+        }
+      ]
+    }
+  ]
+}

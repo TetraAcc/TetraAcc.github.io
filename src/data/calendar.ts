@@ -22,7 +22,6 @@ export const CALENDAR_CONFIG: CalendarConfig = {
   icsUrl: 'https://cal.tetraacc.me/calendar.ics',
   webcalUrl: 'webcal://cal.tetraacc.me/calendar.ics',
   googleCalUrl:
-    'https://calendar.google.com/calendar/render?cid=' +
-    encodeURIComponent('https://cal.tetraacc.me/calendar.ics'),
+    'https://calendar.google.com/calendar/u/0/r?cid=webcal%3A%2F%2Fcal.tetraacc.me%2Fcalendar.ics',
   defaultTimezone: 'Asia/Tokyo'
 }
