@@ -1,0 +1,12 @@
+{
+  "events": [
+    {
+      "date": "2026-11-07",
+      "content": {
+        "zh": "使用 <a href=\"https://astro.build/\" target=\"_blank\">Astro</a> 与 <a href=\"https://github.com/cworld1/astro-theme-pure\" target=\"_blank\">Astro Theme Pure</a> 搭建个人主页，绑定域名 <code>tetraacc.me</code>。",
+        "ja": "<a href=\"https://astro.build/\" target=\"_blank\">Astro</a> と <a href=\"https://github.com/cworld1/astro-theme-pure\" target=\"_blank\">Astro Theme Pure</a> を用いて個人ホームページを構築、独自ドメイン <code>tetraacc.me</code> を設定。",
+        "en": "Launched personal website with <a href=\"https://astro.build/\" target=\"_blank\">Astro</a> &amp; <a href=\"https://github.com/cworld1/astro-theme-pure\" target=\"_blank\">Astro Theme Pure</a>, deployed to <code>tetraacc.me</code>."
+      }
+    }
+  ]
+}

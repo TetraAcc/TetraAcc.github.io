@@ -4,6 +4,13 @@ import PageLayout from '@/layouts/CommonPage.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
 import GearSection from '@/components/about/GearSection.astro'
 import { Comment } from '@/components/waline'
+import gearData from '@/content/gear.json'
+import timelineData from '@/content/site-timeline.json'
+
+const rawEvents = (timelineData as any).events || timelineData
+const timelineZh = rawEvents.map((e: any) => ({ date: e.date, content: e.content?.zh || e.content || '' }))
+const timelineJa = rawEvents.map((e: any) => ({ date: e.date, content: e.content?.ja || e.content?.zh || e.content || '' }))
+const timelineEn = rawEvents.map((e: any) => ({ date: e.date, content: e.content?.en || e.content?.zh || e.content || '' }))
 
 const headings = [
   { depth: 2, slug: 'about-me', text: 'About Me' },
@@ -95,155 +102,11 @@ const headings = [
     <span data-i18n='en'>Gear &amp; Desk Setup</span>
   </h2>
 
-  <GearSection
-    title='Computing & Display · 计算与显示'
-    items={[
-      {
-        name: '雷神 猎刃 16 (ThundeRobot)',
-        spec: 'Intel i7-14650HX · RTX 4060Laptop · 32G / 1.5T',
-        desc: '主力开发与游戏笔记本，承担日常代码编译、深度学习轻量任务与图形渲染。',
-        icon: '💻',
-        tag: 'Laptop'
-      },
-      {
-        name: 'Steam Deck (LCD)',
-        spec: '改装1TB NVMe SSD · SteamOS / Arch Linux',
-        desc: '随身掌机与便携 Linux 节点，值守式服务器与 AstrBot 插件调试机。',
-        icon: '🎮',
-        tag: 'Handheld'
-      },
-      {
-        name: 'Z-edge U27P4K',
-        spec: '27 英寸 · 3840×2160 UHD',
-        desc: '4K显示器',
-        icon: '🖥️',
-        tag: 'Monitor'
-      }
-    ]}
-  />
-
-  <GearSection
-    title='Peripherals & Gaming · 外设与交互'
-    items={[
-      {
-        name: '珂芝 Kzzi K75 Pro',
-        spec: '75% 配列 · Gasket 结构 · 三模热插拔',
-        desc: '主力键盘，日常文字输出与打字主力。',
-        icon: '⌨️',
-        tag: 'Keyboard'
-      },
-      {
-        name: '赛睿 SteelSeries Prime Wireless',
-        spec: 'Prestige OM™ 光磁微动 · 轻量无线',
-        desc: '主力无线电竞鼠标，替代退役赛睿Sensei',
-        icon: '🖱️',
-        tag: 'Mouse'
-      },
-      {
-        name: 'Nintendo Switch Pro 手柄',
-        spec: '经典人体工学握持 · 蓝牙无线连接',
-        desc: '主力游戏手柄，替代Xbox手柄。',
-        icon: '🕹️',
-        tag: 'Gamepad'
-      }
-    ]}
-  />
-
-  <GearSection
-    title='Audio & Hi-Fi · 音频与实体音乐'
-    items={[
-      {
-        name: '铁三角 Audio-Technica AT-LP60X',
-        spec: '全自动皮带驱动立体声黑胶唱盘机',
-        desc: '黑胶唱片主力播放设备。',
-        icon: '📻',
-        tag: 'Turntable'
-      },
-      {
-        name: '东芝 TOSHIBA TY-C250',
-        spec: '便携式 CD 音响系统',
-        desc: '实体 CD 唱片播放主力。',
-        icon: '💿',
-        tag: 'CD Player'
-      },
-      {
-        name: '铁三角 Audio-Technica AT-SP95',
-        spec: '桌面立体声有源音箱',
-        desc: '紧凑桌面音响',
-        icon: '🔊',
-        tag: 'Speaker'
-      },
-      {
-        name: '索尼 Sony WH-1000XM3',
-        spec: '头戴式无线降噪耳机 · LDAC 高解析',
-        desc: '主力沉浸听音与降噪耳机。',
-        icon: '🎧',
-        tag: 'Headphone'
-      },
-      {
-        name: 'Amazon Echo Buds 2',
-        spec: '真无线入耳式 · 主动降噪 (ANC)，Alexa交互',
-        desc: '随身出行与通勤主力 TWS。',
-        icon: '🎵',
-        tag: 'TWS'
-      },
-      {
-        name: '西圣 Xisem Olite',
-        spec: '开放式不入耳蓝牙耳机 · 气传导',
-        desc: '运动与室外散步时保障环境声安全。',
-        icon: '🏃',
-        tag: 'Open-Ear'
-      }
-    ]}
-  />
-
-  <GearSection
-    title='Mobile & Smart Home · 移动设备与智能家居'
-    items={[
-      {
-        name: 'Amazon Echo Show 5 (Gen 2)',
-        spec: '刷机 Android 固件 · 5.5 英寸触控屏',
-        desc: '改造为桌面副屏，实时显示歌词，任务进度，控制家电。',
-        icon: '📟',
-        tag: 'Smart Display'
-      },
-      {
-        name: 'Amazon Echo Dot 4',
-        spec: '球形智能音箱 · Alexa 语音中枢',
-        desc: '智能家居控制总节点，语音控制开关、闹钟与居家自动化联动。',
-        icon: '🎙️',
-        tag: 'Smart Home'
-      },
-      {
-        name: 'Realme GT8',
-        spec: '16GB RAM + 512GB ROM ',
-        desc: '主力手机',
-        icon: '📱',
-        tag: 'Phone'
-      },
-      {
-        name: 'Apple iPhone SE 3',
-        spec: 'Apple A15 Bionic',
-        desc: '备用机与 iOS 跨平台测试终端。',
-        icon: '🍎',
-        tag: 'Phone'
-      },
-      {
-        name: '联想小新 Pad Pro 12.7',
-        spec: '12.7 英寸 144Hz 巨幕大屏',
-        desc: '大屏学习平板，文献研读、分屏备课与远程连接主力设备。',
-        icon: '📋',
-        tag: 'Tablet'
-      },
-      {
-        name: '哈趣 H3 (Haqu H3)',
-        spec: '便携全高清家用投影仪',
-        desc: '卧室巨幕观影体验，周末沉浸式投影看电影与纪录片。',
-        icon: '📽️',
-        tag: 'Projector'
-      }
-    ]}
-  />
+  {
+    gearData.sections.map((sec) => (
+      <GearSection title={sec.title} items={sec.items} />
+    ))
+  }
 
   <h2 id='guestbook'>
     <span data-i18n='zh'>留言板 · Guestbook</span>
@@ -274,36 +137,12 @@ const headings = [
     <span data-i18n='en'>About Site</span>
   </h2>
   <div data-i18n='zh'>
-    <Timeline
-      events={[
-        {
-          date: '2026-11-07',
-          content:
-            '使用 <a href="https://astro.build/" target="_blank">Astro</a> 与 <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a> 搭建个人主页，绑定域名 <code>tetraacc.me</code>。'
-        }
-      ]}
-    />
+    <Timeline events={timelineZh} />
   </div>
   <div data-i18n='ja'>
-    <Timeline
-      events={[
-        {
-          date: '2026-11-07',
-          content:
-            '<a href="https://astro.build/" target="_blank">Astro</a> と <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a> を用いて個人ホームページを構築、独自ドメイン <code>tetraacc.me</code> を設定。'
-        }
-      ]}
-    />
+    <Timeline events={timelineJa} />
   </div>
   <div data-i18n='en'>
-    <Timeline
-      events={[
-        {
-          date: '2026-11-07',
-          content:
-            'Launched personal website with <a href="https://astro.build/" target="_blank">Astro</a> &amp; <a href="https://github.com/cworld1/astro-theme-pure" target="_blank">Astro Theme Pure</a>, deployed to <code>tetraacc.me</code>.'
-        }
-      ]}
-    />
+    <Timeline events={timelineEn} />
   </div>
 </PageLayout>

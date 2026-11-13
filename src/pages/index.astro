@@ -10,6 +10,8 @@ import SkillLayout from '@/components/home/SkillLayout.astro'
 import SpotifyNowPlaying from '@/components/music/SpotifyNowPlaying.astro'
 import config from '@/site-config'
 import nowData from '@/content/now.json'
+import projectsData from '@/content/projects.json'
+import skillsData from '@/content/skills.json'
 
 type NowItem = { icon?: string; label: string; content: string }
 const nowItems: NowItem[] = ((nowData as any).items as NowItem[])?.length
@@ -20,9 +22,11 @@ const nowItems: NowItem[] = ((nowData as any).items as NowItem[])?.length
       (nowData as any).working && { icon: '💻', label: '正在进行', content: (nowData as any).working }
     ].filter(Boolean) as NowItem[]
 
-const languages = ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
-const toolsAndFrameworks = ['Git', 'Linux', 'Astro', 'Node.js', 'Docker']
-const environment = ['Windows 11', 'SteamOS / Arch', 'Cloudflare Tunnel']
+const languages = skillsData.languages || ['Python', 'TypeScript', 'C / C++', 'SQL', 'Shell']
+const toolsAndFrameworks = skillsData.tools || ['Git', 'Linux', 'Astro', 'Node.js', 'Docker']
+const environment = skillsData.environment || ['Windows 11', 'SteamOS / Arch', 'Cloudflare Tunnel']
+
+const featuredProjects = projectsData.projects.slice(0, 2)
 
 const MAX_POSTS = 3
 const allPosts = await getBlogCollection()
@@ -203,60 +207,60 @@ if (!images[imagePath])
 
       <Section title='Open Source'>
         <div class='flex flex-col gap-y-3' data-i18n='zh'>
-          <Card
-            as='a'
-            heading='astrbot_plugin_deadbot'
-            subheading='适用于 AstrBot 的 Deadlock 战报与个人复盘插件。免 API Key 聚合官方与 StatLocker 评分，支持群友战绩播报、个人多维打法分析、对局详情补全、多玩家高光与本地化成就系统。'
-            date='Python · GitHub'
-            href='https://github.com/TetraAcc/astrbot_plugin_deadbot'
-            target='_blank'
-          />
-          <Card
-            as='a'
-            heading='astrbot_plugin_tavily_quota'
-            subheading='全能 API 额度与余额监控插件。一站式监控 DeepSeek、硅基流动、Kimi、智谱 GLM、GitHub、Tavily、OpenRouter 与 Serper；具备暗色仪表盘看板、未配置服务自动隔离隐藏、低额度自动预警与 LLM 工具调用。'
-            date='Python · GitHub'
-            href='https://github.com/TetraAcc/astrbot_plugin_tavily_quota'
-            target='_blank'
-          />
+          {
+            featuredProjects.map((p) => {
+              const href = p.links?.find((l) => l.type === 'github')?.href || p.links?.[0]?.href || '#'
+              const sub = typeof p.description === 'object' ? (p.description.zh || '') : (p.description || '')
+              return (
+                <Card
+                  as='a'
+                  heading={p.name.replace(/^[^\w\s\u4e00-\u9fa5]+/, '').trim() || p.name}
+                  subheading={sub}
+                  date='Python · GitHub'
+                  href={href}
+                  target='_blank'
+                />
+              )
+            })
+          }
         </div>
 
         <div class='flex flex-col gap-y-3' data-i18n='ja'>
-          <Card
-            as='a'
-            heading='astrbot_plugin_deadbot'
-            subheading='APIキー不要で利用できる、AstrBot向けDeadlock戦績レポート＆対戦分析プラグイン。公式APIとStatLocker原画スコアを統合し、マッチ速報、多角打法分析、対戦詳細補完、ハイライト抽出、ローカライズ実績を提供。'
-            date='Python · GitHub'
-            href='https://github.com/TetraAcc/astrbot_plugin_deadbot'
-            target='_blank'
-          />
-          <Card
-            as='a'
-            heading='astrbot_plugin_tavily_quota'
-            subheading='包括的なAPIクォータ＆残高監視プラグイン。DeepSeek、SiliconFlow、Moonshot、Zhipu、GitHub、Tavily、OpenRouter、Serperを一元照会。ダークテーマダッシュボード画像、残高低下時アラート、LLMツール呼び出しに対応。'
-            date='Python · GitHub'
-            href='https://github.com/TetraAcc/astrbot_plugin_tavily_quota'
-            target='_blank'
-          />
+          {
+            featuredProjects.map((p) => {
+              const href = p.links?.find((l) => l.type === 'github')?.href || p.links?.[0]?.href || '#'
+              const sub = typeof p.description === 'object' ? (p.description.ja || p.description.zh || '') : (p.description || '')
+              return (
+                <Card
+                  as='a'
+                  heading={p.name.replace(/^[^\w\s\u4e00-\u9fa5]+/, '').trim() || p.name}
+                  subheading={sub}
+                  date='Python · GitHub'
+                  href={href}
+                  target='_blank'
+                />
+              )
+            })
+          }
         </div>
 
         <div class='flex flex-col gap-y-3' data-i18n='en'>
-          <Card
-            as='a'
-            heading='astrbot_plugin_deadbot'
-            subheading='Keyless Deadlock match reporting & review plugin for AstrBot. Integrates official APIs and StatLocker ratings, featuring group broadcasts, playstyle radar analysis, multiplayer highlights, and achievements.'
-            date='Python · GitHub'
-            href='https://github.com/TetraAcc/astrbot_plugin_deadbot'
-            target='_blank'
-          />
-          <Card
-            as='a'
-            heading='astrbot_plugin_tavily_quota'
-            subheading='All-in-one API quota & balance monitor for AstrBot. Covers DeepSeek, SiliconFlow, Moonshot, Zhipu, GitHub, Tavily, OpenRouter, and Serper. Features dark dashboard cards, auto-isolation, low-balance alerts, and LLM tool calling.'
-            date='Python · GitHub'
-            href='https://github.com/TetraAcc/astrbot_plugin_tavily_quota'
-            target='_blank'
-          />
+          {
+            featuredProjects.map((p) => {
+              const href = p.links?.find((l) => l.type === 'github')?.href || p.links?.[0]?.href || '#'
+              const sub = typeof p.description === 'object' ? (p.description.en || p.description.zh || '') : (p.description || '')
+              return (
+                <Card
+                  as='a'
+                  heading={p.name.replace(/^[^\w\s\u4e00-\u9fa5]+/, '').trim() || p.name}
+                  subheading={sub}
+                  date='Python · GitHub'
+                  href={href}
+                  target='_blank'
+                />
+              )
+            })
+          }
         </div>
 
         <div data-i18n='zh' class='flex justify-end'>

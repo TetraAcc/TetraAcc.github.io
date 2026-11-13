@@ -1,0 +1,5 @@
+{
+  "languages": ["Python", "TypeScript", "C / C++", "SQL", "Shell"],
+  "tools": ["Git", "Linux", "Astro", "Node.js", "Docker"],
+  "environment": ["Windows 11", "SteamOS / Arch", "Cloudflare Tunnel"]
+}

@@ -226,3 +226,50 @@ collections:
                   - { label: '简介/碎碎念 (Desc)', name: 'desc', widget: 'string' }
                   - { label: '发布年月 (如 2026.11)', name: 'date', widget: 'string', default: '2026.11' }
                   - { label: '封面图片链接 (Pic URL)', name: 'pic', widget: 'string' }
+      - name: 'gear'
+        label: '⌨️ 装备与环境清单 (Gear & Setup)'
+        file: 'src/content/gear.json'
+        format: 'json'
+        fields:
+          - label: '装备分组列表 (计算显示/外设交互/音频/移动智能)'
+            name: 'sections'
+            widget: 'list'
+            summary: '{{fields.title}}'
+            fields:
+              - { label: '分组标题 (Title)', name: 'title', widget: 'string' }
+              - label: '物品列表 (可拖拽排序/增删)'
+                name: 'items'
+                widget: 'list'
+                summary: '{{fields.icon}} {{fields.name}} [{{fields.tag}}]'
+                fields:
+                  - { label: '设备名称 (Name)', name: 'name', widget: 'string' }
+                  - { label: '规格参数 (Spec)', name: 'spec', widget: 'string', required: false }
+                  - { label: '使用说明与体验 (Desc)', name: 'desc', widget: 'string' }
+                  - { label: '图标 Emoji (Icon)', name: 'icon', widget: 'string', default: '💻' }
+                  - { label: '类别标签 (Tag，如 Laptop, Mouse, Phone)', name: 'tag', widget: 'string', default: 'Gear' }
+      - name: 'skills'
+        label: '🛠️ 个人技能栈 (Skills)'
+        file: 'src/content/skills.json'
+        format: 'json'
+        fields:
+          - { label: '编程语言 (Languages)', name: 'languages', widget: 'list' }
+          - { label: '工具与框架 (Tools & Frameworks)', name: 'tools', widget: 'list' }
+          - { label: '运行环境与系统 (Environment)', name: 'environment', widget: 'list' }
+      - name: 'timeline'
+        label: '📜 建站时间轴日志 (Timeline)'
+        file: 'src/content/site-timeline.json'
+        format: 'json'
+        fields:
+          - label: '里程碑事件列表 (可拖拽排序/增删)'
+            name: 'events'
+            widget: 'list'
+            summary: '{{fields.date}}: {{fields.content.zh}}'
+            fields:
+              - { label: '事件日期 (YYYY-MM-DD)', name: 'date', widget: 'string' }
+              - label: '事件内容 (支持 HTML 链接与代码标签)'
+                name: 'content'
+                widget: 'object'
+                fields:
+                  - { label: '中文 (ZH)', name: 'zh', widget: 'text' }
+                  - { label: '日文 (JA - 可选，不填默认回退中文)', name: 'ja', widget: 'text', required: false }
+                  - { label: '英文 (EN - 可选，不填默认回退中文)', name: 'en', widget: 'text', required: false }
