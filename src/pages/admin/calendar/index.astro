@@ -415,7 +415,8 @@ const headings = [
         isLive: true,
         dtstamp: '',
         count: 0,
-        fetchTime: null
+        fetchTime: null,
+        errMsg: ''
       }
 
       // 1. 验证逻辑：仅支持 Sveltia CMS 的 GitHub OAuth 登录凭据
@@ -484,7 +485,8 @@ const headings = [
           statusBar.className =
             'not-prose mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs transition-colors'
           if (statusIcon) statusIcon.textContent = '🟡'
-          authStatusText.textContent = `管理员已核验（${authSource}）· ⚠️ 实时源连接失败，已降级展示本地离线备份`
+          const errDetail = lastSyncInfo.errMsg ? ` (${lastSyncInfo.errMsg})` : ''
+          authStatusText.textContent = `管理员已核验（${authSource}）· ⚠️ 实时源连接失败${errDetail}，已降级展示本地离线备份`
           syncDetailsText.textContent = `本地快照时间: ${tzTimeStr || '未知'} · 离线日程: ${lastSyncInfo.count} 项 · 可点击「立即刷新」重试连接`
         }
       }
@@ -746,16 +748,18 @@ const headings = [
           let icsData
           let isLive = true
           let latestDtstamp = ''
-          // 加上时间戳避免浏览器强缓存旧数据
-          const liveUrl = icsUrl + (icsUrl.includes('?') ? '&' : '?') + 't=' + Date.now()
+          let errMsg = ''
           try {
-            const res = await fetch(liveUrl, { cache: 'no-store' })
-            if (!res.ok) throw new Error('Live fetch returned ' + res.status)
+            // 直接请求裸 URL，不可带 ?t= query 参数（Steam Deck 简易静态服务未处理 query 会直接返回 404）
+            // 服务端响应已内置 Cache-Control: no-cache, no-store，浏览器不会强缓存
+            const res = await fetch(icsUrl)
+            if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`)
             icsData = await res.text()
           } catch (fetchErr) {
             console.warn('Live fetch from Steam Deck failed. Trying local fallback:', fetchErr)
             isLive = false
-            const fallbackRes = await fetch('/calendar.ics?t=' + Date.now(), { cache: 'no-store' })
+            errMsg = fetchErr.message || String(fetchErr)
+            const fallbackRes = await fetch('/calendar.ics')
             if (!fallbackRes.ok) throw fetchErr
             icsData = await fallbackRes.text()
           }
@@ -807,7 +811,8 @@ const headings = [
             isLive,
             dtstamp: latestDtstamp,
             count: rawEvents.length,
-            fetchTime: new Date()
+            fetchTime: new Date(),
+            errMsg
           }
 
           const auth = checkAuth()
