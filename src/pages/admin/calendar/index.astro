@@ -42,20 +42,35 @@ const headings = [
 
   {/* 日历受保护主体（验证成功后展现） */}
   <div id='calendarMainArea' class='hidden'>
-    <div class='not-prose mb-4 flex items-center justify-between gap-2 p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs'>
-      <div class='flex items-center gap-2'>
-        <span class='text-sm'>🛡️</span>
-        <span class='font-medium' id='authStatusText'>管理员身份已核验通过 · 实时连接 Steam Deck 服务端</span>
+    <div id='statusBar' class='not-prose mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs transition-colors'>
+      <div class='flex flex-col gap-1'>
+        <div class='flex items-center gap-2'>
+          <span id='statusIcon' class='text-sm'>🟢</span>
+          <span class='font-medium' id='authStatusText'>管理员身份已核验通过 · 正在连接 Steam Deck 服务端...</span>
+        </div>
+        <div class='text-[11px] opacity-80 font-mono ml-6' id='syncDetailsText'>
+          正在拉取最新日程数据...
+        </div>
       </div>
-      <div class='flex items-center gap-3'>
-        <a href='/admin' class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity no-underline'>
+      <div class='flex items-center gap-2.5 self-end sm:self-auto shrink-0'>
+        <button
+          type='button'
+          id='refreshCalendarBtn'
+          class='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card/90 border border-border/80 hover:bg-muted font-medium text-foreground transition-all cursor-pointer shadow-xs active:scale-95'
+          title='强制绕过缓存，重新从 Steam Deck (cal.tetraacc.me) 拉取最新日历数据'
+        >
+          <span id='refreshIcon' class='inline-block text-xs'>🔄</span>
+          <span id='refreshBtnText'>立即刷新</span>
+        </button>
+        <span class='opacity-40'>|</span>
+        <a href='/admin' class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity no-underline text-foreground'>
           📝 内容后台 (CMS)
         </a>
         <span class='opacity-40'>|</span>
         <button
           type='button'
           id='lockSessionBtn'
-          class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity cursor-pointer'
+          class='text-[11px] underline opacity-80 hover:opacity-100 transition-opacity cursor-pointer text-foreground'
           title='清除当前临时授权并重新上锁'
         >
           重新上锁
@@ -396,6 +411,12 @@ const headings = [
       let calendar = null
       let rawEvents = []
       let isInitialized = false
+      let lastSyncInfo = {
+        isLive: true,
+        dtstamp: '',
+        count: 0,
+        fetchTime: null
+      }
 
       // 1. 验证逻辑：仅支持 Sveltia CMS 的 GitHub OAuth 登录凭据
       function checkAuth() {
@@ -416,19 +437,67 @@ const headings = [
       const authGate = document.getElementById('authGate')
       const calendarMainArea = document.getElementById('calendarMainArea')
       const lockSessionBtn = document.getElementById('lockSessionBtn')
+      const statusBar = document.getElementById('statusBar')
+      const statusIcon = document.getElementById('statusIcon')
       const authStatusText = document.getElementById('authStatusText')
+      const syncDetailsText = document.getElementById('syncDetailsText')
+      const refreshCalendarBtn = document.getElementById('refreshCalendarBtn')
+      const refreshIcon = document.getElementById('refreshIcon')
+      const refreshBtnText = document.getElementById('refreshBtnText')
+
+      function formatDtstamp(stampStr, tz) {
+        if (!stampStr) return ''
+        const m = stampStr.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/)
+        if (!m) return stampStr
+        const iso = `${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}Z`
+        const date = new Date(iso)
+        const tzLabel = tz === 'Asia/Tokyo' ? 'JST (东京)' : 'CST (北京)'
+        return (
+          date.toLocaleString('zh-CN', {
+            timeZone: tz,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+          }) + ` · ${tzLabel}`
+        )
+      }
+
+      function updateStatusDisplay(authSource) {
+        if (!statusBar || !authStatusText || !syncDetailsText) return
+
+        const tzTimeStr = formatDtstamp(lastSyncInfo.dtstamp, currentTz)
+        const fetchTimeStr = lastSyncInfo.fetchTime
+          ? lastSyncInfo.fetchTime.toLocaleTimeString('zh-CN', { timeZone: currentTz, hour12: false })
+          : ''
+
+        if (lastSyncInfo.isLive) {
+          statusBar.className =
+            'not-prose mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs transition-colors'
+          if (statusIcon) statusIcon.textContent = '🟢'
+          authStatusText.textContent = `管理员已核验（${authSource}）· 实时连接 Steam Deck 服务端 (cal.tetraacc.me)`
+          syncDetailsText.textContent = `源数据生成于: ${tzTimeStr || '刚刚'} · 聚合日程: ${lastSyncInfo.count} 项 · 最新同步: ${fetchTimeStr}`
+        } else {
+          statusBar.className =
+            'not-prose mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs transition-colors'
+          if (statusIcon) statusIcon.textContent = '🟡'
+          authStatusText.textContent = `管理员已核验（${authSource}）· ⚠️ 实时源连接失败，已降级展示本地离线备份`
+          syncDetailsText.textContent = `本地快照时间: ${tzTimeStr || '未知'} · 离线日程: ${lastSyncInfo.count} 项 · 可点击「立即刷新」重试连接`
+        }
+      }
 
       function applyAuthState() {
         const auth = checkAuth()
         if (auth.authed) {
           authGate.classList.add('hidden')
           calendarMainArea.classList.remove('hidden')
-          if (authStatusText) {
-            authStatusText.textContent = `管理员身份（${auth.source}）已核验通过 · 实时连接 Steam Deck 服务端`
-          }
+          updateStatusDisplay(auth.source)
           if (!isInitialized) {
             isInitialized = true
-            initCalendar()
+            fetchAndRenderCalendar(false)
           }
         } else {
           authGate.classList.remove('hidden')
@@ -482,6 +551,8 @@ const headings = [
           if (calendar) {
             renderEvents(rawEvents)
           }
+          const auth = checkAuth()
+          updateStatusDisplay(auth.source || 'GitHub')
         })
       })
 
@@ -661,12 +732,20 @@ const headings = [
       }
 
       // 8. 拉取并解析 ICS 文件
-      async function initCalendar() {
+      async function fetchAndRenderCalendar(isManual = false) {
         const loadingEl = document.getElementById('calendarLoading')
         const calEl = document.getElementById('calendar')
 
+        if (isManual && refreshCalendarBtn) {
+          refreshCalendarBtn.disabled = true
+          if (refreshIcon) refreshIcon.classList.add('animate-spin')
+          if (refreshBtnText) refreshBtnText.textContent = '正在拉取...'
+        }
+
         try {
           let icsData
+          let isLive = true
+          let latestDtstamp = ''
           // 加上时间戳避免浏览器强缓存旧数据
           const liveUrl = icsUrl + (icsUrl.includes('?') ? '&' : '?') + 't=' + Date.now()
           try {
@@ -675,6 +754,7 @@ const headings = [
             icsData = await res.text()
           } catch (fetchErr) {
             console.warn('Live fetch from Steam Deck failed. Trying local fallback:', fetchErr)
+            isLive = false
             const fallbackRes = await fetch('/calendar.ics?t=' + Date.now(), { cache: 'no-store' })
             if (!fallbackRes.ok) throw fetchErr
             icsData = await fallbackRes.text()
@@ -682,6 +762,13 @@ const headings = [
 
           // 核心容错：清除 UTF-8 BOM 避免 ical.js 语法报错
           icsData = icsData.replace(/^\uFEFF/, '').trim()
+
+          // 提取最新的 DTSTAMP
+          const stampMatches = [...icsData.matchAll(/DTSTAMP:(\d{4}\d{2}\d{2}T\d{2}\d{2}\d{2}Z)/g)]
+          if (stampMatches.length > 0) {
+            const allStamps = stampMatches.map((m) => m[1]).sort()
+            latestDtstamp = allStamps[allStamps.length - 1]
+          }
 
           // 使用 ical.js 解析
           const jcal = ICAL.parse(icsData)
@@ -716,35 +803,58 @@ const headings = [
             }
           })
 
+          lastSyncInfo = {
+            isLive,
+            dtstamp: latestDtstamp,
+            count: rawEvents.length,
+            fetchTime: new Date()
+          }
+
+          const auth = checkAuth()
+          updateStatusDisplay(auth.source || 'GitHub')
+
           if (loadingEl) loadingEl.style.display = 'none'
 
           // 初始化 FullCalendar
-          calendar = new FullCalendar.Calendar(calEl, {
-            initialView: 'dayGridMonth',
-            headerToolbar: {
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,listMonth'
-            },
-            buttonText: {
-              today: '今天 Today',
-              month: '月视图 Month',
-              list: '议程 List'
-            },
-            locale: 'zh-cn',
-            firstDay: 1, // 星期一开始
-            dayMaxEvents: 3, // 每天最多显示 3 个胶囊，超出显示 +more
-            eventClick: function (info) {
-              info.jsEvent.preventDefault()
-              openModal(info.event)
-            }
-          })
+          if (!calendar) {
+            calendar = new FullCalendar.Calendar(calEl, {
+              initialView: 'dayGridMonth',
+              headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,listMonth'
+              },
+              buttonText: {
+                today: '今天 Today',
+                month: '月视图 Month',
+                list: '议程 List'
+              },
+              locale: 'zh-cn',
+              firstDay: 1, // 星期一开始
+              dayMaxEvents: 3, // 每天最多显示 3 个胶囊，超出显示 +more
+              eventClick: function (info) {
+                info.jsEvent.preventDefault()
+                openModal(info.event)
+              }
+            })
+            calendar.render()
+          }
 
-          calendar.render()
           renderEvents(rawEvents)
+
+          if (isManual && refreshCalendarBtn) {
+            if (refreshIcon) refreshIcon.classList.remove('animate-spin')
+            if (refreshBtnText) {
+              refreshBtnText.textContent = isLive ? '✓ 已是最新' : '⚠️ 已更新(离线备份)'
+            }
+            setTimeout(() => {
+              if (refreshBtnText) refreshBtnText.textContent = '立即刷新'
+              refreshCalendarBtn.disabled = false
+            }, 2000)
+          }
         } catch (err) {
           console.error('Calendar render error:', err)
-          if (loadingEl) {
+          if (loadingEl && !calendar) {
             loadingEl.innerHTML = `
               <div class="text-red-500 py-6">
                 <p>⚠️ 日历数据加载或解析失败。</p>
@@ -752,7 +862,22 @@ const headings = [
               </div>
             `
           }
+          if (isManual && refreshCalendarBtn) {
+            if (refreshIcon) refreshIcon.classList.remove('animate-spin')
+            if (refreshBtnText) refreshBtnText.textContent = '❌ 刷新失败'
+            setTimeout(() => {
+              if (refreshBtnText) refreshBtnText.textContent = '立即刷新'
+              refreshCalendarBtn.disabled = false
+            }, 2500)
+          }
         }
+      }
+
+      // 9. 绑定手动刷新按钮
+      if (refreshCalendarBtn) {
+        refreshCalendarBtn.addEventListener('click', () => {
+          fetchAndRenderCalendar(true)
+        })
       }
 
       // 执行认证检查并监听后台登录态同步
