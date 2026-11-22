@@ -9,11 +9,6 @@ const headings = [
 ---
 
 <PageLayout title='日程台账 · 管理后台' {headings} pagefind={false} noindex={true}>
-  <link
-    rel='stylesheet'
-    href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css'
-  />
-
   {/* 身份验证拦截门（未登录前展示，保护敏感日程与 Steam Deck 源） */}
   <div id='authGate' class='not-prose my-8 p-6 sm:p-8 rounded-2xl border border-border/80 bg-card/60 backdrop-blur-md shadow-lg max-w-xl mx-auto text-center'>
     <div class='size-14 rounded-2xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner'>
@@ -401,22 +396,81 @@ const headings = [
     }
   </style>
 
-  {/* 客户端依赖库 */}
-  <script src='https://cdn.jsdelivr.net/npm/ical.js@1.5.0/build/ical.min.js' is:inline></script>
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js' is:inline></script>
-
+  {/* 客户端按需加载日历依赖库（仅通过管理员验证后加载） */}
   <script is:inline define:vars={{ icsUrl: CALENDAR_CONFIG.icsUrl }}>
     ;(function () {
       let currentTz = localStorage.getItem('tetra-cal-tz') || 'Asia/Tokyo'
       let calendar = null
       let rawEvents = []
       let isInitialized = false
+      let assetsPromise = null
       let lastSyncInfo = {
         isLive: true,
         dtstamp: '',
         count: 0,
         fetchTime: null,
         errMsg: ''
+      }
+
+      function loadStylesheet(href) {
+        if (document.querySelector(`link[href="${href}"]`)) return
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = href
+        document.head.appendChild(link)
+      }
+
+      function loadExternalScript(src) {
+        return new Promise((resolve, reject) => {
+          const existing = document.querySelector(`script[src="${src}"]`)
+          if (existing) {
+            if (existing.dataset.loaded === 'true') {
+              resolve()
+              return
+            }
+            existing.addEventListener('load', () => resolve(), { once: true })
+            existing.addEventListener('error', () => reject(new Error('加载依赖失败: ' + src)), {
+              once: true
+            })
+            return
+          }
+          const script = document.createElement('script')
+          script.src = src
+          script.async = true
+          script.addEventListener(
+            'load',
+            () => {
+              script.dataset.loaded = 'true'
+              resolve()
+            },
+            { once: true }
+          )
+          script.addEventListener(
+            'error',
+            () => {
+              script.remove()
+              reject(new Error('加载依赖失败: ' + src))
+            },
+            { once: true }
+          )
+          document.head.appendChild(script)
+        })
+      }
+
+      function loadCalendarAssets() {
+        if (window.ICAL && window.FullCalendar) {
+          return Promise.resolve()
+        }
+        if (assetsPromise) return assetsPromise
+        loadStylesheet('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css')
+        assetsPromise = Promise.all([
+          loadExternalScript('https://cdn.jsdelivr.net/npm/ical.js@1.5.0/build/ical.min.js'),
+          loadExternalScript('https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js')
+        ]).catch((err) => {
+          assetsPromise = null
+          throw err
+        })
+        return assetsPromise
       }
 
       // 1. 验证逻辑：仅支持 Sveltia CMS 的 GitHub OAuth 登录凭据
@@ -480,14 +534,19 @@ const headings = [
             'not-prose mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs transition-colors'
           if (statusIcon) statusIcon.textContent = '🟢'
           authStatusText.textContent = `管理员已核验（${authSource}）· 实时连接 Steam Deck 服务端 (cal.tetraacc.me)`
-          syncDetailsText.textContent = `源数据生成于: ${tzTimeStr || '刚刚'} · 聚合日程: ${lastSyncInfo.count} 项 · 最新同步: ${fetchTimeStr}`
+          syncDetailsText.textContent = lastSyncInfo.fetchTime
+            ? `源数据生成于: ${tzTimeStr || '刚刚'} · 聚合日程: ${lastSyncInfo.count} 项 · 最新同步: ${fetchTimeStr}`
+            : '正在按需加载日历组件并同步最新日程...'
         } else {
           statusBar.className =
-            'not-prose mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs transition-colors'
-          if (statusIcon) statusIcon.textContent = '🟡'
+            'not-prose mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400 text-xs transition-colors'
+          if (statusIcon) statusIcon.textContent = '🔴'
           const errDetail = lastSyncInfo.errMsg ? ` (${lastSyncInfo.errMsg})` : ''
-          authStatusText.textContent = `管理员已核验（${authSource}）· ⚠️ 实时源连接失败${errDetail}，已降级展示本地离线备份`
-          syncDetailsText.textContent = `本地快照时间: ${tzTimeStr || '未知'} · 离线日程: ${lastSyncInfo.count} 项 · 可点击「立即刷新」重试连接`
+          authStatusText.textContent = `管理员已核验（${authSource}）· ⚠️ 实时源连接失败${errDetail}`
+          syncDetailsText.textContent =
+            lastSyncInfo.count > 0
+              ? `当前保留此前已拉取的 ${lastSyncInfo.count} 项内存日程 · 可点击「立即刷新」重试`
+              : '未连接实时数据源（已禁用公开离线回退）· 请检查 Steam Deck 服务或点击「立即刷新」重试'
         }
       }
 
@@ -535,20 +594,24 @@ const headings = [
         })
       }
 
-      // 3. 时区切换监听
+      // 3. 时区切换监听（含初始化高亮同步）
       const tzBtns = document.querySelectorAll('.tz-btn')
+      function syncTzButtons() {
+        tzBtns.forEach((b) => {
+          const isAct = b.getAttribute('data-tz') === currentTz
+          b.classList.toggle('active-tz', isAct)
+          b.classList.toggle('text-muted-foreground', !isAct)
+        })
+      }
+      syncTzButtons()
+
       tzBtns.forEach((btn) => {
         btn.addEventListener('click', () => {
           const newTz = btn.getAttribute('data-tz')
-          if (newTz === currentTz) return
+          if (!newTz || newTz === currentTz) return
           currentTz = newTz
           localStorage.setItem('tetra-cal-tz', currentTz)
-
-          tzBtns.forEach((b) => {
-            const isAct = b.getAttribute('data-tz') === currentTz
-            b.classList.toggle('active-tz', isAct)
-            b.classList.toggle('text-muted-foreground', !isAct)
-          })
+          syncTzButtons()
 
           if (calendar) {
             renderEvents(rawEvents)
@@ -613,12 +676,32 @@ const headings = [
         }
       }
 
-      // 5. 时区时间格式化函数
-      function formatTzTime(jsDate, tz, isAllDay = false) {
-        if (!jsDate) return ''
+      // 5. 时区时间格式化与本地 ISO 转换函数
+      function toLocalIsoInTz(jsDate, tz) {
+        if (!(jsDate instanceof Date) || Number.isNaN(jsDate.getTime())) return null
+        const parts = new Intl.DateTimeFormat('en-CA', {
+          timeZone: tz,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        }).formatToParts(jsDate)
+        const get = (type) => parts.find((p) => p.type === type)?.value || '00'
+        const hr = get('hour') === '24' ? '00' : get('hour')
+        return `${get('year')}-${get('month')}-${get('day')}T${hr}:${get('minute')}:${get('second')}`
+      }
+
+      function formatTzTime(val, tz, isAllDay = false) {
+        if (!val) return ''
         if (isAllDay) {
+          if (typeof val === 'string') {
+            return val.replace(/-/g, '/') + ' (全天 All-Day)'
+          }
           return (
-            jsDate.toLocaleDateString('zh-CN', {
+            val.toLocaleDateString('zh-CN', {
               timeZone: tz,
               year: 'numeric',
               month: '2-digit',
@@ -627,6 +710,7 @@ const headings = [
           )
         }
 
+        const jsDate = val instanceof Date ? val : new Date(val)
         const tzName = tz === 'Asia/Tokyo' ? 'JST (东京时间 UTC+9)' : 'CST (北京时间 UTC+8)'
         const dateStr = jsDate.toLocaleDateString('zh-CN', {
           timeZone: tz,
@@ -662,11 +746,13 @@ const headings = [
         modalBadge.textContent = ext.metaCategory?.label || '日程'
         modalBadge.className = `w-fit text-xs font-mono px-2 py-0.5 rounded ${ext.metaCategory?.badgeClass || ''}`
 
-        const startStr = formatTzTime(eventObj.start, currentTz, eventObj.allDay)
+        const rawStartVal = ext.rawStart || eventObj.start
+        const rawEndVal = ext.rawEnd || eventObj.end
+        const startStr = formatTzTime(rawStartVal, currentTz, eventObj.allDay)
         let timeDisplay = startStr
-        if (eventObj.end && !eventObj.allDay) {
-          const endStr = formatTzTime(eventObj.end, currentTz, false)
-          timeDisplay = `${startStr} ~ ${endStr.split('·')[0]}`
+        if (rawEndVal && !eventObj.allDay) {
+          const endStr = formatTzTime(rawEndVal, currentTz, false)
+          timeDisplay = `${startStr} ~ ${endStr.split('·')[0].trim()}`
         }
         modalTime.textContent = timeDisplay
 
@@ -687,8 +773,10 @@ const headings = [
         if (ext.url) {
           modalLinkBtn.href = ext.url
           modalLinkBtn.classList.remove('hidden')
+          modalLinkBtn.classList.add('inline-flex')
         } else {
           modalLinkBtn.classList.add('hidden')
+          modalLinkBtn.classList.remove('inline-flex')
         }
 
         modal.classList.remove('opacity-0', 'pointer-events-none')
@@ -710,21 +798,30 @@ const headings = [
         if (e.key === 'Escape') closeModal()
       })
 
-      // 7. 将原始解析的事件渲染到 FullCalendar
+      // 7. 将原始解析的事件按当前所选时区映射并渲染到 FullCalendar
       function renderEvents(rawList) {
         const fcEvents = rawList.map((item) => {
+          const displayStart = item.allDay ? item.rawStart : toLocalIsoInTz(item.rawStart, currentTz)
+          const displayEnd = item.allDay
+            ? item.rawEnd
+            : item.rawEnd
+              ? toLocalIsoInTz(item.rawEnd, currentTz)
+              : null
+
           return {
             id: item.uid,
             title: item.summary,
-            start: item.start,
-            end: item.end,
+            start: displayStart,
+            end: displayEnd,
             allDay: item.allDay,
             className: item.metaCategory.className,
             extendedProps: {
               location: item.location,
               description: item.description,
               url: item.url,
-              metaCategory: item.metaCategory
+              metaCategory: item.metaCategory,
+              rawStart: item.rawStart,
+              rawEnd: item.rawEnd
             }
           }
         })
@@ -733,7 +830,51 @@ const headings = [
         calendar.addEventSource(fcEvents)
       }
 
-      // 8. 拉取并解析 ICS 文件
+      function showLoadingState(loadingEl) {
+        if (!loadingEl) return
+        loadingEl.style.display = ''
+        loadingEl.replaceChildren()
+        const wrap = document.createElement('div')
+        wrap.className = 'py-12 text-center text-sm text-muted-foreground flex items-center justify-center gap-2'
+        const dot = document.createElement('span')
+        dot.className = 'size-2 rounded-full bg-primary animate-ping'
+        const label = document.createElement('span')
+        label.textContent = '正在拉取最新日程...'
+        wrap.append(dot, label)
+        loadingEl.appendChild(wrap)
+      }
+
+      function showErrorState(loadingEl, errMessage) {
+        if (!loadingEl) return
+        loadingEl.style.display = ''
+        loadingEl.replaceChildren()
+
+        const box = document.createElement('div')
+        box.className = 'text-red-500 py-8 flex flex-col items-center gap-2'
+
+        const titleP = document.createElement('p')
+        titleP.className = 'font-medium'
+        titleP.textContent = '⚠️ 日历实时数据连接或解析失败'
+
+        const msgP = document.createElement('p')
+        msgP.className = 'text-xs text-muted-foreground font-mono max-w-md break-all'
+        msgP.textContent = errMessage
+
+        const retryBtn = document.createElement('button')
+        retryBtn.type = 'button'
+        retryBtn.className =
+          'mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-card text-foreground text-xs hover:bg-muted transition-colors cursor-pointer'
+        retryBtn.textContent = '🔄 重试连接'
+        retryBtn.addEventListener('click', () => {
+          showLoadingState(loadingEl)
+          fetchAndRenderCalendar(true)
+        })
+
+        box.append(titleP, msgP, retryBtn)
+        loadingEl.appendChild(box)
+      }
+
+      // 8. 按需加载依赖库，并从实时源拉取解析 ICS 文件
       async function fetchAndRenderCalendar(isManual = false) {
         const loadingEl = document.getElementById('calendarLoading')
         const calEl = document.getElementById('calendar')
@@ -745,40 +886,35 @@ const headings = [
         }
 
         try {
-          let icsData
-          let isLive = true
-          let latestDtstamp = ''
-          let errMsg = ''
-          try {
-            // 直接请求裸 URL，不可带 ?t= query 参数（Steam Deck 简易静态服务未处理 query 会直接返回 404）
-            // 服务端响应已内置 Cache-Control: no-cache, no-store，浏览器不会强缓存
-            const res = await fetch(icsUrl)
-            if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`)
-            icsData = await res.text()
-          } catch (fetchErr) {
-            console.warn('Live fetch from Steam Deck failed. Trying local fallback:', fetchErr)
-            isLive = false
-            errMsg = fetchErr.message || String(fetchErr)
-            const fallbackRes = await fetch('/calendar.ics')
-            if (!fallbackRes.ok) throw fetchErr
-            icsData = await fallbackRes.text()
-          }
+          const [res] = await Promise.all([fetch(icsUrl), loadCalendarAssets()])
+          if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`)
+          let icsData = await res.text()
 
           // 核心容错：清除 UTF-8 BOM 避免 ical.js 语法报错
           icsData = icsData.replace(/^\uFEFF/, '').trim()
 
           // 提取最新的 DTSTAMP
+          let latestDtstamp = ''
           const stampMatches = [...icsData.matchAll(/DTSTAMP:(\d{4}\d{2}\d{2}T\d{2}\d{2}\d{2}Z)/g)]
           if (stampMatches.length > 0) {
             const allStamps = stampMatches.map((m) => m[1]).sort()
             latestDtstamp = allStamps[allStamps.length - 1]
           }
 
-          // 使用 ical.js 解析
+          // 使用 ical.js 解析，并先注册 VTIMEZONE 保证跨时区设备上时间一致
           const jcal = ICAL.parse(icsData)
           const comp = new ICAL.Component(jcal)
-          const vevents = comp.getAllSubcomponents('vevent')
+          const vtimezones = comp.getAllSubcomponents('vtimezone')
+          vtimezones.forEach((vtz) => {
+            try {
+              const tzObj = new ICAL.Timezone(vtz)
+              if (tzObj && tzObj.tzid && ICAL.TimezoneService) {
+                ICAL.TimezoneService.register(tzObj)
+              }
+            } catch (e) {}
+          })
 
+          const vevents = comp.getAllSubcomponents('vevent')
           rawEvents = vevents.map((vevent) => {
             const ev = new ICAL.Event(vevent)
             const summary = ev.summary || '无标题日程'
@@ -788,10 +924,8 @@ const headings = [
             const url = vevent.getFirstPropertyValue('url') || ''
 
             const isAllDay = ev.startDate.isDate
-            // 对于全天事件，直接传递 YYYY-MM-DD 字符串，彻底避免时区平移问题
-            const startVal = isAllDay ? ev.startDate.toString() : ev.startDate.toJSDate()
-            const endVal = ev.endDate ? (ev.endDate.isDate ? ev.endDate.toString() : ev.endDate.toJSDate()) : null
-
+            const rawStart = isAllDay ? ev.startDate.toString() : ev.startDate.toJSDate()
+            const rawEnd = ev.endDate ? (ev.endDate.isDate ? ev.endDate.toString() : ev.endDate.toJSDate()) : null
             const metaCategory = categorizeEvent(summary, categories)
 
             return {
@@ -800,19 +934,19 @@ const headings = [
               description,
               location,
               url,
-              start: startVal,
-              end: endVal,
+              rawStart,
+              rawEnd,
               allDay: isAllDay,
               metaCategory
             }
           })
 
           lastSyncInfo = {
-            isLive,
+            isLive: true,
             dtstamp: latestDtstamp,
             count: rawEvents.length,
             fetchTime: new Date(),
-            errMsg
+            errMsg: ''
           }
 
           const auth = checkAuth()
@@ -849,9 +983,7 @@ const headings = [
 
           if (isManual && refreshCalendarBtn) {
             if (refreshIcon) refreshIcon.classList.remove('animate-spin')
-            if (refreshBtnText) {
-              refreshBtnText.textContent = isLive ? '✓ 已是最新' : '⚠️ 已更新(离线备份)'
-            }
+            if (refreshBtnText) refreshBtnText.textContent = '✓ 已是最新'
             setTimeout(() => {
               if (refreshBtnText) refreshBtnText.textContent = '立即刷新'
               refreshCalendarBtn.disabled = false
@@ -859,13 +991,17 @@ const headings = [
           }
         } catch (err) {
           console.error('Calendar render error:', err)
+          const errMessage = err?.message || String(err)
+          lastSyncInfo = {
+            ...lastSyncInfo,
+            isLive: false,
+            errMsg: errMessage
+          }
+          const auth = checkAuth()
+          updateStatusDisplay(auth.source || 'GitHub')
+
           if (loadingEl && !calendar) {
-            loadingEl.innerHTML = `
-              <div class="text-red-500 py-6">
-                <p>⚠️ 日历数据加载或解析失败。</p>
-                <p class="text-xs text-muted-foreground mt-1">${err.message}</p>
-              </div>
-            `
+            showErrorState(loadingEl, errMessage)
           }
           if (isManual && refreshCalendarBtn) {
             if (refreshIcon) refreshIcon.classList.remove('animate-spin')

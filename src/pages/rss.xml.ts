@@ -68,21 +68,31 @@ const GET = async (context: AstroGlobal) => {
     description: config.description,
     site: import.meta.env.SITE,
     items: await Promise.all(
-      allPostsByDate.map(async (post) => ({
-        pubDate: post.data.publishDate,
-        link: `/blog/${post.id}`,
-        // `pubDate` intentionally stays on `publishDate` so aggregators do not re-flow an
-        // edited post as new. `atom:updated` lets readers that support it detect the edit.
-        customData: `<h:img src="${typeof post.data.heroImage?.src === 'string' ? post.data.heroImage?.src : post.data.heroImage?.src.src}" />
-          <enclosure url="${typeof post.data.heroImage?.src === 'string' ? post.data.heroImage?.src : post.data.heroImage?.src.src}" />${
-            post.data.updatedDate
-              ? `
-          <atom:updated>${post.data.updatedDate.toISOString()}</atom:updated>`
-              : ''
-          }`,
-        content: await renderContent(post, siteUrl),
-        ...post.data
-      }))
+      allPostsByDate.map(async (post) => {
+        const rawHeroSrc =
+          typeof post.data.heroImage?.src === 'string'
+            ? post.data.heroImage.src
+            : post.data.heroImage?.src?.src
+        const heroUrl = rawHeroSrc ? new URL(rawHeroSrc, siteUrl).href : ''
+        const customParts: string[] = []
+        if (heroUrl) {
+          customParts.push(`<h:img src="${heroUrl}" />`)
+        }
+        if (post.data.updatedDate) {
+          customParts.push(`<atom:updated>${post.data.updatedDate.toISOString()}</atom:updated>`)
+        }
+        const customData = customParts.join('\n')
+
+        return {
+          pubDate: post.data.publishDate,
+          link: `/blog/${post.id}`,
+          // `pubDate` intentionally stays on `publishDate` so aggregators do not re-flow an
+          // edited post as new. `atom:updated` lets readers that support it detect the edit.
+          ...(customData ? { customData } : {}),
+          content: await renderContent(post, siteUrl),
+          ...post.data
+        }
+      })
     )
   })
 }

@@ -42,12 +42,11 @@ const playlistEmbed = toSpotifyEmbedUrl(SPOTIFY_FEATURED_PLAYLIST)
           return (
             <div class='rounded-2xl border bg-muted/60 p-3.5 transition-colors hover:border-foreground/25'>
               <iframe
-                class='spotify-embed-iframe'
+                class='spotify-embed-iframe border-0'
                 style='border-radius:12px'
                 src={embedUrl}
                 width='100%'
                 height='80'
-                frameborder='0'
                 allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
                 loading='lazy'
                 title={`${item.title} - ${item.artist}`}
@@ -69,12 +68,11 @@ const playlistEmbed = toSpotifyEmbedUrl(SPOTIFY_FEATURED_PLAYLIST)
     playlistEmbed && (
       <div class='mt-2'>
         <iframe
-          class='spotify-embed-iframe'
+          class='spotify-embed-iframe border-0'
           style='border-radius:12px'
           src={playlistEmbed}
           width='100%'
           height='352'
-          frameborder='0'
           allow='autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture'
           loading='lazy'
           title='Spotify Playlist'

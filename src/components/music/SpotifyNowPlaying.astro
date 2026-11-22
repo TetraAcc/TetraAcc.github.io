@@ -46,7 +46,6 @@ const isHome = variant === 'home'
           {/* Left: Cover or Idle Dot */}
           <div class='shrink-0 flex items-center justify-center'>
             <img
-              src=''
               alt='Album Cover'
               class='spotify-np-cover-mobile size-9 rounded-full object-cover border border-border/50'
               style='display: none;'
@@ -87,7 +86,6 @@ const isHome = variant === 'home'
           </span>
 
           <img
-            src=''
             alt='Album Cover'
             class='spotify-np-cover hidden size-6 rounded-full object-cover border'
           />
@@ -117,7 +115,6 @@ const isHome = variant === 'home'
         </span>
 
         <img
-          src=''
           alt='Album Cover'
           class='spotify-np-cover hidden size-6 rounded-full object-cover border'
         />
@@ -180,7 +177,10 @@ const isHome = variant === 'home'
             artistEl.textContent = ''
             artistEl.classList.add('hidden')
           }
-          if (coverEl) coverEl.classList.add('hidden')
+          if (coverEl) {
+            coverEl.removeAttribute('src')
+            coverEl.classList.add('hidden')
+          }
           if (dotEl) {
             dotEl.classList.remove('bg-green-500')
             dotEl.classList.add('bg-muted-foreground/40')
@@ -200,7 +200,7 @@ const isHome = variant === 'home'
             artistMobile.classList.add('hidden')
           }
           if (coverMobile) {
-            coverMobile.src = ''
+            coverMobile.removeAttribute('src')
             coverMobile.style.display = 'none'
           }
           if (idleDotMobile) idleDotMobile.style.display = 'flex'
@@ -310,14 +310,26 @@ const isHome = variant === 'home'
       })
     }
 
-    // 立即执行并注册定时器
+    // 立即执行并注册定时器（页面后台不可见时跳过空转轮询）
     initSpotifyNowPlaying()
     if (window.__spotifyNowPlayingTimer) {
       clearInterval(window.__spotifyNowPlayingTimer)
     }
-    window.__spotifyNowPlayingTimer = setInterval(initSpotifyNowPlaying, 30000)
+    window.__spotifyNowPlayingTimer = setInterval(() => {
+      if (!document.hidden) initSpotifyNowPlaying()
+    }, 30000)
 
-    // 监听 Astro 客户端视图切换
-    document.addEventListener('astro:page-load', initSpotifyNowPlaying)
+    if (!window.__spotifyVisibilityBound) {
+      window.__spotifyVisibilityBound = true
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) initSpotifyNowPlaying()
+      })
+    }
+
+    // 监听 Astro 客户端视图切换（防止重复绑定）
+    if (!window.__spotifyPageLoadBound) {
+      window.__spotifyPageLoadBound = true
+      document.addEventListener('astro:page-load', initSpotifyNowPlaying)
+    }
   })()
 </script>

@@ -28,8 +28,14 @@ const CORS_HEADERS = {
 }
 
 let memoryLastTrack = null
+let memoryAccessToken = null
+let memoryTokenExpiresAt = 0
 
 async function getAccessToken(env) {
+  if (memoryAccessToken && Date.now() < memoryTokenExpiresAt - 120_000) {
+    return { access_token: memoryAccessToken }
+  }
+
   const basic = btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`)
   const response = await fetch(TOKEN_ENDPOINT, {
     method: 'POST',
@@ -42,7 +48,16 @@ async function getAccessToken(env) {
       refresh_token: env.SPOTIFY_REFRESH_TOKEN
     })
   })
-  return response.json()
+  if (!response.ok) {
+    throw new Error(`Spotify token request failed: ${response.status}`)
+  }
+  const data = await response.json()
+  if (!data?.access_token) {
+    throw new Error('Spotify token response missing access_token')
+  }
+  memoryAccessToken = data.access_token
+  memoryTokenExpiresAt = Date.now() + (Number(data.expires_in) || 3600) * 1000
+  return data
 }
 
 async function getLastTrackFromCache() {
@@ -132,19 +147,26 @@ export default {
         }
       }
 
-      // 3. 若缓存为空，才尝试向 Spotify 请求最近播放记录
+      // 3. 若缓存为空或超期，向 Spotify 请求最近播放记录，并校验真实播放时间
       const recentRes = await fetch(RECENTLY_PLAYED_ENDPOINT, { headers })
       if (recentRes.status === 200) {
         const recentData = await recentRes.json()
-        const track = recentData?.items?.[0]?.track
-        if (track) {
+        const item = recentData?.items?.[0]
+        const track = item?.track
+        const realPlayedAt = item?.played_at ? Date.parse(item.played_at) : 0
+        const isWithinTtl =
+          Number.isFinite(realPlayedAt) &&
+          realPlayedAt > 0 &&
+          Date.now() - realPlayedAt <= RECENT_TRACK_TTL_MS
+
+        if (track && isWithinTtl) {
           const trackData = {
             title: track.name,
             artist: track.artists?.map((a) => a.name).join(', ') || '',
             album: track.album?.name || '',
             albumImageUrl: track.album?.images?.[0]?.url || '',
             songUrl: track.external_urls?.spotify || '',
-            playedAt: Date.now()
+            playedAt: realPlayedAt
           }
           await saveLastTrackToCache(trackData, ctx)
           return new Response(
@@ -160,8 +182,9 @@ export default {
       // 4. 超期或无数据时，干净休眠返回“未在播放”
       return new Response(JSON.stringify({ isPlaying: false }), { headers: CORS_HEADERS })
     } catch (err) {
+      console.error('Spotify worker error:', err)
       return new Response(
-        JSON.stringify({ isPlaying: false, error: String(err) }),
+        JSON.stringify({ isPlaying: false, error: 'Upstream unavailable' }),
         { status: 500, headers: CORS_HEADERS }
       )
     }

@@ -4,7 +4,6 @@ const robotsTxt = `
 User-agent: *
 Disallow: /admin
 Disallow: /admin/
-Disallow: /calendar.ics
 Allow: /
 
 Sitemap: ${new URL('sitemap-index.xml', import.meta.env.SITE).href}

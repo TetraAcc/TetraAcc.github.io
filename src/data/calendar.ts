@@ -1,7 +1,7 @@
 export interface CalendarConfig {
   /**
    * ICS 日历源地址。
-   * 支持本地相对路径（如 '/calendar.ics'），或宿主机 Cloudflare Tunnel 映射的外网域名（如 'https://calendar.tetraacc.me/calendar.ics'）。
+   * 指向宿主机 Cloudflare Tunnel 映射的实时日历服务。
    */
   icsUrl: string
   /**

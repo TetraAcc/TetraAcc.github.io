@@ -683,7 +683,11 @@ const meta = {
 
           cards.forEach((card) => {
             const searchHaystack = card.getAttribute('data-search-text') || ''
-            if (!query || searchHaystack.includes(query)) {
+            const matched =
+              !query ||
+              searchHaystack.includes(query) ||
+              (card.querySelector('.entry-full')?.textContent || '').toLowerCase().includes(query)
+            if (matched) {
               card.style.display = ''
               visibleCount++
             } else {
@@ -739,7 +743,24 @@ const meta = {
           const words = bar.getAttribute('data-words') || ''
           const type = bar.getAttribute('data-type-label') || ''
           if (cassetteEcho) {
-            cassetteEcho.innerHTML = `<span class="text-foreground font-medium">${date}</span> · <span class="text-primary font-medium">${type}</span> · <span class="text-foreground/90">${title}</span> <span class="text-[10px] text-muted-foreground/80">(${words}字)</span>`
+            cassetteEcho.replaceChildren()
+            const sDate = document.createElement('span')
+            sDate.className = 'text-foreground font-medium'
+            sDate.textContent = date
+
+            const sType = document.createElement('span')
+            sType.className = 'text-primary font-medium'
+            sType.textContent = type
+
+            const sTitle = document.createElement('span')
+            sTitle.className = 'text-foreground/90'
+            sTitle.textContent = title
+
+            const sWords = document.createElement('span')
+            sWords.className = 'text-[10px] text-muted-foreground/80'
+            sWords.textContent = ` (${words}字)`
+
+            cassetteEcho.append(sDate, ' · ', sType, ' · ', sTitle, sWords)
             cassetteEcho.classList.remove('opacity-0')
           }
         })

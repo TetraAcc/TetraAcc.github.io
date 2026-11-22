@@ -50,6 +50,8 @@ if (!images[imagePath])
       <Image
         src={images[imagePath]()}
         alt={config.logo.alt || 'Profile'}
+        width={224}
+        height={224}
         class='size-28 rounded-full border p-1 object-cover'
         loading='eager'
         fetchpriority='high'
@@ -83,6 +85,7 @@ if (!images[imagePath])
             as='a'
             href='https://github.com/TetraAcc'
             target='_blank'
+            rel='noopener noreferrer'
           >
             <Icon name='github' class='size-5' slot='icon' />
           </Label>
@@ -91,6 +94,7 @@ if (!images[imagePath])
             as='a'
             href='https://space.bilibili.com/15413289'
             target='_blank'
+            rel='noopener noreferrer'
           >
             <Icon name='bilibili' class='size-5' slot='icon' />
           </Label>
@@ -99,6 +103,7 @@ if (!images[imagePath])
             as='a'
             href='https://steamcommunity.com/id/TetraAcc/'
             target='_blank'
+            rel='noopener noreferrer'
           >
             <Icon name='steam' class='size-5' slot='icon' />
           </Label>
@@ -216,9 +221,10 @@ if (!images[imagePath])
                   as='a'
                   heading={p.name.replace(/^[^\w\s\u4e00-\u9fa5]+/, '').trim() || p.name}
                   subheading={sub}
-                  date='Python · GitHub'
+                  date={(p as any).tag || 'Open Source · GitHub'}
                   href={href}
                   target='_blank'
+                  rel='noopener noreferrer'
                 />
               )
             })
@@ -235,9 +241,10 @@ if (!images[imagePath])
                   as='a'
                   heading={p.name.replace(/^[^\w\s\u4e00-\u9fa5]+/, '').trim() || p.name}
                   subheading={sub}
-                  date='Python · GitHub'
+                  date={(p as any).tag || 'Open Source · GitHub'}
                   href={href}
                   target='_blank'
+                  rel='noopener noreferrer'
                 />
               )
             })
@@ -254,9 +261,10 @@ if (!images[imagePath])
                   as='a'
                   heading={p.name.replace(/^[^\w\s\u4e00-\u9fa5]+/, '').trim() || p.name}
                   subheading={sub}
-                  date='Python · GitHub'
+                  date={(p as any).tag || 'Open Source · GitHub'}
                   href={href}
                   target='_blank'
+                  rel='noopener noreferrer'
                 />
               )
             })

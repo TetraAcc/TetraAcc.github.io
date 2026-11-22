@@ -499,16 +499,16 @@ Fuck it. 那都是之前想的事情。连不上的时候我是真的血压飙�
     📖 手写本原件影印归档（封面 / 扉页 / 封底）
   </summary>
   <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-    <a href="/manuscripts/labyrinth-map/封面.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/封面.jpg" alt="手稿封面" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+    <a href="/manuscripts/labyrinth-map/封面.webp" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/封面.webp" alt="手稿封面" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
       <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">封面 ↗</span>
     </a>
-    <a href="/manuscripts/labyrinth-map/扉页.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/扉页.jpg" alt="手稿扉页 · Labyrinth Map" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+    <a href="/manuscripts/labyrinth-map/扉页.webp" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/扉页.webp" alt="手稿扉页 · Labyrinth Map" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
       <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">扉页 ↗</span>
     </a>
-    <a href="/manuscripts/labyrinth-map/封底.jpg" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
-      <img src="/manuscripts/labyrinth-map/封底.jpg" alt="手稿封底" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
+    <a href="/manuscripts/labyrinth-map/封底.webp" target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+      <img src="/manuscripts/labyrinth-map/封底.webp" alt="手稿封底" loading="lazy" class="w-full aspect-[3/4] object-cover transition-transform duration-300 group-hover:scale-105" />
       <span class="block py-1 text-center font-mono text-[11px] text-muted-foreground group-hover:text-primary">封底 ↗</span>
     </a>
   </div>

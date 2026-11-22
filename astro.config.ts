@@ -1,6 +1,5 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import sitemap from '@astrojs/sitemap'
-import vercel from '@astrojs/vercel'
 import AstroPureIntegration from 'astro-pure'
 import { defineConfig, fontProviders, svgoOptimizer } from 'astro/config'
 import rehypeKatex from 'rehype-katex'
@@ -117,7 +116,7 @@ export default defineConfig({
   // [Integrations]
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/calendar')
+      filter: (page) => !page.includes('/calendar') && !page.includes('/admin')
     }),
     AstroPureIntegration(config)
   ],

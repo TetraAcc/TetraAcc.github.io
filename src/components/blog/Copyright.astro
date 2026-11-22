@@ -16,16 +16,18 @@ const { title, publishDate } = data
 const heroImage = 'heroImage' in data ? data.heroImage : undefined
 
 const image = typeof heroImage?.src === 'string' ? heroImage?.src : (heroImage?.src?.src ?? '')
+const absImage = image ? new URL(image, Astro.site ?? Astro.url).href : ''
+const shareUrl = Astro.url.href
 
 const shares = {
   weibo: {
-    link: `http://service.weibo.com/share/share.php?url=${Astro.url}&title=${title}&pic=${image}`
+    link: `https://service.weibo.com/share/share.php?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(title)}${absImage ? `&pic=${encodeURIComponent(absImage)}` : ''}`
   },
   x: {
-    link: `https://x.com/intent/tweet?text='${title}'&url='${Astro.url}'&via='${config.author}'`
+    link: `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`
   },
   bluesky: {
-    link: `https://bsky.app/intent/compose?text=${title}%0A${Astro.url}`
+    link: `https://bsky.app/intent/compose?text=${encodeURIComponent(`${title}\n${shareUrl}`)}`
   }
 } as const
 ---
@@ -68,6 +70,7 @@ const shares = {
         class='text-sm text-foreground max-sm:place-self-center'
         href='https://creativecommons.org/licenses/by-nc-sa/4.0/'
         target='_blank'
+        rel='noopener noreferrer'
       >
         CC BY-NC-SA 4.0
       </a>
@@ -96,6 +99,7 @@ const shares = {
           <a
             href={shares[share].link}
             target='_blank'
+            rel='noopener noreferrer'
             id={`share-${share}`}
             aria-label={`Share to ${share}`}
             class='group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5'
